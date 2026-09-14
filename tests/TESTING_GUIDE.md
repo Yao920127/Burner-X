@@ -1,107 +1,107 @@
-# PDF Compare View 重构测试指南
+# PDF Compare View 重構測試指南
 
-本文档说明如何测试重构后的 PDF 对比功能。
+本文件說明如何測試重構後的 PDF 對比功能。
 
-## 📋 重构概况
+## 📋 重構概況
 
-已将 `history_pdf_compare.js` (2606行) 拆分为：
-- **TextFitting.js** (~450行) - 文本自适应渲染
-- **PDFExporter.js** (~450行) - PDF导出功能
-- **SegmentManager.js** (~400行) - 长画布分段管理
-- **主类** (~1300行) - 协调器和核心逻辑
+已將 `history_pdf_compare.js` (2606行) 拆分為：
+- **TextFitting.js** (~450行) - 文字自適應渲染
+- **PDFExporter.js** (~450行) - PDF匯出功能
+- **SegmentManager.js** (~400行) - 長畫布分段管理
+- **主類** (~1300行) - 協調器和核心邏輯
 
-## 🔧 测试前准备
+## 🔧 測試前準備
 
-### 1. 确保新模块已加载
-在 `index.html` 或相关HTML文件中，在加载 `history_pdf_compare.js` **之前**添加：
+### 1. 確保新模組已載入
+在 `index.html` 或相關HTML檔案中，在載入 `history_pdf_compare.js` **之前**新增：
 
 ```html
-<!-- 加载新的模块 -->
+<!-- 載入新的模組 -->
 <script src="js/history/modules/TextFitting.js"></script>
 <script src="js/history/modules/PDFExporter.js"></script>
 <script src="js/history/modules/SegmentManager.js"></script>
 
-<!-- 加载主类 -->
+<!-- 載入主類 -->
 <script src="js/history/history_pdf_compare.js"></script>
 ```
 
-### 2. 清除浏览器缓存
-重要！使用 Ctrl+Shift+R (或 Cmd+Shift+R) 强制刷新页面。
+### 2. 清除瀏覽器快取
+重要！使用 Ctrl+Shift+R (或 Cmd+Shift+R) 強制重新整理頁面。
 
-## ✅ 测试清单
+## ✅ 測試清單
 
-### 测试1: PDF加载和显示
-**目的**: 验证PDF能正常加载和显示
+### 測試1: PDF載入和顯示
+**目的**: 驗證PDF能正常載入和顯示
 
-1. 打开应用并选择一个PDF文件
-2. 等待PDF加载完成
-3. **预期结果**:
-   - ✅ 左侧显示原文PDF
-   - ✅ 右侧显示翻译后的PDF
-   - ✅ 页面滚动流畅，无白屏
-   - ✅ 控制台无错误
+1. 開啟應用並選擇一個PDF檔案
+2. 等待PDF載入完成
+3. **預期結果**:
+   - ✅ 左側顯示原文PDF
+   - ✅ 右側顯示翻譯後的PDF
+   - ✅ 頁面滾動流暢，無白屏
+   - ✅ 主控台無錯誤
 
-### 测试2: 文本自适应渲染
-**目的**: 验证 TextFitting.js 模块工作正常
+### 測試2: 文字自適應渲染
+**目的**: 驗證 TextFitting.js 模組工作正常
 
-1. 检查右侧翻译区域的文本显示
-2. **预期结果**:
-   - ✅ 文本完整显示在bbox框内
-   - ✅ 字号自适应，未超出边界
-   - ✅ 中文和英文换行正确
-   - ✅ 数学公式(如有)正确渲染
+1. 檢查右側翻譯區域的文字顯示
+2. **預期結果**:
+   - ✅ 文字完整顯示在bbox框內
+   - ✅ 字號自適應，未超出邊界
+   - ✅ 中文和英文換行正確
+   - ✅ 數學公式(如有)正確渲染
 
-**验证代码** (在浏览器控制台):
+**驗證程式碼** (在瀏覽器主控台):
 ```javascript
-// 检查 TextFittingAdapter 是否加载
+// 檢查 TextFittingAdapter 是否載入
 console.log('TextFittingAdapter:', typeof TextFittingAdapter);
 
-// 检查主类是否使用了模块
-const view = window.pdfCompareView; // 假设实例保存在这里
+// 檢查主類是否使用了模組
+const view = window.pdfCompareView; // 假設例項儲存在這裡
 console.log('使用TextFittingAdapter:', view.textFittingAdapter);
 ```
 
-### 测试3: 长画布分段渲染
-**目的**: 验证 SegmentManager.js 模块工作正常
+### 測試3: 長畫布分段渲染
+**目的**: 驗證 SegmentManager.js 模組工作正常
 
-1. 滚动PDF页面，从第一页滚动到最后一页
-2. 快速滚动和慢速滚动都要测试
-3. **预期结果**:
-   - ✅ 滚动流畅，无卡顿
-   - ✅ 页面内容按需加载(懒加载)
-   - ✅ 所有页面都能正确显示
-   - ✅ 内存占用稳定(查看任务管理器)
+1. 滾動PDF頁面，從第一頁滾動到最後一頁
+2. 快速滾動和慢速滾動都要測試
+3. **預期結果**:
+   - ✅ 滾動流暢，無卡頓
+   - ✅ 頁面內容按需載入(懶載入)
+   - ✅ 所有頁面都能正確顯示
+   - ✅ 記憶體佔用穩定(檢視工作管理員)
 
-**验证代码**:
+**驗證程式碼**:
 ```javascript
-// 检查 SegmentManager 是否加载
+// 檢查 SegmentManager 是否載入
 console.log('SegmentManager:', typeof SegmentManager);
 
-// 检查分段信息
+// 檢查分段資訊
 const view = window.pdfCompareView;
-console.log('分段数量:', view.segmentManager?.segments?.length);
-console.log('页面信息:', view.segmentManager?.pageInfos?.length);
+console.log('分段數量:', view.segmentManager?.segments?.length);
+console.log('頁面資訊:', view.segmentManager?.pageInfos?.length);
 ```
 
-### 测试4: PDF导出功能
-**目的**: 验证 PDFExporter.js 模块工作正常
+### 測試4: PDF匯出功能
+**目的**: 驗證 PDFExporter.js 模組工作正常
 
-1. 点击"导出译文PDF"按钮
-2. 等待PDF生成和下载
-3. 打开下载的PDF文件
-4. **预期结果**:
-   - ✅ PDF成功下载
-   - ✅ 译文文本正确显示在原文位置
-   - ✅ 文本大小与Canvas显示一致
-   - ✅ 文本未超出bbox边界
-   - ✅ 中文字体正确显示
+1. 點選"匯出譯文PDF"按鈕
+2. 等待PDF生成和下載
+3. 開啟下載的PDF檔案
+4. **預期結果**:
+   - ✅ PDF成功下載
+   - ✅ 譯文文字正確顯示在原文位置
+   - ✅ 文字大小與Canvas顯示一致
+   - ✅ 文字未超出bbox邊界
+   - ✅ 中文字型正確顯示
 
-**验证代码**:
+**驗證程式碼**:
 ```javascript
-// 检查 PDFExporter 是否加载
+// 檢查 PDFExporter 是否載入
 console.log('PDFExporter:', typeof PDFExporter);
 
-// 手动触发导出(如果需要)
+// 手動觸發匯出(如果需要)
 const view = window.pdfCompareView;
 view.pdfExporter?.exportStructuredTranslation(
   view.originalPdfBase64,
@@ -110,173 +110,173 @@ view.pdfExporter?.exportStructuredTranslation(
 );
 ```
 
-### 测试5: 交互功能
-**目的**: 验证用户交互功能未受影响
+### 測試5: 互動功能
+**目的**: 驗證使用者互動功能未受影響
 
-1. 点击左侧PDF的文本块
-2. **预期结果**:
-   - ✅ 左侧bbox高亮
-   - ✅ 右侧对应区域高亮
-   - ✅ 高亮颜色正确(紫红色)
+1. 點選左側PDF的文字塊
+2. **預期結果**:
+   - ✅ 左側bbox醒目提示
+   - ✅ 右側對應區域醒目提示
+   - ✅ 醒目提示顏色正確(紫紅色)
 
-3. 测试滚动联动
-4. **预期结果**:
-   - ✅ 左右侧滚动保持同步
-   - ✅ 滚动流畅无延迟
+3. 測試滾動聯動
+4. **預期結果**:
+   - ✅ 左右側滾動保持同步
+   - ✅ 滾動流暢無延遲
 
-### 测试6: 内存泄漏检测
-**目的**: 验证事件监听器正确清理
+### 測試6: 記憶體洩漏檢測
+**目的**: 驗證事件監聽器正確清理
 
-1. 打开浏览器开发者工具 → Performance → Memory
-2. 加载PDF，滚动几次
-3. 切换到其他页面或关闭PDF视图
-4. 点击"Collect garbage"按钮
-5. **预期结果**:
-   - ✅ 内存使用量下降
-   - ✅ 没有持续增长的内存占用
+1. 開啟瀏覽器開發者工具 → Performance → Memory
+2. 載入PDF，滾動幾次
+3. 切換到其他頁面或關閉PDF檢視
+4. 點選"Collect garbage"按鈕
+5. **預期結果**:
+   - ✅ 記憶體使用量下降
+   - ✅ 沒有持續增長的記憶體佔用
 
-**验证代码**:
+**驗證程式碼**:
 ```javascript
-// 检查事件监听器是否被清理
+// 檢查事件監聽器是否被清理
 const view = window.pdfCompareView;
 view.segmentManager?.destroy();
 
-// 验证清理后的状态
-console.log('Segments:', view.segmentManager?.segments?.length); // 应该为 0
-console.log('Handlers:', view.segmentManager?._originalScrollHandler); // 应该为 null
+// 驗證清理後的狀態
+console.log('Segments:', view.segmentManager?.segments?.length); // 應該為 0
+console.log('Handlers:', view.segmentManager?._originalScrollHandler); // 應該為 null
 ```
 
-## 🐛 常见问题排查
+## 🐛 常見問題排查
 
-### 问题1: 控制台报错 "TextFittingAdapter is not defined"
-**原因**: 模块未正确加载
-**解决**:
-1. 检查HTML中的script标签顺序
-2. 确保模块文件路径正确
-3. 清除浏览器缓存
+### 問題1: 主控台報錯 "TextFittingAdapter is not defined"
+**原因**: 模組未正確載入
+**解決**:
+1. 檢查HTML中的script標籤順序
+2. 確保模組檔案路徑正確
+3. 清除瀏覽器快取
 
-### 问题2: 文本大小与预期不符
-**原因**: PDF导出和Canvas渲染的公式不一致
-**解决**:
-1. 检查是否使用了最新的修复版本
-2. 确认PDFExporter.js中的文本高度公式为 `mid * 1.2`
+### 問題2: 文字大小與預期不符
+**原因**: PDF匯出和Canvas渲染的公式不一致
+**解決**:
+1. 檢查是否使用了最新的修復版本
+2. 確認PDFExporter.js中的文字高度公式為 `mid * 1.2`
 
-### 问题3: 滚动时内存持续增长
-**原因**: 事件监听器未正确清理
-**解决**:
-1. 确认SegmentManager.js的destroy方法正确实现
-2. 检查事件处理函数是否保存了引用
+### 問題3: 滾動時記憶體持續增長
+**原因**: 事件監聽器未正確清理
+**解決**:
+1. 確認SegmentManager.js的destroy方法正確實現
+2. 檢查事件處理函式是否儲存了參考
 
-### 问题4: 页面加载缓慢或白屏
-**原因**: 懒加载未生效
-**解决**:
-1. 检查SegmentManager的配置
-2. 验证maxSegmentPixels设置是否合理
+### 問題4: 頁面載入緩慢或白屏
+**原因**: 懶載入未生效
+**解決**:
+1. 檢查SegmentManager的配置
+2. 驗證maxSegmentPixels設定是否合理
 
-## 📊 性能对比
+## 📊 效能對比
 
-重构前后性能对比：
+重構前後效能對比：
 
-| 指标 | 重构前 | 重构后 | 改进 |
+| 指標 | 重構前 | 重構後 | 改進 |
 |------|--------|--------|------|
-| 代码行数 | 2606行 | 1300行+1270行(模块) | 模块化 ✅ |
-| 首次加载时间 | 测试中 | 测试中 | - |
-| 滚动帧率 | 测试中 | 测试中 | - |
-| 内存占用 | 测试中 | 测试中 | - |
-| 导出时间 | 测试中 | 测试中 | - |
+| 程式碼行數 | 2606行 | 1300行+1270行(模組) | 模組化 ✅ |
+| 首次載入時間 | 測試中 | 測試中 | - |
+| 滾動幀率 | 測試中 | 測試中 | - |
+| 記憶體佔用 | 測試中 | 測試中 | - |
+| 匯出時間 | 測試中 | 測試中 | - |
 
-## 🔍 调试技巧
+## 🔍 除錯技巧
 
-### 启用详细日志
-在浏览器控制台运行：
+### 啟用詳細日誌
+在瀏覽器主控台執行：
 ```javascript
-// 设置日志级别
+// 設定日誌級別
 localStorage.setItem('debug', 'true');
 location.reload();
 ```
 
-### 查看模块状态
+### 檢視模組狀態
 ```javascript
 const view = window.pdfCompareView;
 
-// 检查所有模块
+// 檢查所有模組
 console.log('TextFittingAdapter:', view.textFittingAdapter);
 console.log('PDFExporter:', view.pdfExporter);
 console.log('SegmentManager:', view.segmentManager);
 
-// 查看缓存
+// 檢視快取
 console.log('Font cache size:', view.textFittingAdapter?.globalFontSizeCache?.size);
 console.log('Formula cache size:', view.textFittingAdapter?._formulaCache?.size);
 ```
 
-### 性能分析
+### 效能分析
 ```javascript
-// 测量渲染时间
+// 測量渲染時間
 console.time('render-segment');
 await view.segmentManager.renderSegment(view.segmentManager.segments[0]);
 console.timeEnd('render-segment');
 
-// 测量导出时间
+// 測量匯出時間
 console.time('export-pdf');
 await view.pdfExporter.exportStructuredTranslation(...);
 console.timeEnd('export-pdf');
 ```
 
-## 📝 测试报告模板
+## 📝 測試報告模板
 
-完成测试后，请填写以下报告：
+完成測試後，請填寫以下報告：
 
 ```markdown
-## 测试环境
-- 浏览器: [Chrome 120 / Firefox 121 / Safari 17]
-- 操作系统: [Windows 11 / macOS 14 / Linux]
-- PDF文件大小: [XX MB, XX页]
-- 测试时间: [YYYY-MM-DD HH:MM]
+## 測試環境
+- 瀏覽器: [Chrome 120 / Firefox 121 / Safari 17]
+- 作業系統: [Windows 11 / macOS 14 / Linux]
+- PDF檔案大小: [XX MB, XX頁]
+- 測試時間: [YYYY-MM-DD HH:MM]
 
-## 测试结果
-- [ ] 测试1: PDF加载和显示 - [通过/失败]
-- [ ] 测试2: 文本自适应渲染 - [通过/失败]
-- [ ] 测试3: 长画布分段渲染 - [通过/失败]
-- [ ] 测试4: PDF导出功能 - [通过/失败]
-- [ ] 测试5: 交互功能 - [通过/失败]
-- [ ] 测试6: 内存泄漏检测 - [通过/失败]
+## 測試結果
+- [ ] 測試1: PDF載入和顯示 - [透過/失敗]
+- [ ] 測試2: 文字自適應渲染 - [透過/失敗]
+- [ ] 測試3: 長畫布分段渲染 - [透過/失敗]
+- [ ] 測試4: PDF匯出功能 - [透過/失敗]
+- [ ] 測試5: 互動功能 - [透過/失敗]
+- [ ] 測試6: 記憶體洩漏檢測 - [透過/失敗]
 
-## 发现的问题
-1. [问题描述]
-   - 重现步骤:
-   - 预期结果:
-   - 实际结果:
-   - 控制台错误:
+## 發現的問題
+1. [問題描述]
+   - 重現步驟:
+   - 預期結果:
+   - 實際結果:
+   - 主控台錯誤:
 
-## 总体评价
+## 總體評價
 - 功能完整性: [0-100%]
-- 性能表现: [优秀/良好/一般/较差]
-- 稳定性: [优秀/良好/一般/较差]
-- 建议:
+- 效能表現: [優秀/良好/一般/較差]
+- 穩定性: [優秀/良好/一般/較差]
+- 建議:
 ```
 
-## 🚀 回滚方案
+## 🚀 回滾方案
 
-如果测试发现严重问题，可以快速回滚到原始版本：
+如果測試發現嚴重問題，可以快速回滾到原始版本：
 
 ```bash
-# 查看最近的提交
+# 檢視最近的提交
 git log --oneline -5
 
-# 回滚到重构前的版本
+# 回滾到重構前的版本
 git checkout <commit-hash> -- js/history/history_pdf_compare.js
 
-# 或者切换到main分支
+# 或者切換到main分支
 git checkout main
 ```
 
-## 📞 支持
+## 📞 支援
 
-如有问题，请：
-1. 查看浏览器控制台的详细错误信息
-2. 检查本文档的"常见问题排查"部分
-3. 提供完整的测试报告和错误日志
+如有問題，請：
+1. 檢視瀏覽器主控台的詳細錯誤資訊
+2. 檢查本文件的"常見問題排查"部分
+3. 提供完整的測試報告和錯誤日誌
 
 ---
 
-**测试重点**: 确保重构后的功能与原始版本**完全一致**，无功能退化。
+**測試重點**: 確保重構後的功能與原始版本**完全一致**，無功能退化。

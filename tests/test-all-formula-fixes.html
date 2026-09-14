@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>公式渲染修复 - 综合测试</title>
+    <title>公式渲染修復 - 綜合測試</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -123,19 +123,19 @@
 </head>
 <body>
     <div class="summary" id="summary">
-        <h1>🧪 公式渲染修复 - 综合测试</h1>
+        <h1>🧪 公式渲染修復 - 綜合測試</h1>
         <div class="summary-stats">
             <div class="stat-box total">
                 <div class="stat-number" id="total-count">0</div>
-                <div class="stat-label">总测试数</div>
+                <div class="stat-label">總測試數</div>
             </div>
             <div class="stat-box passed">
                 <div class="stat-number" id="passed-count">0</div>
-                <div class="stat-label">通过</div>
+                <div class="stat-label">透過</div>
             </div>
             <div class="stat-box failed">
                 <div class="stat-number" id="failed-count">0</div>
-                <div class="stat-label">失败</div>
+                <div class="stat-label">失敗</div>
             </div>
         </div>
     </div>
@@ -145,28 +145,28 @@
     <script>
         const testSections = [
             {
-                title: '1. 花括号开头公式（原始问题）',
+                title: '1. 花括號開頭公式（原始問題）',
                 tests: [
-                    { input: '$1\\mathrm{\\;m}/\\mathrm{s}$', desc: '简单单位公式' },
+                    { input: '$1\\mathrm{\\;m}/\\mathrm{s}$', desc: '簡單單位公式' },
                     { input: '$5\\mathrm{\\;s}$', desc: '短公式' },
-                    { input: '${1.1}\\mathrm{\\;m}$', desc: '花括号开头' },
-                    { input: '${L}_{0.5}\\left( \\mathrm{\\;m}\\right)$', desc: '表格中的复杂公式' },
-                    { input: '${10}\\mathrm{\\;{min}}$', desc: '嵌套花括号' },
-                    { input: '${\\mathrm{{CO}}}_{2}$', desc: '化学公式' },
-                    { input: '${1.5}\\mathrm{\\;m}$', desc: '图片标注公式' },
-                    { input: '$8\\mathrm{{person}}/{\\mathrm{m}}^{2}$', desc: '分数上标' },
+                    { input: '${1.1}\\mathrm{\\;m}$', desc: '花括號開頭' },
+                    { input: '${L}_{0.5}\\left( \\mathrm{\\;m}\\right)$', desc: '表格中的複雜公式' },
+                    { input: '${10}\\mathrm{\\;{min}}$', desc: '巢狀花括號' },
+                    { input: '${\\mathrm{{CO}}}_{2}$', desc: '化學公式' },
+                    { input: '${1.5}\\mathrm{\\;m}$', desc: '圖片標註公式' },
+                    { input: '$8\\mathrm{{person}}/{\\mathrm{m}}^{2}$', desc: '分數上標' },
                 ]
             },
             {
-                title: '2. 多逗号公式（增强后的公式识别）',
+                title: '2. 多逗號公式（增強後的公式識別）',
                 tests: [
-                    { input: '$a_{1}=3, p_{1}=15, o_{1}=1$', desc: '3个逗号' },
-                    { input: '$a_{1}=3, p_{1}=15, o_{1}=1, r_{1}=9, b_{1}^{1}=5$', desc: '5个逗号' },
-                    { input: '$x=1, y=2, z=3, a=4, b=5, c=6, d=7$', desc: '7个逗号' },
+                    { input: '$a_{1}=3, p_{1}=15, o_{1}=1$', desc: '3個逗號' },
+                    { input: '$a_{1}=3, p_{1}=15, o_{1}=1, r_{1}=9, b_{1}^{1}=5$', desc: '5個逗號' },
+                    { input: '$x=1, y=2, z=3, a=4, b=5, c=6, d=7$', desc: '7個逗號' },
                 ]
             },
             {
-                title: '3. LaTeX命令错误修正',
+                title: '3. LaTeX命令錯誤修正',
                 tests: [
                     { input: '$\\Vec{v}$', desc: '\\Vec → \\vec（向量）', shouldFix: true },
                     { input: '$\\Sum_{i=1}^{n} x_i$', desc: '\\Sum → \\sum', shouldFix: true },
@@ -176,30 +176,30 @@
                 ]
             },
             {
-                title: '4. 字体嵌套错误修正',
+                title: '4. 字型巢狀錯誤修正',
                 tests: [
-                    { input: '$\\texttt{\\textbf{M}}$', desc: 'texttt嵌套textbf', shouldFix: true },
-                    { input: '$\\textbf{\\texttt{ABC}}$', desc: 'textbf嵌套texttt', shouldFix: true },
-                    { input: '$\\mathbb{\\mathbf{R}}$', desc: 'mathbb嵌套mathbf', shouldFix: true },
+                    { input: '$\\texttt{\\textbf{M}}$', desc: 'texttt巢狀textbf', shouldFix: true },
+                    { input: '$\\textbf{\\texttt{ABC}}$', desc: 'textbf巢狀texttt', shouldFix: true },
+                    { input: '$\\mathbb{\\mathbf{R}}$', desc: 'mathbb巢狀mathbf', shouldFix: true },
                 ]
             },
             {
-                title: '5. 表格中的公式（模拟结构化数据）',
+                title: '5. 表格中的公式（模擬結構化資料）',
                 tests: [
                     {
-                        input: '<table><tr><th>参数</th><th>值</th></tr><tr><td>速度</td><td>$1\\mathrm{\\;m}/\\mathrm{s}$</td></tr><tr><td>长度</td><td>${L}_{0.5}\\left( \\mathrm{\\;m}\\right)$</td></tr></table>',
-                        desc: '表格中的公式（需要后处理）',
+                        input: '<table><tr><th>引數</th><th>值</th></tr><tr><td>速度</td><td>$1\\mathrm{\\;m}/\\mathrm{s}$</td></tr><tr><td>長度</td><td>${L}_{0.5}\\left( \\mathrm{\\;m}\\right)$</td></tr></table>',
+                        desc: '表格中的公式（需要後處理）',
                         isTable: true
                     },
                 ]
             },
             {
-                title: '6. 极短公式',
+                title: '6. 極短公式',
                 tests: [
-                    { input: '$x$', desc: '单字符' },
-                    { input: '$\\pi$', desc: '希腊字母' },
-                    { input: '$=$', desc: '等号' },
-                    { input: '$a^2$', desc: '上标' },
+                    { input: '$x$', desc: '單字元' },
+                    { input: '$\\pi$', desc: '希臘字母' },
+                    { input: '$=$', desc: '等號' },
+                    { input: '$a^2$', desc: '上標' },
                 ]
             }
         ];
@@ -222,52 +222,52 @@
                 const testDiv = document.createElement('div');
                 testDiv.className = 'test-case';
 
-                // 测试标题
+                // 測試標題
                 const title = document.createElement('div');
                 title.className = 'test-title';
-                title.textContent = `测试 ${idx + 1}: ${test.desc}`;
+                title.textContent = `測試 ${idx + 1}: ${test.desc}`;
                 testDiv.appendChild(title);
 
-                // 源码
+                // 原始碼
                 const source = document.createElement('div');
                 source.className = 'source';
                 source.textContent = test.input;
                 testDiv.appendChild(source);
 
-                // 渲染结果
+                // 渲染結果
                 const resultLabel = document.createElement('div');
                 resultLabel.style.fontSize = '12px';
                 resultLabel.style.marginTop = '8px';
                 resultLabel.style.fontWeight = 'bold';
-                resultLabel.textContent = '渲染结果:';
+                resultLabel.textContent = '渲染結果:';
 
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'result';
 
                 try {
                     if (test.isTable) {
-                        // 表格测试：先插入HTML，再后处理
+                        // 表格測試：先插入HTML，再後處理
                         resultDiv.innerHTML = test.input;
 
-                        // 模拟后处理
+                        // 模擬後處理
                         if (typeof FormulaPostProcessor !== 'undefined') {
                             FormulaPostProcessor.processFormulasInElement(resultDiv);
                         }
 
-                        // 检查表格中的公式是否被渲染
+                        // 檢查表格中的公式是否被渲染
                         const hasKatex = resultDiv.innerHTML.includes('class="katex');
                         const status = document.createElement('span');
                         status.className = `status ${hasKatex ? 'success' : 'fail'}`;
-                        status.textContent = hasKatex ? '✓ 后处理成功' : '✗ 后处理失败';
+                        status.textContent = hasKatex ? '✓ 後處理成功' : '✗ 後處理失敗';
                         resultLabel.appendChild(status);
 
                         if (hasKatex) passedTests++;
                     } else {
-                        // 普通公式测试
+                        // 普通公式測試
                         const html = MarkdownProcessorAST.render(test.input);
                         resultDiv.innerHTML = html;
 
-                        // 如果需要修正错误，再次后处理
+                        // 如果需要修正錯誤，再次後處理
                         if (test.shouldFix && typeof FormulaPostProcessor !== 'undefined') {
                             FormulaPostProcessor.processFormulasInElement(resultDiv);
                         }
@@ -284,7 +284,7 @@
                     resultDiv.innerHTML = `<span style="color: #e74c3c;">${error.message}</span>`;
                     const status = document.createElement('span');
                     status.className = 'status fail';
-                    status.textContent = '✗ 异常';
+                    status.textContent = '✗ 異常';
                     resultLabel.appendChild(status);
                 }
 
@@ -296,17 +296,17 @@
             container.appendChild(sectionDiv);
         });
 
-        // 更新统计
+        // 更新統計
         document.getElementById('total-count').textContent = totalTests;
         document.getElementById('passed-count').textContent = passedTests;
         document.getElementById('failed-count').textContent = totalTests - passedTests;
 
-        // 控制台输出
-        console.log(`%c========== 测试完成 ==========`, 'color: #3498db; font-size: 16px; font-weight: bold;');
-        console.log(`总测试数: ${totalTests}`);
-        console.log(`%c通过: ${passedTests}`, 'color: #27ae60; font-weight: bold;');
-        console.log(`%c失败: ${totalTests - passedTests}`, 'color: #e74c3c; font-weight: bold;');
-        console.log(`通过率: ${(passedTests / totalTests * 100).toFixed(1)}%`);
+        // 主控台輸出
+        console.log(`%c========== 測試完成 ==========`, 'color: #3498db; font-size: 16px; font-weight: bold;');
+        console.log(`總測試數: ${totalTests}`);
+        console.log(`%c透過: ${passedTests}`, 'color: #27ae60; font-weight: bold;');
+        console.log(`%c失敗: ${totalTests - passedTests}`, 'color: #e74c3c; font-weight: bold;');
+        console.log(`透過率: ${(passedTests / totalTests * 100).toFixed(1)}%`);
     </script>
 </body>
 </html>

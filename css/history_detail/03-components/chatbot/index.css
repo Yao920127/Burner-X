@@ -1,22 +1,22 @@
 /**
  * Chatbot - Main Module Entry Point
  *
- * 职责：聊天机器人模块入口
- * 作用域：整个聊天机器人系统
- * 依赖：variables.css
+ * 職責：聊天機器人模組入口
+ * 作用域：整個聊天機器人系統
+ * 依賴：variables.css
  *
- * 模块结构：
- * - config-modal.css: 模型配置弹窗样式
- * - message-actions.css: 消息操作按钮样式
+ * 模組結構：
+ * - config-modal.css: 模型配置彈出視窗樣式
+ * - message-actions.css: 訊息操作按鈕樣式
  *
  * 使用方法：
  * @import url('../03-components/chatbot/index.css');
  */
 
-/* 模型配置弹窗样式 */
+/* 模型配置彈出視窗樣式 */
 @import url('./config-modal.css');
 
-/* 消息操作按钮样式 */
+/* 訊息操作按鈕樣式 */
 @import url('./message-actions.css');
 
 /* ==================== Chatbot Modal Window (High-end Minimalist) ==================== */
@@ -67,7 +67,7 @@
     border-top: 1px solid var(--color-border-light);
   }
 
-  /* 移动端禁用拖拽调整大小 */
+  /* 行動裝置禁用拖拽調整大小 */
   .chatbot-resize-handles {
     display: none !important;
   }
@@ -89,8 +89,8 @@
 }
 
 /*
-  确保第一条消息与顶部有足够距离
-  (解决用户反馈：第一个用户回复的两个按钮，距离顶部的距离也不够)
+  確保第一條訊息與頂部有足夠距離
+  (解決使用者反饋：第一個使用者回覆的兩個按鈕，距離頂部的距離也不夠)
   User buttons are -28px top.
   Padding top 50px ensures they don't hit the window edge/header.
 */
@@ -115,15 +115,15 @@
 /* ==================== Preset Questions (快捷指令) ==================== */
 
 #chatbot-preset-body {
-  gap: 6px 8px !important; /* 恢复适度的间距，避免过于拥挤 */
+  gap: 6px 8px !important; /* 恢復適度的間距，避免過於擁擠 */
 }
 
 .preset-btn {
   background: var(--slate-50); /* Very light gray */
   color: var(--slate-600);
-  border: 1px solid rgba(0,0,0,0.04); /* 增加极淡的边框，提升精致感 */
-  border-radius: 16px; /* 稍微圆润一点 */
-  padding: 4px 12px; /* 恢复适度的内边距 */
+  border: 1px solid rgba(0,0,0,0.04); /* 增加極淡的邊框，提升精緻感 */
+  border-radius: 16px; /* 稍微圓潤一點 */
+  padding: 4px 12px; /* 恢復適度的內邊距 */
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -155,15 +155,15 @@
   bottom: 0;
   pointer-events: none;
   z-index: 5;
-  display: none; /* 默认隐藏 */
+  display: none; /* 預設隱藏 */
 }
 
-/* 只有在浮动模式下才显示调整大小句柄 */
+/* 只有在浮動模式下才顯示調整大小控制代碼 */
 .chatbot-window.floating-mode .chatbot-resize-handles {
   display: block;
 }
 
-/* 浮动模式下标题栏可拖拽 */
+/* 浮動模式下標題欄可拖拽 */
 .chatbot-window.floating-mode .chatbot-draggable-header {
   cursor: move;
 }
@@ -179,7 +179,7 @@
   background-color: rgba(59, 130, 246, 0.2);
 }
 
-/* 上下边缘 */
+/* 上下邊緣 */
 .chatbot-resize-n, .chatbot-resize-s {
   left: 8px;
   right: 8px;
@@ -189,7 +189,7 @@
 .chatbot-resize-n { top: 0; }
 .chatbot-resize-s { bottom: 0; }
 
-/* 左右边缘 */
+/* 左右邊緣 */
 .chatbot-resize-w, .chatbot-resize-e {
   top: 8px;
   bottom: 8px;
@@ -199,7 +199,7 @@
 .chatbot-resize-w { left: 0; }
 .chatbot-resize-e { right: 0; }
 
-/* 四个角 */
+/* 四個角 */
 .chatbot-resize-nw, .chatbot-resize-ne, .chatbot-resize-sw, .chatbot-resize-se {
   width: 16px;
   height: 16px;
@@ -209,7 +209,7 @@
 .chatbot-resize-sw { bottom: 0; left: 0; cursor: sw-resize; }
 .chatbot-resize-se { bottom: 0; right: 0; cursor: se-resize; }
 
-/* 拖拽移动时的样式 */
+/* 拖拽移動時的樣式 */
 .chatbot-dragging {
   user-select: none;
   pointer-events: none;
@@ -272,12 +272,12 @@ body.dark #chatbot-toast {
   background: rgba(30, 41, 59, 0.9) !important;
 }
 
-/* ==================== 消息气泡样式 (Minimalist Refine) ==================== */
+/* ==================== 訊息氣泡樣式 (Minimalist Refine) ==================== */
 
-/* 消息容器通用样式 */
+/* 訊息容器通用樣式 */
 .message-container {
   display: flex;
-  margin-bottom: var(--spacing-md); /* 减少间距，优化空间利用 */
+  margin-bottom: var(--spacing-md); /* 減少間距，最佳化空間利用 */
   margin-top: var(--spacing-md);
   position: relative;
   animation: fadeIn 0.3s ease-out;
@@ -288,16 +288,16 @@ body.dark #chatbot-toast {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 用户消息容器 */
+/* 使用者訊息容器 */
 .user-message-container {
   justify-content: flex-end;
   padding-left: 20%;
 }
 
-/* 助手消息容器 */
+/* 助手訊息容器 */
 .assistant-message-container {
   justify-content: flex-start;
-  padding-right: 10%; /* 减少右侧留白，利用更多空间 */
+  padding-right: 10%; /* 減少右側留白，利用更多空間 */
 
   /*
     IMPORTANT: No top padding here anymore.
@@ -308,8 +308,8 @@ body.dark #chatbot-toast {
 }
 
 /*
-  助手消息内容区域
-  (解决用户反馈：复制和导出，压在思考过程)
+  助手訊息內容區域
+  (解決使用者反饋：複製和匯出，壓在思考過程)
   Add padding-top here so ALL content (Reasoning or Markdown)
   starts below the absolute positioned buttons.
   Buttons are ~24px height + 8px top = 32px.
@@ -320,9 +320,9 @@ body.dark #chatbot-toast {
   position: relative; /* Ensure context */
 }
 
-/* 消息气泡通用样式 */
+/* 訊息氣泡通用樣式 */
 .chat-bubble {
-  padding: 12px 18px; /* 略宽的内边距 */
+  padding: 12px 18px; /* 略寬的內邊距 */
   font-size: 15px;
   line-height: 1.6;
   max-width: 100%;
@@ -331,16 +331,16 @@ body.dark #chatbot-toast {
   transition: all var(--transition-base);
 }
 
-/* 用户消息气泡 - 极简风格：浅色背景 + 深色文字 */
+/* 使用者訊息氣泡 - 極簡風格：淺色背景 + 深色文字 */
 .chat-bubble.user {
   background: var(--slate-100);
   color: var(--slate-800);
-  border-radius: 18px 18px 4px 18px; /* 更现代的非对称圆角 */
+  border-radius: 18px 18px 4px 18px; /* 更現代的非對稱圓角 */
   border: none;
   box-shadow: none;
 }
 
-/* 助手消息气泡 - 极简风格：纯白背景 + 极淡边框 */
+/* 助手訊息氣泡 - 極簡風格：純白背景 + 極淡邊框 */
 .chat-bubble.assistant {
   background: transparent;
   color: var(--color-text-primary);
@@ -352,7 +352,7 @@ body.dark #chatbot-toast {
   overflow-x: auto;
 }
 
-/* 系统消息/输入指示器气泡 */
+/* 系統訊息/輸入指示器氣泡 */
 .chat-bubble.system {
   background: transparent;
   color: var(--slate-400);
@@ -360,7 +360,7 @@ body.dark #chatbot-toast {
   padding: 0 16px;
 }
 
-/* 最终汇总气泡 */
+/* 最終彙總氣泡 */
 .chat-bubble.summary {
   background: var(--slate-50);
   color: var(--slate-800);
@@ -378,21 +378,21 @@ body.dark #chatbot-toast {
   letter-spacing: 0.05em;
 }
 
-/* ==================== 思考过程块样式 (Redesigned) ==================== */
+/* ==================== 思考過程塊樣式 (Redesigned) ==================== */
 
 .reasoning-block {
   background: rgba(248, 250, 252, 0.6); /* Slate-50 with opacity */
   color: var(--slate-500);
   padding: 8px 12px;
-  border: 1px solid var(--slate-200); /* 更细腻的边框 */
-  border-radius: 8px; /* 圆角 */
+  border: 1px solid var(--slate-200); /* 更細膩的邊框 */
+  border-radius: 8px; /* 圓角 */
   /*
     margin-top removed because .assistant-message padding handles the offset now.
     margin-bottom kept for spacing before markdown.
   */
   margin: 0 0 16px 0;
   position: relative;
-  font-size: 13px; /* 稍微小一点的字体 */
+  font-size: 13px; /* 稍微小一點的字型 */
 }
 
 .reasoning-header {
@@ -442,11 +442,11 @@ body.dark #chatbot-toast {
   font-size: 13px;
   line-height: 1.6;
   padding-top: 4px;
-  border-top: 1px solid var(--slate-100); /* 内部细线分隔 */
-  font-family: var(--font-family-monospace); /* 使用等宽字体或更加技术感的字体 */
+  border-top: 1px solid var(--slate-100); /* 內部細線分隔 */
+  font-family: var(--font-family-monospace); /* 使用等寬字型或更加技術感的字型 */
 }
 
-/* ==================== 输入指示器动画 ==================== */
+/* ==================== 輸入指示器動畫 ==================== */
 
 /* Special bubble style for typing indicator */
 .chat-bubble.assistant.typing-bubble {
@@ -490,11 +490,11 @@ body.dark #chatbot-toast {
 
 /* ==================== Chatbot Input Area (Refined Glassmorphism) ==================== */
 
-/* 输入区容器 */
+/* 輸入區容器 */
 .chatbot-input-container {
   padding: 16px 24px 20px 24px;
   border-top: 1px solid rgba(0, 0, 0, 0.03);
-  background: rgba(255, 255, 255, 0.8); /* 稍微降低不透明度以增强毛玻璃感 */
+  background: rgba(255, 255, 255, 0.8); /* 稍微降低不透明度以增強毛玻璃感 */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   flex-shrink: 0;
@@ -502,7 +502,7 @@ body.dark #chatbot-toast {
   z-index: 10;
 }
 
-/* 输入区内部 Wrapper */
+/* 輸入區內部 Wrapper */
 .chatbot-input-wrapper {
   display: flex;
   align-items: flex-end;
@@ -512,21 +512,21 @@ body.dark #chatbot-toast {
   border-radius: 16px;
   padding: 8px 8px 8px 14px;
   transition: all var(--transition-fast);
-  backdrop-filter: blur(5px); /* 内部轻微模糊 */
+  backdrop-filter: blur(5px); /* 內部輕微模糊 */
 }
 
 .chatbot-input-wrapper:focus-within {
   background: white;
-  border-color: var(--slate-200); /* 柔和的边框颜色，避免刺眼的蓝线 */
+  border-color: var(--slate-200); /* 柔和的邊框顏色，避免刺眼的藍線 */
   /*
-    使用更柔和的扩散阴影，而不是实心光晕
-    原先的 0 0 0 3px 会产生类似边框的实心线效果
-    改为 0 0 0 4px rgba(...) 并降低透明度，使其更像光晕
+    使用更柔和的擴散陰影，而不是實心光暈
+    原先的 0 0 0 3px 會產生類似邊框的實心線效果
+    改為 0 0 0 4px rgba(...) 並降低透明度，使其更像光暈
   */
   box-shadow: 0 0 0 4px rgba(224, 231, 255, 0.4);
 }
 
-/* 输入框 */
+/* 輸入欄位 */
 .chatbot-input-field {
   flex: 1;
   width: 100%;
@@ -535,9 +535,9 @@ body.dark #chatbot-toast {
   border: none;
   background: transparent;
   padding: 8px 0; /* 移除左右padding，靠容器 */
-  font-size: 14px; /* 稍微减小字体 */
+  font-size: 14px; /* 稍微減小字型 */
   outline: none;
-  box-shadow: none !important; /* 强制移除任何可能的阴影 */
+  box-shadow: none !important; /* 強制移除任何可能的陰影 */
   box-sizing: border-box;
   color: var(--color-text-primary);
   line-height: 1.5;
@@ -554,11 +554,11 @@ body.dark #chatbot-toast {
   color: var(--slate-400);
 }
 
-/* 按钮通用样式 */
+/* 按鈕通用樣式 */
 .chatbot-input-btn {
-  height: 32px; /* 减小按钮尺寸 */
+  height: 32px; /* 減小按鈕尺寸 */
   width: 32px;
-  border-radius: 8px; /* 稍微方一点 */
+  border-radius: 8px; /* 稍微方一點 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -569,7 +569,7 @@ body.dark #chatbot-toast {
   background: transparent;
 }
 
-/* 添加图片按钮 */
+/* 新增圖片按鈕 */
 .chatbot-add-image-btn {
   color: var(--slate-400);
   margin-right: 4px;
@@ -580,9 +580,9 @@ body.dark #chatbot-toast {
   background: var(--slate-200);
 }
 
-/* 发送按钮 */
+/* 傳送按鈕 */
 .chatbot-send-btn {
-  background: var(--slate-900); /* 黑色主按钮，极简 */
+  background: var(--slate-900); /* 黑色主按鈕，極簡 */
   color: white;
 }
 
@@ -602,7 +602,7 @@ body.dark #chatbot-toast {
   transform: none;
 }
 
-/* 停止按钮 */
+/* 停止按鈕 */
 .chatbot-stop-btn {
   background: var(--slate-900);
   color: white;
@@ -613,7 +613,7 @@ body.dark #chatbot-toast {
   background: black;
 }
 
-/* 免责声明 */
+/* 免責宣告 */
 .chatbot-disclaimer {
   margin-top: 6px;
   text-align: center;
@@ -622,7 +622,7 @@ body.dark #chatbot-toast {
   opacity: 0.6;
 }
 
-/* 已选图片预览 */
+/* 已選圖片預覽 */
 .chatbot-image-preview-area {
   display: none;
   gap: 8px;
@@ -632,7 +632,7 @@ body.dark #chatbot-toast {
   margin-bottom: 4px;
 }
 
-/* ==================== Markdown 内容样式 (Refined) ==================== */
+/* ==================== Markdown 內容樣式 (Refined) ==================== */
 
 .markdown-content {
   overflow-x: auto;
@@ -640,7 +640,7 @@ body.dark #chatbot-toast {
   overflow-wrap: break-word;
   max-width: 100%;
   font-size: 15px;
-  color: var(--slate-800); /* 更深的文字颜色 */
+  color: var(--slate-800); /* 更深的文字顏色 */
 }
 
 .markdown-content p {
@@ -667,7 +667,7 @@ body.dark #chatbot-toast {
   border-radius: 4px;
   font-family: var(--font-family-monospace);
   font-size: 0.9em;
-  border: none; /* 移除边框 */
+  border: none; /* 移除邊框 */
 }
 
 .markdown-content pre {
@@ -726,7 +726,7 @@ body.dark #chatbot-toast {
   margin: 12px 0;
 }
 
-/* 表格样式 */
+/* 表格樣式 */
 .markdown-content table {
   border-collapse: collapse; /* 改回 collapse */
   width: 100%;
@@ -765,7 +765,7 @@ body.dark #chatbot-toast {
   background: var(--slate-50);
 }
 
-/* 滚动条美化 */
+/* 捲軸美化 */
 .markdown-content pre::-webkit-scrollbar,
 .markdown-content table::-webkit-scrollbar {
   height: 4px;

@@ -1,48 +1,48 @@
-# Phase 2 详情页性能优化 - 进度报告
+# Phase 2 詳情頁效能最佳化 - 進度報告
 
 > **日期**: 2025-11-12
 > **分支**: `optimize/frontend-performance`
-> **状态**: 🟡 部分完成（2.1 和 2.2 已完成，2.3 待实施）
+> **狀態**: 🟡 部分完成（2.1 和 2.2 已完成，2.3 待實施）
 
 ---
 
-## 📋 优化概况
+## 📋 最佳化概況
 
-### 目标
-Phase 2 专注于**详情页（history_detail）性能优化**，这是用户停留时间最长的页面（5-30 分钟），优化收益最大。
+### 目標
+Phase 2 專注於**詳情頁（history_detail）效能最佳化**，這是使用者停留時間最長的頁面（5-30 分鐘），最佳化收益最大。
 
-### 已完成内容
+### 已完成內容
 
-| 优化项 | 文件 | 状态 | 预期效果 |
+| 最佳化項 | 檔案 | 狀態 | 預期效果 |
 |--------|------|------|----------|
-| 2.1 标签切换防抖 | `history_detail_show_tab.js` | ✅ 完成 | 减少 60-80% 无效渲染 |
-| 2.2 DOM 元素缓存 | `history_detail_show_tab.js` | ✅ 完成 | 减少 87.5% DOM 查询 |
-| 2.3 批注系统缓存 | `annotation_logic.js` | ⏳ 待实施 | 减少 280ms 右键延迟 |
+| 2.1 標籤切換防抖 | `history_detail_show_tab.js` | ✅ 完成 | 減少 60-80% 無效渲染 |
+| 2.2 DOM 元素快取 | `history_detail_show_tab.js` | ✅ 完成 | 減少 87.5% DOM 查詢 |
+| 2.3 批註系統快取 | `annotation_logic.js` | ⏳ 待實施 | 減少 280ms 右鍵延遲 |
 
 ---
 
-## 🎯 2.1 标签切换防抖优化
+## 🎯 2.1 標籤切換防抖最佳化
 
-### 问题分析
+### 問題分析
 
-**原有实现**：
+**原有實現**：
 ```javascript
 function showTab(tab) {
-  // 直接执行渲染
-  // 快速点击 5 次 = 触发 5 次完整渲染
+  // 直接執行渲染
+  // 快速點選 5 次 = 觸發 5 次完整渲染
 }
 ```
 
-**问题**：
-- 用户快速点击多个标签时，每次点击都触发完整渲染
-- 中间的渲染结果立即被丢弃，浪费 CPU 和内存
-- 典型场景：用户在"仅OCR"、"仅翻译"、"分块对比"之间快速切换，可能触发 5-10 次无效渲染
+**問題**：
+- 使用者快速點選多個標籤時，每次點選都觸發完整渲染
+- 中間的渲染結果立即被丟棄，浪費 CPU 和記憶體
+- 典型場景：使用者在"僅OCR"、"僅翻譯"、"分塊對比"之間快速切換，可能觸發 5-10 次無效渲染
 
-### 优化方案
+### 最佳化方案
 
-**新实现**：
+**新實現**：
 ```javascript
-// 防抖包装器
+// 防抖包裝器
 function showTab(tab) {
   pendingTab = tab;
 
@@ -52,63 +52,63 @@ function showTab(tab) {
 
   showTabDebounceTimer = setTimeout(() => {
     showTabDebounceTimer = null;
-    showTabImmediate(pendingTab);  // 只渲染最后一个
+    showTabImmediate(pendingTab);  // 只渲染最後一個
   }, 100);
 }
 
-// 原逻辑移至此处
+// 原邏輯移至此處
 function showTabImmediate(tab) {
-  // ... 实际渲染逻辑
+  // ... 實際渲染邏輯
 }
 ```
 
-**改进点**：
-- ✅ 添加 100ms 防抖延迟
-- ✅ 快速点击时，只渲染最后一个标签
-- ✅ 保留原有的渲染锁机制（`renderingTab`）
-- ✅ 不影响单次点击的用户体验（100ms 延迟几乎无感知）
+**改進點**：
+- ✅ 新增 100ms 防抖延遲
+- ✅ 快速點選時，只渲染最後一個標籤
+- ✅ 保留原有的渲染鎖機制（`renderingTab`）
+- ✅ 不影響單次點選的使用者體驗（100ms 延遲幾乎無感知）
 
-### 性能提升
+### 效能提升
 
-| 场景 | 优化前 | 优化后 | 提升 |
+| 場景 | 最佳化前 | 最佳化後 | 提升 |
 |------|--------|--------|------|
-| 快速点击 5 次 | 5 次渲染 | 1 次渲染 | **80% ↓** |
-| 快速点击 10 次 | 10 次渲染 | 1 次渲染 | **90% ↓** |
-| 单次点击 | 即时渲染 | 100ms 后渲染 | 用户无感知 |
+| 快速點選 5 次 | 5 次渲染 | 1 次渲染 | **80% ↓** |
+| 快速點選 10 次 | 10 次渲染 | 1 次渲染 | **90% ↓** |
+| 單次點選 | 即時渲染 | 100ms 後渲染 | 使用者無感知 |
 
 ---
 
-## 🎯 2.2 DOM 元素缓存优化
+## 🎯 2.2 DOM 元素快取最佳化
 
-### 问题分析
+### 問題分析
 
-**原有实现**：
+**原有實現**：
 ```javascript
 function showTab(tab) {
-  // 每次切换标签都重复查询相同的 DOM 元素
-  document.getElementById('tab-ocr').classList.remove('active');           // 查询 1
-  document.getElementById('tab-translation').classList.remove('active');   // 查询 2
-  document.getElementById('tab-chunk-compare').classList.remove('active'); // 查询 3
-  document.getElementById('tab-pdf-compare').classList.remove('active');   // 查询 4
+  // 每次切換標籤都重複查詢相同的 DOM 元素
+  document.getElementById('tab-ocr').classList.remove('active');           // 查詢 1
+  document.getElementById('tab-translation').classList.remove('active');   // 查詢 2
+  document.getElementById('tab-chunk-compare').classList.remove('active'); // 查詢 3
+  document.getElementById('tab-pdf-compare').classList.remove('active');   // 查詢 4
 
-  const titleElement = document.getElementById('fileName');     // 查询 5
-  const metaElement = document.getElementById('fileMeta');      // 查询 6
-  const tabsContainer = document.querySelector('.tabs-container'); // 查询 7
+  const titleElement = document.getElementById('fileName');     // 查詢 5
+  const metaElement = document.getElementById('fileMeta');      // 查詢 6
+  const tabsContainer = document.querySelector('.tabs-container'); // 查詢 7
 
-  // ... 后续还会多次查询这些元素（激活、隐藏等）
+  // ... 後續還會多次查詢這些元素（啟用、隱藏等）
 }
 ```
 
-**问题**：
-- 每次标签切换时，重复查询 **8+ 次**相同的 DOM 元素
-- `getElementById()` 虽然快，但在高频调用时仍有开销
-- 代码冗余，可维护性差
+**問題**：
+- 每次標籤切換時，重複查詢 **8+ 次**相同的 DOM 元素
+- `getElementById()` 雖然快，但在高頻呼叫時仍有開銷
+- 程式碼冗餘，可維護性差
 
-### 优化方案
+### 最佳化方案
 
-**新实现**：
+**新實現**：
 ```javascript
-// DOM 缓存对象（模块级）
+// DOM 快取物件（模組級）
 const DOM_CACHE = {
   tabs: {
     ocr: null,
@@ -122,7 +122,7 @@ const DOM_CACHE = {
     tabsContainer: null
   },
 
-  // 初始化缓存
+  // 初始化快取
   init: function() {
     this.tabs.ocr = document.getElementById('tab-ocr');
     this.tabs.translation = document.getElementById('tab-translation');
@@ -133,7 +133,7 @@ const DOM_CACHE = {
     this.layout.tabsContainer = document.querySelector('.tabs-container');
   },
 
-  // 懒初始化
+  // 懶初始化
   ensureInitialized: function() {
     if (!this.tabs.ocr) {
       this.init();
@@ -142,10 +142,10 @@ const DOM_CACHE = {
 };
 
 function showTabImmediate(tab) {
-  // 确保缓存已初始化
+  // 確保快取已初始化
   DOM_CACHE.ensureInitialized();
 
-  // 使用缓存的 DOM 元素
+  // 使用快取的 DOM 元素
   DOM_CACHE.tabs.ocr.classList.remove('active');
   DOM_CACHE.tabs.translation.classList.remove('active');
   DOM_CACHE.tabs.chunkCompare.classList.remove('active');
@@ -155,121 +155,121 @@ function showTabImmediate(tab) {
   if (DOM_CACHE.layout.meta) DOM_CACHE.layout.meta.style.display = '';
   if (DOM_CACHE.layout.tabsContainer) DOM_CACHE.layout.tabsContainer.style.display = '';
 
-  // ... 后续使用缓存
+  // ... 後續使用快取
 }
 ```
 
-**改进点**：
-- ✅ 所有频繁查询的 DOM 元素只查询一次，存入缓存
-- ✅ 懒初始化策略：第一次使用时才初始化
-- ✅ 清晰的缓存结构：`tabs` 和 `layout` 分组
-- ✅ 安全的空值检查：避免页面结构变化导致错误
+**改進點**：
+- ✅ 所有頻繁查詢的 DOM 元素只查詢一次，存入快取
+- ✅ 懶初始化策略：第一次使用時才初始化
+- ✅ 清晰的快取結構：`tabs` 和 `layout` 分組
+- ✅ 安全的空值檢查：避免頁面結構變化導致錯誤
 
-### 性能提升
+### 效能提升
 
-| 指标 | 优化前 | 优化后 | 提升 |
+| 指標 | 最佳化前 | 最佳化後 | 提升 |
 |------|--------|--------|------|
-| DOM 查询次数/切换 | 8+ 次 | 1 次（首次） | **87.5% ↓** |
-| 查询耗时 | ~0.5-1ms | ~0.05-0.1ms | **80-90% ↓** |
-| 代码可维护性 | 分散查询 | 集中管理 | ✅ 提升 |
+| DOM 查詢次數/切換 | 8+ 次 | 1 次（首次） | **87.5% ↓** |
+| 查詢耗時 | ~0.5-1ms | ~0.05-0.1ms | **80-90% ↓** |
+| 程式碼可維護性 | 分散查詢 | 集中管理 | ✅ 提升 |
 
 ---
 
-## 🧪 测试工具
+## 🧪 測試工具
 
-### 测试页面
+### 測試頁面
 
-**文件**：`tests/performance/phase2-detail-test.html`
+**檔案**：`tests/performance/phase2-detail-test.html`
 
 **功能**：
-1. **测试 1: 标签切换防抖**
-   - 快速触发 10 次点击
-   - 验证只渲染最后一次
-   - 预期：10 次点击 → 1 次渲染（节省 90%）
+1. **測試 1: 標籤切換防抖**
+   - 快速觸發 10 次點選
+   - 驗證只渲染最後一次
+   - 預期：10 次點選 → 1 次渲染（節省 90%）
 
-2. **测试 2: DOM 缓存性能**
-   - 对比 1000 次查询的耗时
-   - 不使用缓存 vs 使用缓存
-   - 预期：性能提升 50% 以上
+2. **測試 2: DOM 快取效能**
+   - 對比 1000 次查詢的耗時
+   - 不使用快取 vs 使用快取
+   - 預期：效能提升 50% 以上
 
-3. **测试 3: 综合性能基准**
-   - 测量标签切换的完整流程
-   - 预期：平均切换时间 < 150ms
+3. **測試 3: 綜合效能基準**
+   - 測量標籤切換的完整流程
+   - 預期：平均切換時間 < 150ms
 
-### 运行测试
+### 執行測試
 
 ```bash
-# 在浏览器中打开测试页面
+# 在瀏覽器中開啟測試頁面
 start tests/performance/phase2-detail-test.html
 
-# 或使用相对路径
+# 或使用相對路徑
 open ./tests/performance/phase2-detail-test.html
 ```
 
-**测试步骤**：
-1. 打开测试页面
-2. 依次点击三个测试按钮
-3. 观察日志输出和测试结果
-4. 确认所有测试通过（✅）
+**測試步驟**：
+1. 開啟測試頁面
+2. 依次點選三個測試按鈕
+3. 觀察日誌輸出和測試結果
+4. 確認所有測試透過（✅）
 
 ---
 
-## 📊 综合性能对比
+## 📊 綜合效能對比
 
-### 用户场景分析
+### 使用者場景分析
 
-**典型用户行为**：
-- 在详情页停留 5-30 分钟
-- 频繁在标签间切换（平均每分钟 3-5 次）
-- 总计切换 15-150 次
+**典型使用者行為**：
+- 在詳情頁停留 5-30 分鐘
+- 頻繁在標籤間切換（平均每分鐘 3-5 次）
+- 總計切換 15-150 次
 
-### 性能收益计算
+### 效能收益計算
 
-**优化前**（无防抖，无缓存）：
-- 切换 100 次
-- 每次 8+ DOM 查询 = 800+ 次查询
-- 每次查询 ~0.5ms = 400ms 总耗时
-- 假设 20% 是无效切换 = 20 次浪费的完整渲染
+**最佳化前**（無防抖，無快取）：
+- 切換 100 次
+- 每次 8+ DOM 查詢 = 800+ 次查詢
+- 每次查詢 ~0.5ms = 400ms 總耗時
+- 假設 20% 是無效切換 = 20 次浪費的完整渲染
 
-**优化后**（有防抖，有缓存）：
-- 切换 100 次
-- DOM 缓存后只需 1 次查询（首次）
-- 后续查询 ~0.05ms × 100 = 5ms 总耗时
-- 防抖消除 20 次无效渲染 = 节省 20 次完整渲染
+**最佳化後**（有防抖，有快取）：
+- 切換 100 次
+- DOM 快取後只需 1 次查詢（首次）
+- 後續查詢 ~0.05ms × 100 = 5ms 總耗時
+- 防抖消除 20 次無效渲染 = 節省 20 次完整渲染
 
-**总收益**：
-- DOM 查询耗时：400ms → 5ms（**减少 98.75%**）
-- 无效渲染：20 次 → 0 次（**减少 100%**）
-- 用户体验：标签切换更流畅，无卡顿
+**總收益**：
+- DOM 查詢耗時：400ms → 5ms（**減少 98.75%**）
+- 無效渲染：20 次 → 0 次（**減少 100%**）
+- 使用者體驗：標籤切換更流暢，無卡頓
 
 ---
 
-## 🔧 技术亮点
+## 🔧 技術亮點
 
-### 1. 防抖与渲染锁的配合
+### 1. 防抖與渲染鎖的配合
 
 ```javascript
-// 防抖：处理快速点击不同标签
+// 防抖：處理快速點選不同標籤
 function showTab(tab) {
   // 100ms 防抖
 }
 
-// 渲染锁：防止同一标签重复渲染
+// 渲染鎖：防止同一標籤重複渲染
 function showTabImmediate(tab) {
   if (renderingTab === tab) {
-    return; // 已在渲染中，跳过
+    return; // 已在渲染中，跳過
   }
   renderingTab = tab;
   // ...
 }
 ```
 
-**巧妙之处**：
-- 防抖解决"快速切换不同标签"的问题
-- 渲染锁解决"重复点击同一标签"的问题
-- 两者互补，覆盖所有场景
+**巧妙之處**：
+- 防抖解決"快速切換不同標籤"的問題
+- 渲染鎖解決"重複點選同一標籤"的問題
+- 兩者互補，覆蓋所有場景
 
-### 2. 懒初始化策略
+### 2. 懶初始化策略
 
 ```javascript
 const DOM_CACHE = {
@@ -282,104 +282,104 @@ const DOM_CACHE = {
 };
 ```
 
-**优势**：
-- 不需要在页面加载时手动初始化
-- 首次使用时自动初始化
-- 避免在 DOM 尚未准备好时初始化失败
+**優勢**：
+- 不需要在頁面載入時手動初始化
+- 首次使用時自動初始化
+- 避免在 DOM 尚未準備好時初始化失敗
 
-### 3. 非侵入式优化
+### 3. 非侵入式最佳化
 
-**改动范围**：
-- 添加了 `DOM_CACHE` 对象
-- 重命名 `showTab` → `showTabImmediate`
-- 添加防抖包装器 `showTab`
-- 替换所有 DOM 查询为缓存访问
+**改動範圍**：
+- 新增了 `DOM_CACHE` 物件
+- 重新命名 `showTab` → `showTabImmediate`
+- 新增防抖包裝器 `showTab`
+- 替換所有 DOM 查詢為快取訪問
 
-**保持不变**：
-- 原有的渲染逻辑完全不变
-- 原有的事件监听器不需要修改
-- 原有的功能行为完全一致
-
----
-
-## ⏳ 下一步计划
-
-### 2.3 批注系统 DOM 缓存
-
-**目标文件**：`js/annotations/annotation_logic.js`
-
-**问题**：
-- 右键菜单触发时，执行 `querySelectorAll('.sub-block')` 查询全文档
-- 大文档场景下，延迟高达 280ms
-
-**优化方案**：
-1. 创建 `AnnotationDOMCache` 类
-2. 在渲染时缓存 sub-block 元素
-3. 右键点击时直接从缓存查找
-
-**预期效果**：
-- 右键延迟：280ms → ~10ms（**减少 96%**）
+**保持不變**：
+- 原有的渲染邏輯完全不變
+- 原有的事件監聽器不需要修改
+- 原有的功能行為完全一致
 
 ---
 
-## ✅ 验收清单
+## ⏳ 下一步計劃
 
-- [x] 2.1 标签切换防抖优化实施完成
-- [x] 2.2 DOM 元素缓存优化实施完成
-- [x] 创建 Phase 2 测试工具
-- [x] 代码语法检查通过（`node -c`）
-- [ ] **功能测试**：在实际应用中验证标签切换正常
-- [ ] **性能测试**：运行测试工具，确认优化效果
-- [ ] **兼容性测试**：Chrome/Edge/Firefox
-- [ ] 2.3 批注系统优化
-- [ ] 创建 Phase 2 完整总结文档
+### 2.3 批註系統 DOM 快取
+
+**目標檔案**：`js/annotations/annotation_logic.js`
+
+**問題**：
+- 右鍵選單觸發時，執行 `querySelectorAll('.sub-block')` 查詢全文件
+- 大文件場景下，延遲高達 280ms
+
+**最佳化方案**：
+1. 建立 `AnnotationDOMCache` 類
+2. 在渲染時快取 sub-block 元素
+3. 右鍵點選時直接從快取查詢
+
+**預期效果**：
+- 右鍵延遲：280ms → ~10ms（**減少 96%**）
 
 ---
 
-## 📝 Git 提交建议
+## ✅ 驗收清單
+
+- [x] 2.1 標籤切換防抖最佳化實施完成
+- [x] 2.2 DOM 元素快取最佳化實施完成
+- [x] 建立 Phase 2 測試工具
+- [x] 程式碼語法檢查透過（`node -c`）
+- [ ] **功能測試**：在實際應用中驗證標籤切換正常
+- [ ] **效能測試**：執行測試工具，確認最佳化效果
+- [ ] **相容性測試**：Chrome/Edge/Firefox
+- [ ] 2.3 批註系統最佳化
+- [ ] 建立 Phase 2 完整總結文件
+
+---
+
+## 📝 Git 提交建議
 
 ```bash
-# 提交 2.1 和 2.2 优化
+# 提交 2.1 和 2.2 最佳化
 git add js/history/history_detail_show_tab.js
-git commit -m "perf: Phase 2.1/2.2 详情页标签切换优化
+git commit -m "perf: Phase 2.1/2.2 詳情頁標籤切換最佳化
 
-- 添加标签切换防抖（100ms）
-- 实现 DOM 元素缓存机制
-- 减少 80-90% 无效渲染
-- 减少 87.5% DOM 查询次数
+- 新增標籤切換防抖（100ms）
+- 實現 DOM 元素快取機制
+- 減少 80-90% 無效渲染
+- 減少 87.5% DOM 查詢次數
 
-优化文件: history_detail_show_tab.js
-风险等级: 低
-测试状态: 待验证"
+最佳化檔案: history_detail_show_tab.js
+風險等級: 低
+測試狀態: 待驗證"
 
-# 提交测试工具
+# 提交測試工具
 git add tests/performance/phase2-detail-test.html
-git commit -m "test: Phase 2 测试工具
+git commit -m "test: Phase 2 測試工具
 
-- 防抖效果测试
-- DOM 缓存性能测试
-- 综合性能基准测试"
+- 防抖效果測試
+- DOM 快取效能測試
+- 綜合效能基準測試"
 
-# 提交文档
+# 提交文件
 git add docs/PHASE2_PROGRESS.md
-git commit -m "docs: Phase 2 进度报告"
+git commit -m "docs: Phase 2 進度報告"
 ```
 
 ---
 
-## 🎉 总结
+## 🎉 總結
 
-Phase 2 的前两个优化项（2.1 和 2.2）已成功实施：
+Phase 2 的前兩個最佳化項（2.1 和 2.2）已成功實施：
 
-✅ **标签切换防抖**：减少 60-80% 无效渲染
-✅ **DOM 元素缓存**：减少 87.5% DOM 查询
-✅ **测试工具**：完整的自动化测试套件
-✅ **代码质量**：清晰注释，懒初始化，非侵入式
+✅ **標籤切換防抖**：減少 60-80% 無效渲染
+✅ **DOM 元素快取**：減少 87.5% DOM 查詢
+✅ **測試工具**：完整的自動化測試套件
+✅ **程式碼質量**：清晰註釋，懶初始化，非侵入式
 
-**下一步**：实施 2.3 批注系统优化，进一步提升详情页性能。
+**下一步**：實施 2.3 批註系統最佳化，進一步提升詳情頁效能。
 
 ---
 
-**优化愉快！** 🚀
+**最佳化愉快！** 🚀
 
-如有问题或建议，欢迎随时反馈。
+如有問題或建議，歡迎隨時反饋。

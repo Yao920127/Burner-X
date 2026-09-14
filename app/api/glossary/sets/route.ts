@@ -3,13 +3,13 @@ import fs from 'fs/promises';
 import path from 'path';
 
 /**
- * 术语库数据存储路径（使用文件系统作为简单存储）
- * 生产环境应使用数据库
+ * 術語庫資料儲存路徑（使用檔案系統作為簡單儲存）
+ * 生產環境應使用資料庫
  */
 const GLOSSARY_DATA_DIR = path.join(process.cwd(), 'data', 'glossary');
 
 /**
- * 确保数据目录存在
+ * 確保資料目錄存在
  */
 async function ensureDataDir() {
   try {
@@ -20,7 +20,7 @@ async function ensureDataDir() {
 }
 
 /**
- * 加载所有术语库集合
+ * 載入所有術語庫集合
  */
 async function loadAllGlossarySets() {
   await ensureDataDir();
@@ -47,7 +47,7 @@ async function loadAllGlossarySets() {
 }
 
 /**
- * 保存术语库集合
+ * 儲存術語庫集合
  */
 async function saveGlossarySet(setId: string, set: any, entries: any[]) {
   await ensureDataDir();
@@ -63,7 +63,7 @@ async function saveGlossarySet(setId: string, set: any, entries: any[]) {
 }
 
 /**
- * 删除术语库集合
+ * 刪除術語庫集合
  */
 async function deleteGlossarySet(setId: string) {
   const filePath = path.join(GLOSSARY_DATA_DIR, `set_${setId}.json`);
@@ -76,7 +76,7 @@ async function deleteGlossarySet(setId: string) {
 }
 
 /**
- * 加载指定术语库的条目
+ * 載入指定術語庫的條目
  */
 async function loadEntriesForSet(setId: string) {
   const filePath = path.join(GLOSSARY_DATA_DIR, `set_${setId}.json`);
@@ -92,7 +92,7 @@ async function loadEntriesForSet(setId: string) {
 }
 
 /**
- * GET /api/glossary/sets - 获取所有术语库集合
+ * GET /api/glossary/sets - 獲取所有術語庫集合
  */
 export async function GET() {
   try {

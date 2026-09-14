@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      # 开发模式：禁用 CSP、便于本地联调
+      # 開發模式：禁用 CSP、便於本地聯調
       NODE_ENV: development
       DISABLE_CSP: "true"
       RUN_MIGRATIONS: "false"

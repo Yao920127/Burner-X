@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AST 架构测试对比</title>
+    <title>AST 架構測試對比</title>
     <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -149,38 +149,38 @@
 </head>
 <body>
     <div class="container">
-        <h1>🚀 AST 架构测试对比</h1>
+        <h1>🚀 AST 架構測試對比</h1>
 
         <div class="controls">
-            <h3 style="margin-bottom: 10px;">输入 Markdown 文本：</h3>
-            <textarea id="input" placeholder="输入要测试的 Markdown 文本...">where $R _ { i , t }$ represents the return of crypto $i$ in month t; $\alpha _ { i }$ represents the asset-specific intercept</textarea>
-            <button onclick="renderBoth()">渲染对比</button>
+            <h3 style="margin-bottom: 10px;">輸入 Markdown 文字：</h3>
+            <textarea id="input" placeholder="輸入要測試的 Markdown 文字...">where $R _ { i , t }$ represents the return of crypto $i$ in month t; $\alpha _ { i }$ represents the asset-specific intercept</textarea>
+            <button onclick="renderBoth()">渲染對比</button>
             <button class="secondary" onclick="clearResults()">清空</button>
         </div>
 
         <div class="test-cases">
-            <h3 style="margin-bottom: 10px;">预设测试用例：</h3>
+            <h3 style="margin-bottom: 10px;">預設測試用例：</h3>
             <div class="test-case">
-                <button onclick="loadTestCase('formula')">📐 公式误匹配测试</button>
+                <button onclick="loadTestCase('formula')">📐 公式誤比對測試</button>
             </div>
             <div class="test-case">
-                <button onclick="loadTestCase('table')">📊 表格错位测试</button>
+                <button onclick="loadTestCase('table')">📊 表格錯位測試</button>
             </div>
             <div class="test-case">
-                <button onclick="loadTestCase('ocr')">🔧 OCR 错误修复测试</button>
+                <button onclick="loadTestCase('ocr')">🔧 OCR 錯誤修復測試</button>
             </div>
             <div class="test-case">
-                <button onclick="loadTestCase('mixed')">🎭 综合场景测试</button>
+                <button onclick="loadTestCase('mixed')">🎭 綜合場景測試</button>
             </div>
         </div>
 
         <div class="metrics" id="metrics" style="display: none;">
             <div class="metric-card">
-                <div class="metric-label">旧版渲染时间</div>
+                <div class="metric-label">舊版渲染時間</div>
                 <div class="metric-value" id="oldTime">-</div>
             </div>
             <div class="metric-card">
-                <div class="metric-label">新版渲染时间</div>
+                <div class="metric-label">新版渲染時間</div>
                 <div class="metric-value" id="newTime">-</div>
             </div>
             <div class="metric-card">
@@ -196,7 +196,7 @@
         <div class="comparison">
             <div class="panel">
                 <div class="panel-header">
-                    <span class="panel-title">旧版（正则方案）</span>
+                    <span class="panel-title">舊版（正則方案）</span>
                     <span class="panel-badge">marked + regex</span>
                 </div>
                 <div class="panel-content" id="oldResult"></div>
@@ -211,42 +211,42 @@
         </div>
     </div>
 
-    <!-- 依赖库 -->
+    <!-- 依賴庫 -->
     <script src="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>
 
-    <!-- 旧版处理器 -->
+    <!-- 舊版處理器 -->
     <script src="js/processing/markdown_processor_enhanced.js"></script>
 
-    <!-- 新版处理器 -->
+    <!-- 新版處理器 -->
     <script src="js/processing/markdown_processor_ast.js"></script>
 
     <script>
-        // 测试用例
+        // 測試用例
         const testCases = {
             formula: `where $R _ { i , t }$ represents the return of crypto $i$ in month t; $\\alpha _ { i }$ represents the asset-specific intercept; $\\beta _ { i , f a c t o r }$ represent crypto i's sensitivity to the respective factor`,
 
-            table: `| 指标 | 1 | 2 | 3 | 4 | 5 |
+            table: `| 指標 | 1 | 2 | 3 | 4 | 5 |
 |------|---|---|---|---|---|
-| 市场 | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** |
+| 市場 | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** |
 | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) |
-| 规模 | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** |`,
+| 規模 | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** |`,
 
             ocr: `This is a formula: $\\$ R_{i,t} \\$ and another one: $\\$ \\alpha_{i} \\$$`,
 
-            mixed: `# 测试文档
+            mixed: `# 測試文件
 
-## 公式测试
+## 公式測試
 The regression model is: $R_{i,t} = \\alpha_i + \\beta_i \\cdot Factor_t + \\epsilon_{i,t}$
 
-## 表格测试
-| 变量 | 系数 | t值 |
+## 表格測試
+| 變數 | 係數 | t值 |
 |------|------|-----|
-| 常数项 | 0.05 | 2.3 |
-| | (标准误) | (0.02) |
+| 常數項 | 0.05 | 2.3 |
+| | (標準誤) | (0.02) |
 
-## OCR 错误测试
+## OCR 錯誤測試
 Some text with $\\$ x + y \\$$ formula.`
         };
 
@@ -258,21 +258,21 @@ Some text with $\\$ x + y \\$$ formula.`
         function renderBoth() {
             const input = document.getElementById('input').value;
             if (!input.trim()) {
-                alert('请输入 Markdown 文本');
+                alert('請輸入 Markdown 文字');
                 return;
             }
 
-            // 显示指标面板
+            // 顯示指標面板
             document.getElementById('metrics').style.display = 'grid';
 
-            // 旧版渲染
+            // 舊版渲染
             const oldStart = performance.now();
             let oldResult = '';
             try {
                 const processed = MarkdownProcessorEnhanced.safeMarkdown(input, []);
                 oldResult = MarkdownProcessorEnhanced.renderWithKatexFailback(processed);
             } catch (error) {
-                oldResult = `<div style="color: red;">渲染错误: ${error.message}</div>`;
+                oldResult = `<div style="color: red;">渲染錯誤: ${error.message}</div>`;
             }
             const oldTime = performance.now() - oldStart;
 
@@ -282,15 +282,15 @@ Some text with $\\$ x + y \\$$ formula.`
             try {
                 newResult = MarkdownProcessorAST.render(input, []);
             } catch (error) {
-                newResult = `<div style="color: red;">渲染错误: ${error.message}</div>`;
+                newResult = `<div style="color: red;">渲染錯誤: ${error.message}</div>`;
             }
             const newTime = performance.now() - newStart;
 
-            // 显示结果
+            // 顯示結果
             document.getElementById('oldResult').innerHTML = oldResult;
             document.getElementById('newResult').innerHTML = newResult;
 
-            // 显示指标
+            // 顯示指標
             document.getElementById('oldTime').textContent = oldTime.toFixed(2) + ' ms';
             document.getElementById('newTime').textContent = newTime.toFixed(2) + ' ms';
 
@@ -298,7 +298,7 @@ Some text with $\\$ x + y \\$$ formula.`
             document.getElementById('speedup').textContent = speedup > 0 ? '+' + speedup + '%' : speedup + '%';
             document.getElementById('speedup').style.color = speedup > 0 ? '#10b981' : '#ef4444';
 
-            // 获取新版指标
+            // 獲取新版指標
             const metrics = MarkdownProcessorAST.getMetrics();
             document.getElementById('formulaRate').textContent =
                 `${metrics.formulaSuccesses}/${metrics.formulaSuccesses + metrics.formulaErrors}`;
@@ -311,7 +311,7 @@ Some text with $\\$ x + y \\$$ formula.`
             document.getElementById('metrics').style.display = 'none';
         }
 
-        // 页面加载时渲染默认示例
+        // 頁面載入時渲染預設示例
         window.addEventListener('load', () => {
             renderBoth();
         });

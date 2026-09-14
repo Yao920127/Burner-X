@@ -1,21 +1,21 @@
 /**
- * CSS Variables - History Detail 全局变量系统
+ * CSS Variables - History Detail 全域變數系統
  *
- * 职责：定义所有可复用的设计令牌（Design Tokens）
- * 作用域：全局（:root）
- * 修改时机：仅在需要全局调整设计系统时修改
+ * 職責：定義所有可複用的設計令牌（Design Tokens）
+ * 作用域：全域（:root）
+ * 修改時機：僅在需要全域調整設計系統時修改
  *
- * 组织结构：
- * 1. Z-Index 层级系统
- * 2. 颜色系统 (Modern Slate & Indigo Palette - Refined for Minimalism)
- * 3. 尺寸系统
- * 4. 间距与圆角
- * 5. 动画与过渡
- * 6. 断点
+ * 組織結構：
+ * 1. Z-Index 層級系統
+ * 2. 顏色系統 (Modern Slate & Indigo Palette - Refined for Minimalism)
+ * 3. 尺寸系統
+ * 4. 間距與圓角
+ * 5. 動畫與過渡
+ * 6. 斷點
  */
 
 :root {
-  /* ==================== Z-Index 层级系统 ==================== */
+  /* ==================== Z-Index 層級系統 ==================== */
   --z-base: 1;
   --z-dropdown: 1000;
   --z-sticky: 1020;
@@ -29,7 +29,7 @@
   --z-lightbox: 2300;
   --z-critical: 9999;
 
-  /* ==================== 颜色系统 (Modernized & Minimalist) ==================== */
+  /* ==================== 顏色系統 (Modernized & Minimalist) ==================== */
 
   /* Slate Palette (Neutral) - Refined for lighter, airier feel */
   --slate-50: #f9fafb;

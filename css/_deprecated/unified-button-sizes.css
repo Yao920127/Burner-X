@@ -1,30 +1,30 @@
 /* css/unified-button-sizes.css */
-/* 统一的按钮尺寸系统 - 针对TOC、Chatbot等浮动按钮 */
+/* 統一的按鈕尺寸系統 - 針對TOC、Chatbot等浮動按鈕 */
 
-/* 重新定义按钮尺寸变量 - 调整为更合适的大小 */
+/* 重新定義按鈕尺寸變數 - 調整為更合適的大小 */
 :root {
-  /* 桌面端按钮尺寸（适中尺寸，不会太小） */
-  --btn-small-size: 40px;    /* TOC按钮等 */
+  /* 桌面端按鈕尺寸（適中尺寸，不會太小） */
+  --btn-small-size: 40px;    /* TOC按鈕等 */
   --btn-medium-size: 44px;   /* Chatbot等 */
-  --btn-large-size: 42px;    /* 沉浸式按钮等，从48px调整为42px */
+  --btn-large-size: 42px;    /* 沉浸式按鈕等，從48px調整為42px */
   
-  /* 移动端按钮尺寸（适度缩小但保持可用性） */
-  --btn-small-mobile: 36px;  /* 原来28px */
-  --btn-medium-mobile: 40px; /* 原来32px */
-  --btn-large-mobile: 44px;  /* 原来36px */
+  /* 行動裝置按鈕尺寸（適度縮小但保持可用性） */
+  --btn-small-mobile: 36px;  /* 原來28px */
+  --btn-medium-mobile: 40px; /* 原來32px */
+  --btn-large-mobile: 44px;  /* 原來36px */
   
-  /* 对应的图标尺寸 */
+  /* 對應的圖示尺寸 */
   --btn-icon-small: 18px;    
   --btn-icon-medium: 20px;   
-  --btn-icon-large: 19px;    /* 从22px调整为19px */
+  --btn-icon-large: 19px;    /* 從22px調整為19px */
   
-  /* 移动端图标尺寸 */
+  /* 行動裝置圖示尺寸 */
   --btn-icon-small-mobile: 16px;   
   --btn-icon-medium-mobile: 18px;  
-  --btn-icon-large-mobile: 18px;   /* 从20px调整为18px */
+  --btn-icon-large-mobile: 18px;   /* 從20px調整為18px */
 }
 
-/* 更新现有的按钮类 */
+/* 更新現有的按鈕類 */
 .tiny-round-btn {
   border-radius: 50% !important;
   background-color: #2563eb !important;
@@ -38,7 +38,7 @@
   padding: 0 !important;
   transition: background-color 0.2s, transform 0.2s !important;
 
-  /* 使用新的尺寸变量 */
+  /* 使用新的尺寸變數 */
   width: var(--btn-small-size) !important;
   height: var(--btn-small-size) !important;
   font-size: var(--btn-icon-small) !important;
@@ -72,7 +72,7 @@
   transform: scale(1.08);
 }
 
-/* 更新big-round-btn为large-round-btn */
+/* 更新big-round-btn為large-round-btn */
 .big-round-btn,
 .large-round-btn {
   border-radius: 50% !important;
@@ -98,7 +98,7 @@
   transform: scale(1.08);
 }
 
-/* 确保图标正确继承尺寸 */
+/* 確保圖示正確繼承尺寸 */
 .tiny-round-btn > i,
 .medium-round-btn > i,
 .big-round-btn > i,
@@ -108,21 +108,21 @@
   padding: 0 !important;
 }
 
-/* 沉浸式布局按钮也使用统一尺寸 */
+/* 沉浸式版面按鈕也使用統一尺寸 */
 #toggle-immersive-btn {
   width: var(--btn-large-size) !important;
   height: var(--btn-large-size) !important;
   font-size: var(--btn-icon-large) !important;
 }
 
-/* Chatbot FAB 统一尺寸（如果存在） */
+/* Chatbot FAB 統一尺寸（如果存在） */
 #chatbot-fab {
   width: var(--btn-medium-size) !important;
   height: var(--btn-medium-size) !important;
   font-size: var(--btn-icon-medium) !important;
 }
 
-/* Chatbot FAB按钮样式 - 使用类选择器覆盖内联样式 */
+/* Chatbot FAB按鈕樣式 - 使用類選擇器覆蓋內聯樣式 */
 .chatbot-fab-button {
   width: var(--btn-medium-size) !important;
   height: var(--btn-medium-size) !important;
@@ -149,7 +149,7 @@
   background: linear-gradient(135deg, #2563eb, #1e40af) !important;
 }
 
-/* 平板设备优化 (768px - 1024px) */
+/* 平板裝置最佳化 (768px - 1024px) */
 @media (max-width: 1024px) and (min-width: 769px) {
   .tiny-round-btn {
     width: 38px !important;
@@ -186,7 +186,7 @@
   }
 }
 
-/* 移动端响应式设计 (700px以下) */
+/* 行動裝置響應式設計 (700px以下) */
 @media (max-width: 700px) {
   :root {
     --btn-small-size: var(--btn-small-mobile);
@@ -197,7 +197,7 @@
     --btn-icon-large: var(--btn-icon-large-mobile);
   }
   
-  /* 确保TOC和Chatbot按钮在移动端足够小但仍可点击 */
+  /* 確保TOC和Chatbot按鈕在行動裝置足夠小但仍可點選 */
   .tiny-round-btn {
     width: var(--btn-small-mobile) !important;
     height: var(--btn-small-mobile) !important;
@@ -217,7 +217,7 @@
     font-size: var(--btn-icon-large-mobile) !important;
   }
   
-  /* Chatbot FAB 移动端尺寸 */
+  /* Chatbot FAB 行動裝置尺寸 */
   #chatbot-fab {
     width: var(--btn-medium-mobile) !important;
     height: var(--btn-medium-mobile) !important;
@@ -233,7 +233,7 @@
     font-size: var(--btn-icon-medium-mobile) !important;
   }
   
-  /* 沉浸式按钮在移动端已经被隐藏，这里是备用 */
+  /* 沉浸式按鈕在行動裝置已經被隱藏，這裡是備用 */
   #toggle-immersive-btn {
     width: var(--btn-large-mobile) !important;
     height: var(--btn-large-mobile) !important;
@@ -241,7 +241,7 @@
   }
 }
 
-/* 极小屏幕设备 (400px以下) */
+/* 極小螢幕裝置 (400px以下) */
 @media (max-width: 400px) {
   .tiny-round-btn {
     width: 34px !important;
@@ -278,7 +278,7 @@
   }
 }
 
-/* 提供可访问性改进 */
+/* 提供可訪問性改進 */
 @media (prefers-reduced-motion: reduce) {
   .tiny-round-btn,
   .medium-round-btn,
@@ -295,7 +295,7 @@
   }
 }
 
-/* 高对比度模式支持 */
+/* 高對比度模式支援 */
 @media (prefers-contrast: high) {
   .tiny-round-btn,
   .medium-round-btn,
@@ -306,7 +306,7 @@
   }
 }
 
-/* 暗色模式适配 */
+/* 暗色模式適配 */
 @media (prefers-color-scheme: dark) {
   .tiny-round-btn,
   .medium-round-btn,

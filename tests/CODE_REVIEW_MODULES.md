@@ -1,13 +1,13 @@
-# Code Review: 模块提取对比分析
+# Code Review: 模組提取對比分析
 
-## 审查摘要
-对比原始文件 `history_pdf_compare.js` 与提取的三个模块，检查功能逻辑、依赖关系和状态管理的一致性。
+## 審查摘要
+對比原始檔案 `history_pdf_compare.js` 與提取的三個模組，檢查功能邏輯、依賴關係和狀態管理的一致性。
 
 ---
 
-## 1️⃣ TextFittingAdapter 模块审查
+## 1️⃣ TextFittingAdapter 模組審查
 
-### 对应的原始方法
+### 對應的原始方法
 - `initializeTextFitting()` → `TextFittingAdapter.initialize()`
 - `preprocessGlobalFontSizes()` → `TextFittingAdapter.preprocessGlobalFontSizes()`
 - `drawPlainTextInBox()` → `TextFittingAdapter.drawPlainTextInBox()`
@@ -17,45 +17,45 @@
 
 ### ✅ 保持一致的部分
 
-| 特性 | 状态 | 备注 |
+| 特性 | 狀態 | 備註 |
 |------|------|------|
-| 初始化逻辑 | ✅ | 完全相同的TextFittingEngine初始化 |
-| 预处理算法 | ✅ | globalFontScale、bbox计算完全一致 |
-| wrapText换行算法 | ✅ | CJK断句、标点符号处理、换行符处理完全相同 |
-| drawPlainTextInBox回退方案 | ✅ | 与原始版本的fallback逻辑一致 |
-| drawPlainTextWithFitting主算法 | ✅ | 二分查找、宽度因子、垂直居中完全一致 |
-| 字号范围计算 | ✅ | minFontSize、maxFontSize计算相同 |
-| CJK判断逻辑 | ✅ | `/[\u4e00-\u9fa5]/` 正则完全一致 |
+| 初始化邏輯 | ✅ | 完全相同的TextFittingEngine初始化 |
+| 預處理演算法 | ✅ | globalFontScale、bbox計算完全一致 |
+| wrapText換行演算法 | ✅ | CJK斷句、標點符號處理、換行字元處理完全相同 |
+| drawPlainTextInBox回退方案 | ✅ | 與原始版本的fallback邏輯一致 |
+| drawPlainTextWithFitting主演算法 | ✅ | 二分查詢、寬度因子、垂直居中完全一致 |
+| 字號範圍計算 | ✅ | minFontSize、maxFontSize計算相同 |
+| CJK判斷邏輯 | ✅ | `/[\u4e00-\u9fa5]/` 正則完全一致 |
 
-### ⚠️ 需要注意的改变
+### ⚠️ 需要注意的改變
 
 #### 1. 缺失方法：renderFormulasInText()
-**原始代码 (1588-1604行)**:
+**原始程式碼 (1588-1604行)**:
 ```javascript
 renderFormulasInText(text) {
-  // 使用缓存避免重复渲染
+  // 使用快取避免重複渲染
   if (this._formulaCache.has(text)) {
     return this._formulaCache.get(text);
   }
 
   if (typeof window.renderMathInElement === 'function') {
-    // KaTeX渲染逻辑
+    // KaTeX渲染邏輯
     ...
   }
 }
 ```
 
-**模块版本**:
+**模組版本**:
 ```javascript
 renderFormulasInText(text) {
-  // 363-404行：完全相同的实现
+  // 363-404行：完全相同的實現
 }
 ```
 
-✅ **已正确包含** - 在TextFittingAdapter的363-404行
+✅ **已正確包含** - 在TextFittingAdapter的363-404行
 
-#### 2. 选项配置的改变
-**原始代码处理**:
+#### 2. 選項配置的改變
+**原始程式碼處理**:
 ```javascript
 // history_pdf_compare.js
 this.textFittingEngine = new TextFittingEngine({
@@ -69,7 +69,7 @@ this.textFittingEngine = new TextFittingEngine({
 });
 ```
 
-**模块版本处理**:
+**模組版本處理**:
 ```javascript
 // TextFittingAdapter.js
 this.options = Object.assign({
@@ -84,157 +84,157 @@ this.options = Object.assign({
 }, options);
 ```
 
-⚠️ **改进**: 新增globalFontScale选项支持，提高配置灵活性
+⚠️ **改進**: 新增globalFontScale選項支援，提高配置靈活性
 
-#### 3. 缓存管理的独立性
-**差异**:
+#### 3. 快取管理的獨立性
+**差異**:
 - **原始**: globalFontSizeCache 在 PDFCompareView 中管理
-- **模块**: 自包含的globalFontSizeCache、_formulaCache
+- **模組**: 自包含的globalFontSizeCache、_formulaCache
 
-✅ **有利**: 模块化改进，支持clearCache()方法
+✅ **有利**: 模組化改進，支援clearCache()方法
 
-### ❌ 潜在的问题或遗漏
+### ❌ 潛在的問題或遺漏
 
-#### 1. TextFittingEngine初始化的隐式依赖
-**问题**: 模块依赖全局的 `TextFittingEngine` 类
+#### 1. TextFittingEngine初始化的隱式依賴
+**問題**: 模組依賴全域的 `TextFittingEngine` 類
 ```javascript
 if (typeof TextFittingEngine === 'undefined') {
-  console.error('[TextFittingAdapter] TextFittingEngine 未加载！请确保 js/utils/text-fitting.js 已正确引入');
+  console.error('[TextFittingAdapter] TextFittingEngine 未載入！請確保 js/utils/text-fitting.js 已正確引入');
   return;
 }
 ```
 
-**风险**:
-- 如果 `text-fitting.js` 未加载，将默默失败
-- 日志显示错误但继续执行，可能导致难以调试的问题
+**風險**:
+- 如果 `text-fitting.js` 未載入，將默默失敗
+- 日誌顯示錯誤但繼續執行，可能導致難以除錯的問題
 
-**建议**:
+**建議**:
 ```javascript
 initialize() {
   if (typeof TextFittingEngine === 'undefined') {
-    throw new Error('[TextFittingAdapter] TextFittingEngine 未加载！');
+    throw new Error('[TextFittingAdapter] TextFittingEngine 未載入！');
   }
   // ...
 }
 ```
 
-#### 2. wrapText方法缺少canvas context参数验证
-**原始代码**: 无参数检查
-**模块代码**: 同样无参数检查
+#### 2. wrapText方法缺少canvas context引數驗證
+**原始程式碼**: 無引數檢查
+**模組程式碼**: 同樣無引數檢查
 
 ```javascript
 wrapText(ctx, text, maxWidth) {
   if (!text) return [];
-  // 缺少 ctx 验证
-  ctx.measureText(testLine);  // 可能报错
+  // 缺少 ctx 驗證
+  ctx.measureText(testLine);  // 可能報錯
 }
 ```
 
-**建议**:
+**建議**:
 ```javascript
 wrapText(ctx, text, maxWidth) {
   if (!text) return [];
   if (!ctx || typeof ctx.measureText !== 'function') {
-    console.warn('[TextFitting] 无效的canvas context');
+    console.warn('[TextFitting] 無效的canvas context');
     return text.split('\n');
   }
   // ...
 }
 ```
 
-#### 3. globalFontSizeCache 的前置条件
+#### 3. globalFontSizeCache 的前置條件
 **方法**: `preprocessGlobalFontSizes(contentListJson, translatedContentList)`
 
-**缺失的验证**:
+**缺失的驗證**:
 ```javascript
 if (!contentListJson || !Array.isArray(contentListJson)) {
-  console.warn('[TextFittingAdapter] 无效的contentListJson');
+  console.warn('[TextFittingAdapter] 無效的contentListJson');
   return;
 }
 ```
 
-**原始代码中没有验证，模块版本也没有加**
+**原始程式碼中沒有驗證，模組版本也沒有加**
 
 ---
 
-## 2️⃣ PDFExporter 模块审查
+## 2️⃣ PDFExporter 模組審查
 
-### 对应的原始方法
-- `exportStructuredTranslation()` → `PDFExporter.exportStructuredTranslation()` (新提取，原始文件中在2000+行)
+### 對應的原始方法
+- `exportStructuredTranslation()` → `PDFExporter.exportStructuredTranslation()` (新提取，原始檔案中在2000+行)
 - `calculatePdfTextLayout()` → `PDFExporter.calculatePdfTextLayout()`
 - `wrapTextForPdf()` → `PDFExporter.wrapTextForPdf()`
 
 ### ✅ 保持一致的部分
 
-| 特性 | 状态 | 备注 |
+| 特性 | 狀態 | 備註 |
 |------|------|------|
-| PDF加载和字体嵌入 | ✅ | fontkit注册逻辑相同 |
-| 页面分组逻辑 | ✅ | pageContentMap创建方式相同 |
-| bbox坐标转换 | ✅ | scaleX/scaleY计算相同 |
-| 白色矩形覆盖算法 | ✅ | rgb(1,1,1)覆盖逻辑相同 |
-| 文本布局二分查找 | ✅ | 高低指针、精度0.5算法相同 |
-| wrapTextForPdf换行 | ✅ | CJK断句逻辑与Canvas版本一致 |
-| PDF坐标系处理 | ✅ | y轴翻转、缩放计算相同 |
+| PDF載入和字型嵌入 | ✅ | fontkit註冊邏輯相同 |
+| 頁面分組邏輯 | ✅ | pageContentMap建立方式相同 |
+| bbox座標轉換 | ✅ | scaleX/scaleY計算相同 |
+| 白色矩形覆蓋演算法 | ✅ | rgb(1,1,1)覆蓋邏輯相同 |
+| 文字版面二分查詢 | ✅ | 高低指標、精度0.5演算法相同 |
+| wrapTextForPdf換行 | ✅ | CJK斷句邏輯與Canvas版本一致 |
+| PDF座標系處理 | ✅ | y軸翻轉、縮放計算相同 |
 
-### ⚠️ 需要注意的改变
+### ⚠️ 需要注意的改變
 
-#### 1. 缺失的依赖项声明
-**原始代码** (在PDFCompareView中):
+#### 1. 缺失的依賴項宣告
+**原始程式碼** (在PDFCompareView中):
 ```javascript
 async exportStructuredTranslation(translatedContentList) {
   // 使用 this.originalPdfBase64
   // 使用 this.scale 和 this.dpr
-  // 使用 showNotification 从外部传入
+  // 使用 showNotification 從外部傳入
 }
 ```
 
-**模块版本**:
+**模組版本**:
 ```javascript
 async exportStructuredTranslation(originalPdfBase64, translatedContentList, showNotification = null) {
-  // 显式接收所有参数
-  // 不依赖 this.scale
-  // 不依赖 this.dpr
-  // 独立的 dpr 处理
+  // 顯式接收所有引數
+  // 不依賴 this.scale
+  // 不依賴 this.dpr
+  // 獨立的 dpr 處理
 }
 ```
 
-✅ **改进**: 参数显式化，减少隐式依赖
+✅ **改進**: 引數顯式化，減少隱式依賴
 
-#### 2. 参数差异：缺少scale和dpr
-**问题**: PDFExporter 中没有 scale 和 dpr 属性
+#### 2. 引數差異：缺少scale和dpr
+**問題**: PDFExporter 中沒有 scale 和 dpr 屬性
 
-**原始代码中的使用**:
+**原始程式碼中的使用**:
 ```javascript
-// PDFCompareView 中计算渲染时使用
+// PDFCompareView 中計算渲染時使用
 const scaleX = pageWidth / BBOX_NORMALIZED_RANGE;
 const scaleY = pageHeight / BBOX_NORMALIZED_RANGE;
 ```
 
-**模块版本**:
+**模組版本**:
 ```javascript
 // PDFExporter.js 中
-// 注意：没有使用 this.scale 或 this.dpr
+// 注意：沒有使用 this.scale 或 this.dpr
 const scaleX = pageWidth / BBOX_NORMALIZED_RANGE;
 const scaleY = pageHeight / BBOX_NORMALIZED_RANGE;
 ```
 
-⚠️ **潜在问题**: 模块直接使用 PDF 的页面宽高，而不考虑原始的 scale/dpr。这可能导致文本大小计算不同。
+⚠️ **潛在問題**: 模組直接使用 PDF 的頁面寬高，而不考慮原始的 scale/dpr。這可能導致文字大小計算不同。
 
-#### 3. 字体加载的网络依赖
-**风险**: 硬编码的CDN URL
+#### 3. 字型載入的網路依賴
+**風險**: 硬編碼的CDN URL
 ```javascript
 fontUrl: 'https://gcore.jsdelivr.net/npm/source-han-sans-cn@1.0.0/SourceHanSansCN-Normal.otf',
 pdfLibUrl: 'https://gcore.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js',
 fontkitUrl: 'https://gcore.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js',
 ```
 
-⚠️ **问题**:
-- CDN依赖可能导致离线失败
-- URL可能变更
-- 没有fallback方案
+⚠️ **問題**:
+- CDN依賴可能導致離線失敗
+- URL可能變更
+- 沒有fallback方案
 
-#### 4. calculatePdfTextLayout 与 drawPlainTextWithFitting 的不一致
-**原始代码中的差异**:
+#### 4. calculatePdfTextLayout 與 drawPlainTextWithFitting 的不一致
+**原始程式碼中的差異**:
 
 Canvas版本 (drawPlainTextWithFitting):
 ```javascript
@@ -252,17 +252,17 @@ const totalHeight = lines.length > 0
   : 0;
 ```
 
-❌ **问题**: 计算不一致！
-- Canvas: 最后一行使用 `mid * 1.2`
-- PDF: 最后一行使用 `mid`
-- 这会导致PDF和Canvas中的文本大小不同
+❌ **問題**: 計算不一致！
+- Canvas: 最後一行使用 `mid * 1.2`
+- PDF: 最後一行使用 `mid`
+- 這會導致PDF和Canvas中的文字大小不同
 
-**建议**: 应该统一为同一个公式
+**建議**: 應該統一為同一個公式
 
-#### 5. 缺少原始文本清除逻辑
-**问题**: 原始代码有 `clearTextInBbox()` 方法来清除PDF中的原始文本，但PDFExporter中：
+#### 5. 缺少原始文字清除邏輯
+**問題**: 原始程式碼有 `clearTextInBbox()` 方法來清除PDF中的原始文字，但PDFExporter中：
 ```javascript
-// 用白色矩形覆盖原文
+// 用白色矩形覆蓋原文
 items.forEach(item => {
   // ...
   page.drawRectangle({
@@ -276,89 +276,89 @@ items.forEach(item => {
 ```
 
 ⚠️ **注意**:
-- 使用 `rgb(1, 1, 1)` 而不是 `rgb(255, 255, 255)`（pdf-lib的色值范围是0-1而不是0-255）
-- 这会导致非纯白色覆盖，可能看到轻微的灰色背景
+- 使用 `rgb(1, 1, 1)` 而不是 `rgb(255, 255, 255)`（pdf-lib的色值範圍是0-1而不是0-255）
+- 這會導致非純白色覆蓋，可能看到輕微的灰色背景
 
-**建议**:
+**建議**:
 ```javascript
-color: rgb(255, 255, 255)  // 或使用 rgb(1, 1, 1) 但需要验证
+color: rgb(255, 255, 255)  // 或使用 rgb(1, 1, 1) 但需要驗證
 ```
 
-### ❌ 潜在的问题或遗漏
+### ❌ 潛在的問題或遺漏
 
-#### 1. 缺少错误恢复机制
-**原始代码**:
+#### 1. 缺少錯誤恢復機制
+**原始程式碼**:
 ```javascript
 if (typeof PDFLib === 'undefined') {
   await this.loadPdfLib();
 }
 ```
 
-**模块版本**: 同样存在，但缺少重试机制
+**模組版本**: 同樣存在，但缺少重試機制
 
-**问题**: 如果加载失败，没有重试逻辑
+**問題**: 如果載入失敗，沒有重試邏輯
 
-#### 2. fontkit加载失败时的行为
-**代码**:
+#### 2. fontkit載入失敗時的行為
+**程式碼**:
 ```javascript
 script.onerror = (error) => {
-  console.warn('[PDFExporter] fontkit 加载失败:', error);
-  resolve(); // fontkit失败不阻止流程
+  console.warn('[PDFExporter] fontkit 載入失敗:', error);
+  resolve(); // fontkit失敗不阻止流程
 };
 ```
 
-⚠️ **问题**:
-- fontkit失败会导致中文字体无法嵌入
-- 但流程继续，可能使用默认字体（不支持中文）
-- 最终PDF中的中文会显示为空或方块
+⚠️ **問題**:
+- fontkit失敗會導致中文字型無法嵌入
+- 但流程繼續，可能使用預設字型（不支援中文）
+- 最終PDF中的中文會顯示為空或方塊
 
-**建议**:
+**建議**:
 ```javascript
-// 如果fontkit失败，应该至少警告用户
+// 如果fontkit失敗，應該至少警告使用者
 if (!fontkit && needsCJKFont) {
-  showNotification('警告：中文字体可能无法正确显示', 'warning');
+  showNotification('警告：中文字型可能無法正確顯示', 'warning');
 }
 ```
 
-#### 3. 缺少对 showNotification 的类型检查
-**代码**:
+#### 3. 缺少對 showNotification 的型別檢查
+**程式碼**:
 ```javascript
 if (showNotification) {
-  showNotification('没有翻译内容可导出', 'warning');
+  showNotification('沒有翻譯內容可匯出', 'warning');
 }
 ```
 
-⚠️ **问题**: 假设 showNotification 是函数，但没有验证
+⚠️ **問題**: 假設 showNotification 是函式，但沒有驗證
 
-**建议**:
+**建議**:
 ```javascript
 if (typeof showNotification === 'function') {
-  showNotification('没有翻译内容可导出', 'warning');
+  showNotification('沒有翻譯內容可匯出', 'warning');
 }
 ```
 
-#### 4. 文本布局计算中的lineHeight使用
-**问题**: 在 calculatePdfTextLayout 中计算最后一行时：
+#### 4. 文字版面計算中的lineHeight使用
+**問題**: 在 calculatePdfTextLayout 中計算最後一行時：
 ```javascript
 const totalHeight = lines.length > 0
   ? (lines.length - 1) * lineHeight + mid
   : 0;
 ```
 
-但在实际绘制时：
+但在實際繪製時：
 ```javascript
 const totalHeight = lines.length > 0
   ? (lines.length - 1) * lineHeight + fontSize
   : 0;
 ```
 
-这两个值应该相同（mid === fontSize），但逻辑复杂易出错。
+這兩個值應該相同（mid === fontSize），但邏輯複雜易出錯。
 
 ---
 
-## 3️⃣ SegmentManager 模块审查
+## 3️⃣ SegmentManager 模組審查
 
-### 对应的原始方法
+### 對應的原始方法
 - `renderAllPagesContinuous()` → `SegmentManager.renderAllPagesContinuous()`
 - `createSegmentDom()` → `SegmentManager.createSegmentDom()`
 - `initLazyLoadingSegments()` → `SegmentManager.initLazyLoadingSegments()`
@@ -369,56 +369,56 @@ const totalHeight = lines.length > 0
 
 ### ✅ 保持一致的部分
 
-| 特性 | 状态 | 备注 |
+| 特性 | 狀態 | 備註 |
 |------|------|------|
-| 段划分算法 | ✅ | maxSegmentPixels和页面分组逻辑相同 |
-| DOM创建逻辑 | ✅ | wrapper、canvas、overlay创建完全相同 |
-| DPR处理 | ✅ | 物理像素和CSS像素的转换相同 |
-| 懒加载触发 | ✅ | scrollDebounceMs 和 renderVisibleSegments 逻辑相同 |
-| 可见性判断 | ✅ | visibleStartPx和visibleEndPx计算相同 |
-| 离屏渲染 | ✅ | 使用临时canvas避免PDF.js清除问题 |
-| 点击事件处理 | ✅ | 段级别的坐标转换和命中测试逻辑相同 |
+| 段劃分演算法 | ✅ | maxSegmentPixels和頁面分組邏輯相同 |
+| DOM建立邏輯 | ✅ | wrapper、canvas、overlay建立完全相同 |
+| DPR處理 | ✅ | 物理畫素和CSS畫素的轉換相同 |
+| 懶載入觸發 | ✅ | scrollDebounceMs 和 renderVisibleSegments 邏輯相同 |
+| 可見性判斷 | ✅ | visibleStartPx和visibleEndPx計算相同 |
+| 離屏渲染 | ✅ | 使用臨時canvas避免PDF.js清除問題 |
+| 點選事件處理 | ✅ | 段級別的座標轉換和命中測試邏輯相同 |
 
-### ⚠️ 需要注意的改变
+### ⚠️ 需要注意的改變
 
-#### 1. 依赖注入模式
-**原始代码** (在PDFCompareView中):
+#### 1. 依賴注入模式
+**原始程式碼** (在PDFCompareView中):
 ```javascript
-// 方法直接访问 this 的属性
+// 方法直接訪問 this 的屬性
 async renderSegmentOverlays(seg) {
-  // 直接调用 this.renderPageBboxesToCtx()
-  // 直接调用 this.renderPageTranslationToCtx()
-  // 直接访问 this.contentListJson
+  // 直接呼叫 this.renderPageBboxesToCtx()
+  // 直接呼叫 this.renderPageTranslationToCtx()
+  // 直接訪問 this.contentListJson
 }
 ```
 
-**模块版本**:
+**模組版本**:
 ```javascript
-// 使用依赖注入
+// 使用依賴注入
 setDependencies(deps) {
   Object.assign(this, deps);
 }
 
-// 在方法中检查依赖
+// 在方法中檢查依賴
 async renderSegmentOverlays(seg) {
   if (!this.renderPageBboxesToCtx || !this.renderPageTranslationToCtx) {
-    console.warn('[SegmentManager] 缺少渲染函数依赖');
+    console.warn('[SegmentManager] 缺少渲染函式依賴');
     return;
   }
   // ...
 }
 ```
 
-✅ **改进**: 显式依赖注入，减少隐式耦合
+✅ **改進**: 顯式依賴注入，減少隱式耦合
 
-#### 2. 容器设置方法
-**原始代码** (隐式):
+#### 2. 容器設定方法
+**原始程式碼** (隱式):
 ```javascript
-// 直接在 render() 方法中设置容器
+// 直接在 render() 方法中設定容器
 this.originalSegmentsContainer = document.getElementById('pdf-original-segments');
 ```
 
-**模块版本** (显式):
+**模組版本** (顯式):
 ```javascript
 setContainers(originalSegments, translationSegments, originalScroll, translationScroll) {
   this.originalSegmentsContainer = originalSegments;
@@ -428,16 +428,16 @@ setContainers(originalSegments, translationSegments, originalScroll, translation
 }
 ```
 
-✅ **改进**: 更清晰的初始化流程
+✅ **改進**: 更清晰的初始化流程
 
-#### 3. PDF文档依赖
-**原始代码**:
+#### 3. PDF文件依賴
+**原始程式碼**:
 ```javascript
-// 从 PDFCompareView.pdfDoc 继承
+// 從 PDFCompareView.pdfDoc 繼承
 this.pdfDoc = pdfDoc;
 ```
 
-**模块版本**:
+**模組版本**:
 ```javascript
 constructor(pdfDoc, options = {}) {
   this.pdfDoc = pdfDoc;
@@ -446,12 +446,12 @@ constructor(pdfDoc, options = {}) {
 }
 ```
 
-✅ **一致**: 都显式接收pdfDoc作为构造参数
+✅ **一致**: 都顯式接收pdfDoc作為構造引數
 
-### ❌ 潜在的问题或遗漏
+### ❌ 潛在的問題或遺漏
 
-#### 1. 事件监听器的清理问题
-**代码**:
+#### 1. 事件監聽器的清理問題
+**程式碼**:
 ```javascript
 initLazyLoadingSegments() {
   if (!this._lazyInitialized) {
@@ -462,30 +462,30 @@ initLazyLoadingSegments() {
 }
 
 destroy() {
-  // 移除事件监听
+  // 移除事件監聽
   if (this._lazyInitialized && this.originalScroll && this.translationScroll) {
-    // 注意：由于事件监听使用了箭头函数，无法直接移除
-    // 这里设置标记位，防止继续渲染
+    // 注意：由於事件監聽使用了箭頭函式，無法直接移除
+    // 這裡設定標記位，防止繼續渲染
     this.segments = [];
     this.pageInfos = [];
   }
 }
 ```
 
-❌ **问题**:
-- 事件监听器无法正确移除（注释中也承认了）
-- 清空 segments 和 pageInfos 不能停止已经开始的渲染
-- 可能导致内存泄漏和ghost渲染
+❌ **問題**:
+- 事件監聽器無法正確移除（註釋中也承認了）
+- 清空 segments 和 pageInfos 不能停止已經開始的渲染
+- 可能導致記憶體洩漏和ghost渲染
 
-**建议**:
+**建議**:
 ```javascript
 initLazyLoadingSegments() {
   if (!this._lazyInitialized) {
-    // 保存回调引用以便后续移除
+    // 儲存回撥參考以便後續移除
     this._scrollHandler = (scroller) => {
       clearTimeout(this._lazyScrollTimer);
       this._lazyScrollTimer = setTimeout(() => {
-        if (!this._destroyed) {  // 添加销毁标志检查
+        if (!this._destroyed) {  // 新增銷燬標誌檢查
           this.renderVisibleSegments(scroller);
         }
       }, this.options.scrollDebounceMs);
@@ -522,11 +522,11 @@ destroy() {
 }
 ```
 
-#### 2. renderSegment 中的离屏canvas管理
-**问题**:
+#### 2. renderSegment 中的離屏canvas管理
+**問題**:
 ```javascript
 async renderSegment(seg) {
-  // 使用离屏画布避免 PDF.js 清除问题
+  // 使用離屏畫布避免 PDF.js 清除問題
   const off = document.createElement('canvas');
   const offCtx = off.getContext('2d', { willReadFrequently: true, alpha: false });
 
@@ -537,7 +537,7 @@ async renderSegment(seg) {
     offCtx.clearRect(0, 0, off.width, off.height);
     await p.page.render({ canvasContext: offCtx, viewport: p.viewport }).promise;
 
-    // 绘制到左右段画布
+    // 繪製到左右段畫布
     seg.left.ctx.drawImage(off, 0, p.yInSegPx);
     seg.right.ctx.drawImage(off, 0, p.yInSegPx);
   }
@@ -545,20 +545,20 @@ async renderSegment(seg) {
 }
 ```
 
-⚠️ **性能问题**:
-- 每次渲染都创建离屏canvas，没有复用
-- 频繁重新分配canvas宽高
-- 没有垃圾回收机制
+⚠️ **效能問題**:
+- 每次渲染都建立離屏canvas，沒有複用
+- 頻繁重新分配canvas寬高
+- 沒有垃圾回收機制
 
-**建议**:
+**建議**:
 ```javascript
 constructor(pdfDoc, options = {}) {
   // ...
-  this._offscreenCanvas = null;  // 缓存离屏canvas
+  this._offscreenCanvas = null;  // 快取離屏canvas
 }
 
 async renderSegment(seg) {
-  // 复用或创建离屏canvas
+  // 複用或建立離屏canvas
   let off = this._offscreenCanvas;
   if (!off) {
     off = document.createElement('canvas');
@@ -569,16 +569,16 @@ async renderSegment(seg) {
 
 destroy() {
   // ...
-  this._offscreenCanvas = null;  // 释放
+  this._offscreenCanvas = null;  // 釋放
 }
 ```
 
-#### 3. clearTextInSegment 方法的可用性问题
-**代码**:
+#### 3. clearTextInSegment 方法的可用性問題
+**程式碼**:
 ```javascript
 async clearTextInSegment(seg) {
   if (!this.contentListJson || !this.clearTextInBbox) {
-    console.warn('[SegmentManager] 缺少清除文字依赖');
+    console.warn('[SegmentManager] 缺少清除文字依賴');
     return;
   }
 
@@ -587,17 +587,17 @@ async clearTextInSegment(seg) {
 }
 ```
 
-⚠️ **问题**:
-- 此方法在SegmentManager中定义但原始代码中没有调用
-- clearTextInBbox 期望的参数需要仔细验证
-- seg.right.ctx 是画布context，但注入的 clearTextInBbox 可能期望不同的接口
+⚠️ **問題**:
+- 此方法在SegmentManager中定義但原始程式碼中沒有呼叫
+- clearTextInBbox 期望的引數需要仔細驗證
+- seg.right.ctx 是畫布context，但注入的 clearTextInBbox 可能期望不同的介面
 
-**需要验证**:
-- 这个方法是否真的被使用？
-- 参数接口是否匹配？
+**需要驗證**:
+- 這個方法是否真的被使用？
+- 引數介面是否比對？
 
-#### 4. 缺少 bboxNormalizedRange 的验证
-**代码**:
+#### 4. 缺少 bboxNormalizedRange 的驗證
+**程式碼**:
 ```javascript
 async clearTextInSegment(seg) {
   const BBOX_NORMALIZED_RANGE = this.options.bboxNormalizedRange;
@@ -607,19 +607,19 @@ async clearTextInSegment(seg) {
 }
 ```
 
-⚠️ **问题**: 如果 bboxNormalizedRange 是 null 或 0，会导致NaN
+⚠️ **問題**: 如果 bboxNormalizedRange 是 null 或 0，會導致NaN
 
-**建议**:
+**建議**:
 ```javascript
 const BBOX_NORMALIZED_RANGE = this.options.bboxNormalizedRange || 1000;
 if (BBOX_NORMALIZED_RANGE <= 0) {
-  console.error('[SegmentManager] 无效的 bboxNormalizedRange');
+  console.error('[SegmentManager] 無效的 bboxNormalizedRange');
   return;
 }
 ```
 
-#### 5. 缺少对容器存在的验证
-**代码**:
+#### 5. 缺少對容器存在的驗證
+**程式碼**:
 ```javascript
 createSegmentDom(seg, dpr) {
   // ...
@@ -628,20 +628,20 @@ createSegmentDom(seg, dpr) {
 }
 ```
 
-⚠️ **问题**: 如果容器是 null，appendChild 会抛出错误
+⚠️ **問題**: 如果容器是 null，appendChild 會丟擲錯誤
 
-**原始代码中的问题** (也存在):
+**原始程式碼中的問題** (也存在):
 ```javascript
 renderAllPagesContinuous() {
   // ...
   for (const seg of this.segments) {
-    this.createSegmentDom(seg, dpr);  // 可能失败
+    this.createSegmentDom(seg, dpr);  // 可能失敗
   }
   // ...
 }
 ```
 
-**建议**:
+**建議**:
 ```javascript
 createSegmentDom(seg, dpr) {
   if (!this.originalSegmentsContainer || !this.translationSegmentsContainer) {
@@ -654,67 +654,67 @@ createSegmentDom(seg, dpr) {
 
 ---
 
-## 总体评估矩阵
+## 總體評估矩陣
 
-| 模块 | 功能一致性 | 依赖处理 | 状态管理 | 接口变化 | 问题严重度 |
+| 模組 | 功能一致性 | 依賴處理 | 狀態管理 | 介面變化 | 問題嚴重度 |
 |------|-----------|---------|---------|---------|-----------|
-| TextFittingAdapter | 95% | 良好 | 良好 | 参数化 | 低 |
-| PDFExporter | 90% | 需改进 | 自包含 | 参数化 | 中 |
-| SegmentManager | 95% | 好(DI) | 良好 | 显式化 | 中 |
+| TextFittingAdapter | 95% | 良好 | 良好 | 引數化 | 低 |
+| PDFExporter | 90% | 需改進 | 自包含 | 引數化 | 中 |
+| SegmentManager | 95% | 好(DI) | 良好 | 顯式化 | 中 |
 
 ---
 
-## 关键建议汇总
+## 關鍵建議彙總
 
-### 🔴 高优先级 (必须修复)
+### 🔴 高優先順序 (必須修復)
 
-1. **TextFittingAdapter.wrapText** - 添加ctx验证
-2. **PDFExporter** - 统一Canvas和PDF的文本高度计算公式
-3. **PDFExporter.loadPdfLib** - 改进对失败的错误处理
-4. **SegmentManager** - 修复事件监听器的清理问题
+1. **TextFittingAdapter.wrapText** - 新增ctx驗證
+2. **PDFExporter** - 統一Canvas和PDF的文字高度計算公式
+3. **PDFExporter.loadPdfLib** - 改進對失敗的錯誤處理
+4. **SegmentManager** - 修復事件監聽器的清理問題
 
-### 🟡 中优先级 (应该改进)
+### 🟡 中優先順序 (應該改進)
 
-1. **TextFittingAdapter.initialize** - 改为throw而不是return
-2. **PDFExporter.calculatePdfTextLayout** - 添加参数验证
-3. **SegmentManager.renderSegment** - 缓存离屏canvas以提高性能
-4. **SegmentManager.createSegmentDom** - 添加容器存在性验证
+1. **TextFittingAdapter.initialize** - 改為throw而不是return
+2. **PDFExporter.calculatePdfTextLayout** - 新增引數驗證
+3. **SegmentManager.renderSegment** - 快取離屏canvas以提高效能
+4. **SegmentManager.createSegmentDom** - 新增容器存在性驗證
 
-### 🟢 低优先级 (可选改进)
+### 🟢 低優先順序 (可選改進)
 
-1. **TextFittingAdapter.preprocessGlobalFontSizes** - 添加参数验证
-2. **PDFExporter** - 添加showNotification类型检查
-3. **SegmentManager** - 文档化clearTextInSegment的使用场景
-
----
-
-## 兼容性检查表
-
-### 从 PDFCompareView 迁移时需要确保：
-
-- [ ] TextFittingAdapter.initialize() 在 TextFittingEngine 加载后调用
-- [ ] PDFExporter 实例化时接收正确的选项对象
-- [ ] SegmentManager.setDependencies() 在使用前调用，提供所有必需的渲染函数
-- [ ] SegmentManager.setContainers() 在 renderAllPagesContinuous() 之前调用
-- [ ] 调用 SegmentManager.destroy() 来清理事件监听器和DOM
-- [ ] PDFExporter.exportStructuredTranslation() 收到有效的showNotification回调
-- [ ] TextFittingAdapter 的 globalFontSizeCache 在每次新PDF加载时调用 clearCache()
+1. **TextFittingAdapter.preprocessGlobalFontSizes** - 新增引數驗證
+2. **PDFExporter** - 新增showNotification型別檢查
+3. **SegmentManager** - 文件化clearTextInSegment的使用場景
 
 ---
 
-## 集成检查示例
+## 相容性檢查表
+
+### 從 PDFCompareView 遷移時需要確保：
+
+- [ ] TextFittingAdapter.initialize() 在 TextFittingEngine 載入後呼叫
+- [ ] PDFExporter 例項化時接收正確的選項物件
+- [ ] SegmentManager.setDependencies() 在使用前呼叫，提供所有必需的渲染函式
+- [ ] SegmentManager.setContainers() 在 renderAllPagesContinuous() 之前呼叫
+- [ ] 呼叫 SegmentManager.destroy() 來清理事件監聽器和DOM
+- [ ] PDFExporter.exportStructuredTranslation() 收到有效的showNotification回撥
+- [ ] TextFittingAdapter 的 globalFontSizeCache 在每次新PDF載入時呼叫 clearCache()
+
+---
+
+## 整合檢查示例
 
 ```javascript
-// 正确的初始化顺序
+// 正確的初始化順序
 const textFitter = new TextFittingAdapter();
-textFitter.initialize();  // 检查TextFittingEngine
+textFitter.initialize();  // 檢查TextFittingEngine
 
 const segmentManager = new SegmentManager(pdfDoc, {
   maxSegmentPixels: 4096,
   bboxNormalizedRange: 1000
 });
 
-// 设置依赖项
+// 設定依賴項
 segmentManager.setDependencies({
   renderPageBboxesToCtx: (ctx, pageNum, yOffset, w, h) => { /* ... */ },
   renderPageTranslationToCtx: (ctx, wrapper, pageNum, yOffset, w, h) => { /* ... */ },
@@ -742,20 +742,20 @@ textFitter.clearCache();
 
 ---
 
-## 结论
+## 結論
 
-整体而言，这三个模块的提取是**高质量的**，保持了原始逻辑的一致性，并通过参数化和依赖注入改进了代码架构。
+整體而言，這三個模組的提取是**高質量的**，保持了原始邏輯的一致性，並透過引數化和依賴注入改進了程式碼架構。
 
-**主要优点**:
-- 功能逻辑保留完整
+**主要優點**:
+- 功能邏輯保留完整
 - 耦合度降低
-- 模块职责清晰
-- 可复用性提高
+- 模組職責清晰
+- 可複用性提高
 
-**需要关注的地方**:
-- Canvas vs PDF 文本高度计算需要统一
-- 事件监听器管理需要改进
-- 参数验证需要加强
-- 网络依赖需要fallback机制
+**需要關注的地方**:
+- Canvas vs PDF 文字高度計算需要統一
+- 事件監聽器管理需要改進
+- 引數驗證需要加強
+- 網路依賴需要fallback機制
 
-**总体评分**: 8.5/10 - 很好的重构，少数地方需要微调。
+**總體評分**: 8.5/10 - 很好的重構，少數地方需要微調。

@@ -1,7 +1,7 @@
 name: Build and Push Docker Image
 
 on:
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:  # 允許手動觸發
   push:
     branches:
       - main
@@ -18,7 +18,7 @@ env:
 
 jobs:
   build-and-push:
-    # PR 上仅需跑 test 必要检查；跳过镜像构建以避免 lock 不一致导致失败
+    # PR 上僅需跑 test 必要檢查；跳過映象構建以避免 lock 不一致導致失敗
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
@@ -50,8 +50,8 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            # 避免在 PR 场景下出现 "-<sha>" 这种以连字符开头的非法标签
-            # 统一使用稳定前缀，确保 Docker tag 合法（如 "sha-ac262a7"）
+            # 避免在 PR 場景下出現 "-<sha>" 這種以連字元開頭的非法標籤
+            # 統一使用穩定字首，確保 Docker tag 合法（如 "sha-ac262a7"）
             type=sha,prefix=sha-
             type=raw,value=latest,enable={{is_default_branch}}
 

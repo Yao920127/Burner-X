@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>滚动性能测试 - Phase 4.1.3</title>
+  <title>滾動效能測試 - Phase 4.1.3</title>
   <style>
     * {
       margin: 0;
@@ -175,7 +175,7 @@
     .table-wrapper table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 800px; /* 确保表格可以横向滚动 */
+      min-width: 800px; /* 確保表格可以橫向滾動 */
     }
 
     .table-wrapper th,
@@ -195,7 +195,7 @@
       background: #fafafa;
     }
 
-    /* Intersection Observer 实现的渐变阴影 */
+    /* Intersection Observer 實現的漸變陰影 */
     .table-wrapper.with-observer {
       position: relative;
     }
@@ -217,7 +217,7 @@
       opacity: 0;
     }
 
-    /* RAF 实现的渐变阴影 */
+    /* RAF 實現的漸變陰影 */
     .table-wrapper.with-raf::after {
       content: '';
       position: absolute;
@@ -297,55 +297,55 @@
 </head>
 <body>
   <div class="test-header">
-    <h1>🎯 Phase 4.1.3 - 滚动性能测试对比</h1>
-    <p>对比 Intersection Observer vs. requestAnimationFrame 滚动监听性能（100个表格场景）</p>
+    <h1>🎯 Phase 4.1.3 - 滾動效能測試對比</h1>
+    <p>對比 Intersection Observer vs. requestAnimationFrame 滾動監聽效能（100個表格場景）</p>
 
     <div class="info-box">
-      <strong>测试说明：</strong>
+      <strong>測試說明：</strong>
       <ul>
-        <li>生成100个可横向滚动的表格</li>
-        <li>对比两种滚动监听方案的性能指标</li>
-        <li>测试指标：事件触发次数、平均响应时间、FPS、内存使用</li>
-        <li>建议：运行测试时打开控制台查看详细日志</li>
+        <li>生成100個可橫向滾動的表格</li>
+        <li>對比兩種滾動監聽方案的效能指標</li>
+        <li>測試指標：事件觸發次數、平均響應時間、FPS、記憶體使用</li>
+        <li>建議：執行測試時開啟主控台檢視詳細日誌</li>
       </ul>
     </div>
 
     <div class="controls">
-      <button class="btn-primary" onclick="generateTables()">生成100个表格</button>
-      <button class="btn-secondary" onclick="runTestIntersectionObserver()">测试 Intersection Observer</button>
-      <button class="btn-secondary" onclick="runTestRAF()">测试 RAF 节流</button>
-      <button class="btn-danger" onclick="clearTest()">清空测试</button>
+      <button class="btn-primary" onclick="generateTables()">生成100個表格</button>
+      <button class="btn-secondary" onclick="runTestIntersectionObserver()">測試 Intersection Observer</button>
+      <button class="btn-secondary" onclick="runTestRAF()">測試 RAF 節流</button>
+      <button class="btn-danger" onclick="clearTest()">清空測試</button>
     </div>
   </div>
 
   <div class="test-modes">
     <div class="test-mode">
-      <h2>🔵 Intersection Observer (推荐)</h2>
-      <div class="status ready" id="status-observer">就绪</div>
+      <h2>🔵 Intersection Observer (推薦)</h2>
+      <div class="status ready" id="status-observer">就緒</div>
       <div class="progress">
         <div class="progress-bar">
           <div class="progress-fill" id="progress-observer" style="width: 0%"></div>
         </div>
-        <div class="progress-text" id="progress-text-observer">等待测试...</div>
+        <div class="progress-text" id="progress-text-observer">等待測試...</div>
       </div>
     </div>
 
     <div class="test-mode">
       <h2>🟠 requestAnimationFrame</h2>
-      <div class="status ready" id="status-raf">就绪</div>
+      <div class="status ready" id="status-raf">就緒</div>
       <div class="progress">
         <div class="progress-bar">
           <div class="progress-fill" id="progress-raf" style="width: 0%"></div>
         </div>
-        <div class="progress-text" id="progress-text-raf">等待测试...</div>
+        <div class="progress-text" id="progress-text-raf">等待測試...</div>
       </div>
     </div>
   </div>
 
   <div class="results">
-    <h2>📊 测试结果</h2>
+    <h2>📊 測試結果</h2>
     <div id="results-content">
-      <p style="color: #666;">运行测试后将显示对比结果...</p>
+      <p style="color: #666;">執行測試後將顯示對比結果...</p>
     </div>
   </div>
 
@@ -357,10 +357,10 @@
       raf: null
     };
 
-    // 生成测试表格
+    // 生成測試表格
     function generateTables() {
       const container = document.getElementById('test-container');
-      container.innerHTML = '<h3 style="margin: 20px 0;">测试表格（100个）</h3>';
+      container.innerHTML = '<h3 style="margin: 20px 0;">測試表格（100個）</h3>';
 
       for (let i = 0; i < 100; i++) {
         const wrapper = document.createElement('div');
@@ -369,7 +369,7 @@
           <table>
             <thead>
               <tr>
-                <th>编号</th>
+                <th>編號</th>
                 <th>列1</th>
                 <th>列2</th>
                 <th>列3</th>
@@ -390,9 +390,9 @@
         container.appendChild(wrapper);
       }
 
-      console.log('✅ 已生成 100 个表格');
-      updateStatus('observer', 'ready', '表格已生成，就绪');
-      updateStatus('raf', 'ready', '表格已生成，就绪');
+      console.log('✅ 已生成 100 個表格');
+      updateStatus('observer', 'ready', '表格已生成，就緒');
+      updateStatus('raf', 'ready', '表格已生成，就緒');
     }
 
     function generateRows(tableIndex) {
@@ -400,32 +400,32 @@
       for (let i = 0; i < 5; i++) {
         html += `<tr>
           <td>表格${tableIndex + 1}-行${i + 1}</td>
-          <td>数据 ${i + 1}-1</td>
-          <td>数据 ${i + 1}-2</td>
-          <td>数据 ${i + 1}-3</td>
-          <td>数据 ${i + 1}-4</td>
-          <td>数据 ${i + 1}-5</td>
-          <td>数据 ${i + 1}-6</td>
-          <td>数据 ${i + 1}-7</td>
-          <td>数据 ${i + 1}-8</td>
-          <td>数据 ${i + 1}-9</td>
-          <td>数据 ${i + 1}-10</td>
+          <td>資料 ${i + 1}-1</td>
+          <td>資料 ${i + 1}-2</td>
+          <td>資料 ${i + 1}-3</td>
+          <td>資料 ${i + 1}-4</td>
+          <td>資料 ${i + 1}-5</td>
+          <td>資料 ${i + 1}-6</td>
+          <td>資料 ${i + 1}-7</td>
+          <td>資料 ${i + 1}-8</td>
+          <td>資料 ${i + 1}-9</td>
+          <td>資料 ${i + 1}-10</td>
         </tr>`;
       }
       return html;
     }
 
-    // Intersection Observer 实现
+    // Intersection Observer 實現
     function runTestIntersectionObserver() {
-      console.log('🔵 开始测试 Intersection Observer...');
-      updateStatus('observer', 'running', '测试进行中...');
+      console.log('🔵 開始測試 Intersection Observer...');
+      updateStatus('observer', 'running', '測試進行中...');
 
-      // 清理之前的监听
+      // 清理之前的監聽
       cleanupListeners();
 
       const wrappers = document.querySelectorAll('.table-wrapper');
       if (wrappers.length === 0) {
-        alert('请先生成表格');
+        alert('請先生成表格');
         return;
       }
 
@@ -434,13 +434,13 @@
       let observerCallCount = 0;
       const responseTimes = [];
 
-      // 添加样式类
+      // 新增樣式類
       wrappers.forEach(wrapper => {
         wrapper.classList.add('with-observer');
         wrapper.classList.remove('with-raf', 'scrolled-to-end');
       });
 
-      // 创建 Intersection Observer
+      // 建立 Intersection Observer
       const observers = [];
       wrappers.forEach(wrapper => {
         const table = wrapper.querySelector('table');
@@ -463,7 +463,7 @@
         observers.push(observer);
       });
 
-      // 模拟滚动测试
+      // 模擬滾動測試
       simulateScrolling(wrappers, () => {
         const endTime = performance.now();
         const endMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
@@ -480,12 +480,12 @@
           method: 'Intersection Observer'
         };
 
-        // 清理观察器
+        // 清理觀察器
         observers.forEach(o => o.disconnect());
 
-        updateStatus('observer', 'completed', '测试完成');
+        updateStatus('observer', 'completed', '測試完成');
         updateProgress('observer', 100, '✅ 完成');
-        console.log('✅ Intersection Observer 测试完成:', testResults.observer);
+        console.log('✅ Intersection Observer 測試完成:', testResults.observer);
 
         if (testResults.raf) {
           displayComparison();
@@ -493,17 +493,17 @@
       });
     }
 
-    // RAF 节流实现
+    // RAF 節流實現
     function runTestRAF() {
-      console.log('🟠 开始测试 requestAnimationFrame...');
-      updateStatus('raf', 'running', '测试进行中...');
+      console.log('🟠 開始測試 requestAnimationFrame...');
+      updateStatus('raf', 'running', '測試進行中...');
 
-      // 清理之前的监听
+      // 清理之前的監聽
       cleanupListeners();
 
       const wrappers = document.querySelectorAll('.table-wrapper');
       if (wrappers.length === 0) {
-        alert('请先生成表格');
+        alert('請先生成表格');
         return;
       }
 
@@ -513,13 +513,13 @@
       let scrollEventCount = 0;
       const responseTimes = [];
 
-      // 添加样式类
+      // 新增樣式類
       wrappers.forEach(wrapper => {
         wrapper.classList.add('with-raf');
         wrapper.classList.remove('with-observer', 'scrolled-to-end');
       });
 
-      // 为每个表格添加 RAF 节流的滚动监听
+      // 為每個表格新增 RAF 節流的滾動監聽
       const rafHandlers = [];
       wrappers.forEach(wrapper => {
         let scrollRAF = null;
@@ -548,7 +548,7 @@
         rafHandlers.push({ wrapper, handler: scrollHandler });
       });
 
-      // 模拟滚动测试
+      // 模擬滾動測試
       simulateScrolling(wrappers, () => {
         const endTime = performance.now();
         const endMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
@@ -566,14 +566,14 @@
           method: 'RAF Throttle'
         };
 
-        // 清理监听器
+        // 清理監聽器
         rafHandlers.forEach(({ wrapper, handler }) => {
           wrapper.removeEventListener('scroll', handler);
         });
 
-        updateStatus('raf', 'completed', '测试完成');
+        updateStatus('raf', 'completed', '測試完成');
         updateProgress('raf', 100, '✅ 完成');
-        console.log('✅ RAF 测试完成:', testResults.raf);
+        console.log('✅ RAF 測試完成:', testResults.raf);
 
         if (testResults.observer) {
           displayComparison();
@@ -581,10 +581,10 @@
       });
     }
 
-    // 模拟滚动行为
+    // 模擬滾動行為
     function simulateScrolling(wrappers, callback) {
       let currentIndex = 0;
-      const totalSteps = wrappers.length * 3; // 每个表格滚动3次
+      const totalSteps = wrappers.length * 3; // 每個表格滾動3次
       let step = 0;
 
       function scrollNext() {
@@ -603,10 +603,10 @@
             currentIndex++;
             step += scrollSteps;
 
-            // 更新进度
+            // 更新進度
             const progress = Math.round((step / totalSteps) * 100);
-            updateProgress('observer', progress, `滚动测试... ${currentIndex}/${wrappers.length}`);
-            updateProgress('raf', progress, `滚动测试... ${currentIndex}/${wrappers.length}`);
+            updateProgress('observer', progress, `滾動測試... ${currentIndex}/${wrappers.length}`);
+            updateProgress('raf', progress, `滾動測試... ${currentIndex}/${wrappers.length}`);
 
             setTimeout(scrollNext, 10);
             return;
@@ -623,7 +623,7 @@
       scrollNext();
     }
 
-    // 清理监听器
+    // 清理監聽器
     function cleanupListeners() {
       const wrappers = document.querySelectorAll('.table-wrapper');
       wrappers.forEach(wrapper => {
@@ -632,7 +632,7 @@
       });
     }
 
-    // 显示对比结果
+    // 顯示對比結果
     function displayComparison() {
       const obs = testResults.observer;
       const raf = testResults.raf;
@@ -647,33 +647,33 @@
         <table class="comparison-table">
           <thead>
             <tr>
-              <th>指标</th>
+              <th>指標</th>
               <th>Intersection Observer</th>
-              <th>RAF 节流</th>
+              <th>RAF 節流</th>
               <th>改善</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>总耗时</strong></td>
+              <td><strong>總耗時</strong></td>
               <td class="${obs.duration < raf.duration ? 'winner-cell' : ''}">${obs.duration.toFixed(0)} ms</td>
               <td class="${raf.duration < obs.duration ? 'winner-cell' : ''}">${raf.duration.toFixed(0)} ms</td>
               <td>${durationImprove > 0 ? '↓' : '↑'} ${Math.abs(durationImprove)}%</td>
             </tr>
             <tr>
-              <td><strong>回调触发次数</strong></td>
+              <td><strong>回撥觸發次數</strong></td>
               <td class="winner-cell">${obs.callCount} 次</td>
-              <td>${raf.scrollEventCount} 个滚动事件<br>${raf.callCount} 次 RAF 调用</td>
-              <td>减少 ${callCountDiff} 次事件</td>
+              <td>${raf.scrollEventCount} 個滾動事件<br>${raf.callCount} 次 RAF 呼叫</td>
+              <td>減少 ${callCountDiff} 次事件</td>
             </tr>
             <tr>
-              <td><strong>平均响应时间</strong></td>
+              <td><strong>平均響應時間</strong></td>
               <td class="${obs.avgResponseTime < raf.avgResponseTime ? 'winner-cell' : ''}">${obs.avgResponseTime.toFixed(3)} ms</td>
               <td class="${raf.avgResponseTime < obs.avgResponseTime ? 'winner-cell' : ''}">${raf.avgResponseTime.toFixed(3)} ms</td>
               <td>${obs.avgResponseTime < raf.avgResponseTime ? '更快' : '更慢'}</td>
             </tr>
             <tr>
-              <td><strong>内存增长</strong></td>
+              <td><strong>記憶體增長</strong></td>
               <td class="${obs.memoryIncrease < raf.memoryIncrease ? 'winner-cell' : ''}">${(obs.memoryIncrease / 1024 / 1024).toFixed(2)} MB</td>
               <td class="${raf.memoryIncrease < obs.memoryIncrease ? 'winner-cell' : ''}">${(raf.memoryIncrease / 1024 / 1024).toFixed(2)} MB</td>
               <td>${memoryImprove > 0 ? '↓' : '↑'} ${Math.abs(memoryImprove)}%</td>
@@ -682,19 +682,19 @@
         </table>
 
         <div class="info-box" style="margin-top: 20px; background: #e8f5e9; border-color: #4CAF50;">
-          <strong>🎯 结论：</strong>
+          <strong>🎯 結論：</strong>
           <ul>
-            <li><strong>Intersection Observer</strong> 减少了 <strong>${callCountDiff}</strong> 次不必要的滚动事件处理</li>
-            <li>平均响应时间 ${obs.avgResponseTime < raf.avgResponseTime ? '更快' : '相近'}</li>
-            <li>总体性能提升约 <strong>${Math.abs(durationImprove)}%</strong></li>
-            <li><strong>推荐使用 Intersection Observer 方案</strong> ✅</li>
+            <li><strong>Intersection Observer</strong> 減少了 <strong>${callCountDiff}</strong> 次不必要的滾動事件處理</li>
+            <li>平均響應時間 ${obs.avgResponseTime < raf.avgResponseTime ? '更快' : '相近'}</li>
+            <li>總體效能提升約 <strong>${Math.abs(durationImprove)}%</strong></li>
+            <li><strong>推薦使用 Intersection Observer 方案</strong> ✅</li>
           </ul>
         </div>
       `;
 
       document.getElementById('results-content').innerHTML = resultsHtml;
 
-      console.log('📊 对比结果：', {
+      console.log('📊 對比結果：', {
         observer: obs,
         raf: raf,
         improvement: {
@@ -717,28 +717,28 @@
     }
 
     function clearTest() {
-      if (confirm('确定要清空测试吗？')) {
+      if (confirm('確定要清空測試嗎？')) {
         document.getElementById('test-container').innerHTML = '';
         testResults = { observer: null, raf: null };
-        updateStatus('observer', 'ready', '就绪');
-        updateStatus('raf', 'ready', '就绪');
-        updateProgress('observer', 0, '等待测试...');
-        updateProgress('raf', 0, '等待测试...');
-        document.getElementById('results-content').innerHTML = '<p style="color: #666;">运行测试后将显示对比结果...</p>';
-        console.log('🗑️ 测试已清空');
+        updateStatus('observer', 'ready', '就緒');
+        updateStatus('raf', 'ready', '就緒');
+        updateProgress('observer', 0, '等待測試...');
+        updateProgress('raf', 0, '等待測試...');
+        document.getElementById('results-content').innerHTML = '<p style="color: #666;">執行測試後將顯示對比結果...</p>';
+        console.log('🗑️ 測試已清空');
       }
     }
 
-    // 页面加载提示
+    // 頁面載入提示
     window.addEventListener('load', function() {
       console.log('%c═══════════════════════════════════════', 'color: #2196F3; font-weight: bold');
-      console.log('%c   Phase 4.1.3 滚动性能测试', 'color: #2196F3; font-weight: bold');
+      console.log('%c   Phase 4.1.3 滾動效能測試', 'color: #2196F3; font-weight: bold');
       console.log('%c═══════════════════════════════════════', 'color: #2196F3; font-weight: bold');
       console.log('');
-      console.log('测试流程：');
-      console.log('  1. 生成100个表格');
-      console.log('  2. 分别运行两种滚动监听方案的测试');
-      console.log('  3. 查看对比结果');
+      console.log('測試流程：');
+      console.log('  1. 生成100個表格');
+      console.log('  2. 分別執行兩種滾動監聽方案的測試');
+      console.log('  3. 檢視對比結果');
     });
   </script>
 </body>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>配图编辑器 - draw.io</title>
+  <title>配圖編輯器 - draw.io</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="../../public/pure.svg">
   <style>
@@ -260,10 +260,10 @@
 <body>
   <div class="topbar">
     <div class="topbar-title">
-      <span style="font-size:1.2em;font-weight:700;letter-spacing:0.02em;">配图编辑器（draw.io）</span>
+      <span style="font-size:1.2em;font-weight:700;letter-spacing:0.02em;">配圖編輯器（draw.io）</span>
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
-      <button id="toggle-layout-btn" class="button small outline">⇄ 切换布局</button>
+      <button id="toggle-layout-btn" class="button small outline">⇄ 切換版面</button>
     </div>
   </div>
 
@@ -272,8 +272,8 @@
       <div class="editor-header">
         <span>draw.io XML</span>
         <div style="display:flex;align-items:center;gap:10px;">
-          <small id="xml-status" style="color:#64748b;">只读预览</small>
-          <button id="toggle-editor-btn" class="panel-control">隐藏</button>
+          <small id="xml-status" style="color:#64748b;">只讀預覽</small>
+          <button id="toggle-editor-btn" class="panel-control">隱藏</button>
         </div>
       </div>
       <textarea id="xml-editor" class="editor-textarea" spellcheck="false"></textarea>
@@ -283,7 +283,7 @@
 
     <div class="drawio-container" id="drawio-area">
       <div class="drawio-header">
-        <button id="toggle-drawio-btn" class="panel-control">隐藏</button>
+        <button id="toggle-drawio-btn" class="panel-control">隱藏</button>
       </div>
       <iframe id="drawio-frame" title="draw.io editor"
               src="https://embed.diagrams.net/?embed=1&proto=json&ui=min"
@@ -355,10 +355,10 @@
       const iframe = document.getElementById('drawio-frame');
       if (!iframe) return;
 
-      let hasReceivedInit = false; // 标记是否收到 init 事件
+      let hasReceivedInit = false; // 標記是否收到 init 事件
       let initTimeout = null;
 
-      // 验证 XML 格式
+      // 驗證 XML 格式
       function validateXml(xmlString) {
         try {
           const parser = new DOMParser();
@@ -367,7 +367,7 @@
           if (parserError) {
             return {
               valid: false,
-              error: parserError.textContent || '未知的 XML 解析错误'
+              error: parserError.textContent || '未知的 XML 解析錯誤'
             };
           }
           return { valid: true };
@@ -376,42 +376,42 @@
         }
       }
 
-      // 显示错误提示
+      // 顯示錯誤提示
       function showError(errorMsg, xmlContent) {
         const container = document.querySelector('.drawio-container');
         const errorHtml = `
           <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;max-width:600px;background:#fff;padding:24px;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.1);text-align:center;z-index:1000;">
             <div style="font-size:48px;margin-bottom:12px;">⚠️</div>
-            <div style="font-size:18px;font-weight:600;color:#dc2626;margin-bottom:12px;">配图加载失败</div>
+            <div style="font-size:18px;font-weight:600;color:#dc2626;margin-bottom:12px;">配圖載入失敗</div>
             <div style="font-size:14px;color:#64748b;margin-bottom:20px;max-height:200px;overflow-y:auto;background:#f8fafc;padding:12px;border-radius:6px;text-align:left;word-break:break-word;">${errorMsg}</div>
             <div style="display:flex;gap:12px;justify-content:center;">
-              <button onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(xmlContent)}'));this.textContent='✓ 已复制'" style="padding:8px 16px;background:#3b82f6;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;">📋 复制 XML 到剪贴板</button>
-              <button onclick="window.location.reload()" style="padding:8px 16px;background:#64748b;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;">🔄 刷新重试</button>
+              <button onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(xmlContent)}'));this.textContent='✓ 已複製'" style="padding:8px 16px;background:#3b82f6;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;">📋 複製 XML 到剪貼簿</button>
+              <button onclick="window.location.reload()" style="padding:8px 16px;background:#64748b;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px;">🔄 重新整理重試</button>
             </div>
           </div>
         `;
         container.insertAdjacentHTML('beforeend', errorHtml);
       }
 
-      // 验证加载的 XML
+      // 驗證載入的 XML
       const validation = validateXml(xml);
       if (!validation.valid) {
-        console.error('[drawio.html] XML 验证失败:', validation.error);
-        showError(`XML 格式错误：${validation.error}`, xml);
+        console.error('[drawio.html] XML 驗證失敗:', validation.error);
+        showError(`XML 格式錯誤：${validation.error}`, xml);
         return;
       }
 
-      // diagrams.net embed 模式使用 postMessage + proto=json 协议
+      // diagrams.net embed 模式使用 postMessage + proto=json 協議
       function postDrawioMessage(msg) {
         if (!iframe.contentWindow) {
           console.error('[drawio.html] iframe.contentWindow 不可用');
           return;
         }
         iframe.contentWindow.postMessage(JSON.stringify(msg), '*');
-        console.log('[drawio.html] 发送消息到 draw.io:', msg);
+        console.log('[drawio.html] 傳送訊息到 draw.io:', msg);
       }
 
-      // 监听来自 diagrams.net 的消息
+      // 監聽來自 diagrams.net 的訊息
       window.addEventListener('message', function (evt) {
         if (!evt.data) return;
         let data = null;
@@ -424,45 +424,45 @@
 
         console.log('[drawio.html] 收到 draw.io 事件:', data);
 
-        // 等待 diagrams.net 发送 'init' 事件，表示已准备好接收消息
+        // 等待 diagrams.net 傳送 'init' 事件，表示已準備好接收訊息
         if (data.event === 'init') {
           hasReceivedInit = true;
           if (initTimeout) clearTimeout(initTimeout);
 
-          console.log('[drawio.html] draw.io 已初始化，发送 XML 数据');
-          // 发送 load 指令加载 XML
+          console.log('[drawio.html] draw.io 已初始化，傳送 XML 資料');
+          // 傳送 load 指令載入 XML
           postDrawioMessage({
             action: 'load',
             autosave: 1,
             xml: xml
           });
         } else if (data.event === 'save') {
-          // 处理保存事件
-          console.log('[drawio.html] 用户保存了图表');
+          // 處理儲存事件
+          console.log('[drawio.html] 使用者儲存了圖表');
           const docId = getQueryParam('docId') || 'unknown';
           const key = 'drawioData_' + docId;
 
           try {
             window.localStorage.setItem(key, data.xml);
-            // 同步更新左侧编辑器
+            // 同步更新左側編輯器
             document.getElementById('xml-editor').value = data.xml;
-            console.log('[drawio.html] 已保存到 localStorage:', key);
+            console.log('[drawio.html] 已儲存到 localStorage:', key);
           } catch (e) {
-            console.error('[drawio.html] 保存失败:', e);
+            console.error('[drawio.html] 儲存失敗:', e);
           }
         } else if (data.event === 'export') {
-          // 处理导出事件
-          console.log('[drawio.html] 导出事件:', data);
+          // 處理匯出事件
+          console.log('[drawio.html] 匯出事件:', data);
         } else if (data.event === 'load') {
-          console.log('[drawio.html] 图表加载完成');
+          console.log('[drawio.html] 圖表載入完成');
         }
       });
 
-      // 超时检测：如果 5 秒内没有收到 init 事件，显示错误
+      // 超時檢測：如果 5 秒內沒有收到 init 事件，顯示錯誤
       initTimeout = setTimeout(() => {
         if (!hasReceivedInit) {
-          console.error('[drawio.html] 超时：未收到 draw.io 初始化事件');
-          showError('draw.io 编辑器初始化超时，可能是网络问题或 embed.diagrams.net 服务不可用。', xml);
+          console.error('[drawio.html] 超時：未收到 draw.io 初始化事件');
+          showError('draw.io 編輯器初始化超時，可能是網路問題或 embed.diagrams.net 服務不可用。', xml);
         }
       }, 5000);
     }

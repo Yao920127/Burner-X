@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>压缩表格修复测试</title>
+    <title>壓縮表格修復測試</title>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="js/processing/markdown_processor_ast.js"></script>
     <style>
@@ -76,29 +76,29 @@
     </style>
 </head>
 <body>
-    <h1>📊 压缩表格自动修复</h1>
-    <p style="color: #7f8c8d;">自动检测并修复所有内容在一行的表格</p>
+    <h1>📊 壓縮表格自動修復</h1>
+    <p style="color: #7f8c8d;">自動檢測並修復所有內容在一行的表格</p>
 
     <div id="output"></div>
 
     <script>
-        const compressedTable = `| | | | 五分位数 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 规模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
+        const compressedTable = `| | | | 五分位數 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 規模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
 
         const output = document.getElementById('output');
 
-        // 步骤 1: 显示原始压缩表格
+        // 步驟 1: 顯示原始壓縮表格
         const section1 = document.createElement('div');
         section1.className = 'section';
         section1.innerHTML = `
-            <div class="section-title">步骤 1: 原始压缩表格（所有内容在一行）</div>
+            <div class="section-title">步驟 1: 原始壓縮表格（所有內容在一行）</div>
             <div class="code-block">${compressedTable.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
             <div style="color: #e74c3c; font-weight: bold; margin-top: 10px;">
-                ⚠️ 问题：所有 | 都在同一行，markdown-it 无法识别为表格
+                ⚠️ 問題：所有 | 都在同一行，markdown-it 無法識別為表格
             </div>
         `;
         output.appendChild(section1);
 
-        // 步骤 2: markdown-it 直接渲染（失败）
+        // 步驟 2: markdown-it 直接渲染（失敗）
         const section2 = document.createElement('div');
         section2.className = 'section';
         const md = markdownit({ html: true, breaks: false });
@@ -106,13 +106,13 @@
         const hasTableDirect = directHTML.includes('<table');
 
         section2.innerHTML = `
-            <div class="section-title">步骤 2: markdown-it 直接渲染</div>
-            <div class="status ${hasTableDirect ? 'success' : 'fail'}">${hasTableDirect ? '✓ 成功生成表格' : '✗ 失败：未生成表格'}</div>
+            <div class="section-title">步驟 2: markdown-it 直接渲染</div>
+            <div class="status ${hasTableDirect ? 'success' : 'fail'}">${hasTableDirect ? '✓ 成功生成表格' : '✗ 失敗：未生成表格'}</div>
             <div class="result">${directHTML}</div>
         `;
         output.appendChild(section2);
 
-        // 步骤 3: MarkdownProcessorAST 自动修复
+        // 步驟 3: MarkdownProcessorAST 自動修復
         const section3 = document.createElement('div');
         section3.className = 'section';
 
@@ -122,78 +122,78 @@
                 const hasTableAST = astHTML.includes('<table');
 
                 section3.innerHTML = `
-                    <div class="section-title">步骤 3: MarkdownProcessorAST 自动修复并渲染</div>
-                    <div class="status ${hasTableAST ? 'success' : 'fail'}">${hasTableAST ? '✓ 自动修复成功！生成了表格' : '✗ 修复失败'}</div>
+                    <div class="section-title">步驟 3: MarkdownProcessorAST 自動修復並渲染</div>
+                    <div class="status ${hasTableAST ? 'success' : 'fail'}">${hasTableAST ? '✓ 自動修復成功！生成了表格' : '✗ 修復失敗'}</div>
                     <div class="result">${astHTML}</div>
                 `;
 
-                // 显示修复过程
+                // 顯示修復過程
                 if (hasTableAST) {
                     const section4 = document.createElement('div');
                     section4.className = 'section';
                     section4.innerHTML = `
-                        <div class="section-title">✨ 修复过程说明</div>
+                        <div class="section-title">✨ 修復過程說明</div>
                         <ol style="line-height: 1.8;">
-                            <li><strong>检测</strong>：发现行中包含分隔符 <code>|---|---|</code> 且管道符数量 ≥ 6</li>
-                            <li><strong>分析</strong>：通过分隔符确定列数（${(directHTML.match(/\|/g) || []).length} 个管道符）</li>
-                            <li><strong>分割</strong>：将单行表格按列数拆分成多行
+                            <li><strong>檢測</strong>：發現行中包含分隔符 <code>|---|---|</code> 且管道符數量 ≥ 6</li>
+                            <li><strong>分析</strong>：透過分隔符確定列數（${(directHTML.match(/\|/g) || []).length} 個管道符）</li>
+                            <li><strong>分割</strong>：將單行表格按列數拆分成多行
                                 <ul>
-                                    <li>表头行：提取分隔符之前的内容</li>
+                                    <li>表頭行：提取分隔符之前的內容</li>
                                     <li>分隔符行：保留 <code>|---|---|...</code></li>
-                                    <li>数据行：每 N 个单元格作为一行</li>
+                                    <li>資料行：每 N 個單元格作為一行</li>
                                 </ul>
                             </li>
-                            <li><strong>重建</strong>：组合成标准的多行 Markdown 表格</li>
-                            <li><strong>渲染</strong>：交给 markdown-it 正常渲染</li>
+                            <li><strong>重建</strong>：組合成標準的多行 Markdown 表格</li>
+                            <li><strong>渲染</strong>：交給 markdown-it 正常渲染</li>
                         </ol>
                     `;
                     output.appendChild(section4);
                 }
             } catch (error) {
                 section3.innerHTML = `
-                    <div class="section-title">步骤 3: MarkdownProcessorAST 渲染</div>
-                    <div class="status fail">✗ 渲染出错</div>
-                    <div style="color: #e74c3c; margin-top: 10px;">错误: ${error.message}</div>
+                    <div class="section-title">步驟 3: MarkdownProcessorAST 渲染</div>
+                    <div class="status fail">✗ 渲染出錯</div>
+                    <div style="color: #e74c3c; margin-top: 10px;">錯誤: ${error.message}</div>
                     <div class="code-block">${error.stack}</div>
                 `;
             }
         } else {
             section3.innerHTML = `
-                <div class="section-title">步骤 3: MarkdownProcessorAST 渲染</div>
-                <div class="status fail">✗ MarkdownProcessorAST 未加载</div>
+                <div class="section-title">步驟 3: MarkdownProcessorAST 渲染</div>
+                <div class="status fail">✗ MarkdownProcessorAST 未載入</div>
             `;
         }
         output.appendChild(section3);
 
-        // 总结
+        // 總結
         const summary = document.createElement('div');
         summary.className = 'section';
         summary.style.background = '#d5f4e6';
         summary.innerHTML = `
-            <div class="section-title" style="color: #27ae60;">🎉 总结</div>
+            <div class="section-title" style="color: #27ae60;">🎉 總結</div>
             <p style="font-size: 16px; line-height: 1.8;">
-                <strong>MarkdownProcessorAST</strong> 现在可以自动检测并修复压缩的单行表格：
+                <strong>MarkdownProcessorAST</strong> 現在可以自動檢測並修復壓縮的單行表格：
             </p>
             <ul style="line-height: 1.8;">
-                <li>✅ 检测单行表格（通过分隔符和管道符数量）</li>
-                <li>✅ 自动拆分为多行标准格式</li>
-                <li>✅ 保持表格结构完整</li>
-                <li>✅ 对正常表格无影响</li>
+                <li>✅ 檢測單行表格（透過分隔符和管道符數量）</li>
+                <li>✅ 自動拆分為多行標準格式</li>
+                <li>✅ 保持表格結構完整</li>
+                <li>✅ 對正常表格無影響</li>
             </ul>
             <p style="margin-top: 15px; color: #27ae60; font-weight: bold;">
-                所有表格现在都能正确渲染！
+                所有表格現在都能正確渲染！
             </p>
         `;
         output.appendChild(summary);
 
-        // 显示指标
+        // 顯示指標
         setTimeout(() => {
             if (typeof MarkdownProcessorAST !== 'undefined' && MarkdownProcessorAST.getMetrics) {
                 const metrics = MarkdownProcessorAST.getMetrics();
                 const metricsDiv = document.createElement('div');
                 metricsDiv.className = 'section';
                 metricsDiv.innerHTML = `
-                    <div class="section-title">📊 性能指标</div>
+                    <div class="section-title">📊 效能指標</div>
                     <div class="code-block">${JSON.stringify(metrics, null, 2)}</div>
                 `;
                 output.appendChild(metricsDiv);

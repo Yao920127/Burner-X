@@ -1,21 +1,21 @@
 /**
- * Helper Utilities - 辅助工具类
+ * Helper Utilities - 輔助工具類
  *
- * 职责：各种辅助样式和工具类
- * 作用域：全局
- * 依赖：variables.css
+ * 職責：各種輔助樣式和工具類
+ * 作用域：全域
+ * 依賴：variables.css
  *
  * 提取自：history_detail_inline_styles.css
  *
  * 包含：
- * - TOC 高亮效果
- * - 设置对话框样式
- * - Markdown 内容辅助
- * - 转换标题样式
- * - TOC 信息提示
+ * - TOC 醒目提示效果
+ * - 設定對話方塊樣式
+ * - Markdown 內容輔助
+ * - 轉換標題樣式
+ * - TOC 資訊提示
  */
 
-/* ==================== 1. TOC 高亮效果 ==================== */
+/* ==================== 1. TOC 醒目提示效果 ==================== */
 
 .toc-highlight,
 .toc-target-highlight {
@@ -39,7 +39,7 @@
   }
 }
 
-/* 确保图片和表格等特殊元素在高亮时的效果 */
+/* 確保圖片和表格等特殊元素在醒目提示時的效果 */
 .markdown-body img.toc-highlight,
 .markdown-body table.toc-highlight,
 .markdown-body img.toc-target-highlight,
@@ -48,7 +48,7 @@
   border-radius: var(--radius-sm);
 }
 
-/* ==================== 2. TOC 信息提示样式 ==================== */
+/* ==================== 2. TOC 資訊提示樣式 ==================== */
 
 .toc-info {
   padding: var(--spacing-sm);
@@ -60,7 +60,7 @@
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
-/* ==================== 3. 转换后的标题样式 ==================== */
+/* ==================== 3. 轉換後的標題樣式 ==================== */
 
 .converted-from-heading {
   font-weight: var(--font-weight-semibold);
@@ -71,7 +71,7 @@
   padding-bottom: var(--spacing-xs);
 }
 
-/* ==================== 4. 设置对话框中的单选按钮样式 ==================== */
+/* ==================== 4. 設定對話方塊中的單選按鈕樣式 ==================== */
 
 .radio-container {
   margin: var(--spacing-sm) 0 var(--spacing-md);
@@ -92,9 +92,9 @@
   user-select: none;
 }
 
-/* ==================== 5. Markdown 内容辅助样式 ==================== */
+/* ==================== 5. Markdown 內容輔助樣式 ==================== */
 
-/* 图片居中 */
+/* 圖片居中 */
 .markdown-body img {
   display: block;
   margin-left: auto;
@@ -110,13 +110,13 @@
   margin-right: auto;
 }
 
-/* ==================== 6. 子块样式 ==================== */
+/* ==================== 6. 子塊樣式 ==================== */
 
 .sub-block {
   display: inline;
 }
 
-/* ==================== 7. 阅读进度数值高亮 ==================== */
+/* ==================== 7. 閱讀進度數值醒目提示 ==================== */
 
 #reading-progress-percentage-verbose,
 #reading-progress-percentage {
@@ -125,7 +125,7 @@
   font-size: var(--font-size-sm);
 }
 
-/* ==================== 8. 暗色模式支持 ==================== */
+/* ==================== 8. 暗色模式支援 ==================== */
 
 @media (prefers-color-scheme: dark) {
   .toc-info {

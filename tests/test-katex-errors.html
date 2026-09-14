@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>KaTeX 错误诊断</title>
+    <title>KaTeX 錯誤診斷</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
     <style>
@@ -53,59 +53,59 @@
     </style>
 </head>
 <body>
-    <h1>🔍 KaTeX 错误诊断</h1>
+    <h1>🔍 KaTeX 錯誤診斷</h1>
 
     <div id="output"></div>
 
     <script>
         const output = document.getElementById('output');
 
-        // 测试用例
+        // 測試用例
         const testCases = [
             {
-                name: '问题 1: \\tag 在行内公式中',
+                name: '問題 1: \\tag 在行內公式中',
                 original: `i = \\left| {{0.37}{v}_{\\mathrm{r}}}\\right| + \\left| {{0.28}{d}_{\\mathrm{r}}}\\right| + \\left| {{0.2}{o}_{\\mathrm{r}}}\\right| + \\left| {{0.15}{t}_{\\mathrm{r}}}\\right| \\tag{7}`,
                 displayMode: false,
                 error: 'KaTeX parse error: \\tag works only in display equations'
             },
             {
-                name: '修复 1: 使用块级公式（displayMode: true）',
+                name: '修復 1: 使用塊級公式（displayMode: true）',
                 original: `i = \\left| {{0.37}{v}_{\\mathrm{r}}}\\right| + \\left| {{0.28}{d}_{\\mathrm{r}}}\\right| + \\left| {{0.2}{o}_{\\mathrm{r}}}\\right| + \\left| {{0.15}{t}_{\\mathrm{r}}}\\right| \\tag{7}`,
                 displayMode: true,
                 isFix: true
             },
             {
-                name: '问题 2: \\;^\\circ 语法错误',
+                name: '問題 2: \\;^\\circ 語法錯誤',
                 original: `0.1 - 0.2 \\mathrm{\\;^\\circ C}`,
                 displayMode: false,
                 error: 'KaTeX parse error: Got group of unknown type: \'internal\''
             },
             {
-                name: '修复 2a: 使用 ^{\\circ}',
+                name: '修復 2a: 使用 ^{\\circ}',
                 original: `0.1 - 0.2 \\mathrm{\\;^{\\circ} C}`,
                 displayMode: false,
                 isFix: true
             },
             {
-                name: '修复 2b: 使用 \\degree',
+                name: '修復 2b: 使用 \\degree',
                 original: `0.1 - 0.2 \\,\\mathrm{^\\circ C}`,
                 displayMode: false,
                 isFix: true
             },
             {
-                name: '修复 2c: 调整空格和括号',
+                name: '修復 2c: 調整空格和括號',
                 original: `0.1 - 0.2\\,^{\\circ}\\mathrm{C}`,
                 displayMode: false,
                 isFix: true
             },
             {
-                name: '问题分析: 双花括号 {{...}}',
+                name: '問題分析: 雙花括號 {{...}}',
                 original: `\\left| {{0.37}{v}_{\\mathrm{r}}}\\right|`,
                 displayMode: false,
-                note: '双花括号 {{...}} 会被解析为内部组'
+                note: '雙花括號 {{...}} 會被解析為內部組'
             },
             {
-                name: '修复 3: 移除多余花括号',
+                name: '修復 3: 移除多餘花括號',
                 original: `\\left| {0.37}{v}_{\\mathrm{r}}\\right|`,
                 displayMode: false,
                 isFix: true
@@ -118,13 +118,13 @@
 
             testDiv.innerHTML = `
                 <h2>${test.name}</h2>
-                <p><strong>公式源码:</strong></p>
+                <p><strong>公式原始碼:</strong></p>
                 <div class="source">${test.original}</div>
             `;
 
             if (test.error) {
                 testDiv.innerHTML += `
-                    <p><strong>错误信息:</strong></p>
+                    <p><strong>錯誤資訊:</strong></p>
                     <div class="error">${test.error}</div>
                 `;
             }
@@ -133,7 +133,7 @@
                 testDiv.innerHTML += `<p><em>${test.note}</em></p>`;
             }
 
-            // 尝试渲染
+            // 嘗試渲染
             const resultDiv = document.createElement('div');
             resultDiv.className = 'result';
 
@@ -146,21 +146,21 @@
 
                 resultDiv.innerHTML = html;
 
-                // 检查是否有错误
+                // 檢查是否有錯誤
                 const hasError = html.includes('katex-error') || html.includes('parseerror');
 
                 if (test.isFix) {
                     testDiv.innerHTML += hasError
-                        ? `<p class="fail">✗ 修复失败</p>`
-                        : `<p class="success">✓ 修复成功</p>`;
+                        ? `<p class="fail">✗ 修復失敗</p>`
+                        : `<p class="success">✓ 修復成功</p>`;
                 }
 
-                testDiv.innerHTML += `<p><strong>渲染结果:</strong></p>`;
+                testDiv.innerHTML += `<p><strong>渲染結果:</strong></p>`;
                 testDiv.appendChild(resultDiv);
 
             } catch (error) {
                 testDiv.innerHTML += `
-                    <p class="fail">✗ 渲染异常</p>
+                    <p class="fail">✗ 渲染異常</p>
                     <div class="error">${error.message}</div>
                 `;
             }
@@ -168,44 +168,44 @@
             output.appendChild(testDiv);
         });
 
-        // 添加建议
+        // 新增建議
         setTimeout(() => {
             const suggestionDiv = document.createElement('div');
             suggestionDiv.className = 'test-case';
             suggestionDiv.innerHTML = `
-                <h2>💡 修复建议</h2>
+                <h2>💡 修復建議</h2>
 
-                <h3>问题 1: \\tag 只能在块级公式中使用</h3>
-                <p><strong>原因:</strong> KaTeX 的 <code>\\tag</code> 命令只能用于 display mode（块级公式，即 <code>$$...$$</code>）</p>
-                <p><strong>解决方案:</strong></p>
+                <h3>問題 1: \\tag 只能在塊級公式中使用</h3>
+                <p><strong>原因:</strong> KaTeX 的 <code>\\tag</code> 命令只能用於 display mode（塊級公式，即 <code>$$...$$</code>）</p>
+                <p><strong>解決方案:</strong></p>
                 <ul>
-                    <li><strong>方案 A:</strong> 使用块级公式 <code>$$...\\tag{7}$$</code></li>
-                    <li><strong>方案 B:</strong> 移除 <code>\\tag</code>，改用文本标注</li>
-                    <li><strong>方案 C:</strong> 在 formula_post_processor.js 中自动移除行内公式的 <code>\\tag</code></li>
+                    <li><strong>方案 A:</strong> 使用塊級公式 <code>$$...\\tag{7}$$</code></li>
+                    <li><strong>方案 B:</strong> 移除 <code>\\tag</code>，改用文字標註</li>
+                    <li><strong>方案 C:</strong> 在 formula_post_processor.js 中自動移除行內公式的 <code>\\tag</code></li>
                 </ul>
 
-                <h3>问题 2: \\;^\\circ 语法错误</h3>
-                <p><strong>原因:</strong> <code>\\;</code> 后面直接跟 <code>^</code> 会产生内部组错误</p>
-                <p><strong>解决方案:</strong></p>
+                <h3>問題 2: \\;^\\circ 語法錯誤</h3>
+                <p><strong>原因:</strong> <code>\\;</code> 後面直接跟 <code>^</code> 會產生內部組錯誤</p>
+                <p><strong>解決方案:</strong></p>
                 <ul>
-                    <li><strong>推荐:</strong> <code>\\,^{\\circ}\\mathrm{C}</code> 或 <code>^{\\circ}\\mathrm{C}</code></li>
-                    <li><strong>或:</strong> <code>\\mathrm{\\,^{\\circ}C}</code>（花括号包围上标）</li>
+                    <li><strong>推薦:</strong> <code>\\,^{\\circ}\\mathrm{C}</code> 或 <code>^{\\circ}\\mathrm{C}</code></li>
+                    <li><strong>或:</strong> <code>\\mathrm{\\,^{\\circ}C}</code>（花括號包圍上標）</li>
                 </ul>
 
-                <h3>问题 3: 双花括号 {{...}}</h3>
-                <p><strong>原因:</strong> 双花括号在 LaTeX 中有特殊含义，可能导致解析错误</p>
-                <p><strong>解决方案:</strong></p>
+                <h3>問題 3: 雙花括號 {{...}}</h3>
+                <p><strong>原因:</strong> 雙花括號在 LaTeX 中有特殊含義，可能導致解析錯誤</p>
+                <p><strong>解決方案:</strong></p>
                 <ul>
-                    <li>只使用单层花括号 <code>{0.37}</code></li>
-                    <li>或者完全移除不必要的花括号</li>
+                    <li>只使用單層花括號 <code>{0.37}</code></li>
+                    <li>或者完全移除不必要的花括號</li>
                 </ul>
 
-                <h3>🔧 自动修复建议</h3>
-                <p>在 <code>formula_post_processor.js</code> 中添加以下修复规则：</p>
+                <h3>🔧 自動修復建議</h3>
+                <p>在 <code>formula_post_processor.js</code> 中新增以下修復規則：</p>
                 <ol>
-                    <li>检测行内公式中的 <code>\\tag{...}</code> 并移除或转换为块级</li>
-                    <li>修复 <code>\\;^\\circ</code> → <code>\\,^{\\circ}</code></li>
-                    <li>移除多余的双花括号 <code>{{...}}</code> → <code>{...}</code></li>
+                    <li>檢測行內公式中的 <code>\\tag{...}</code> 並移除或轉換為塊級</li>
+                    <li>修復 <code>\\;^\\circ</code> → <code>\\,^{\\circ}</code></li>
+                    <li>移除多餘的雙花括號 <code>{{...}}</code> → <code>{...}</code></li>
                 </ol>
             `;
             output.appendChild(suggestionDiv);

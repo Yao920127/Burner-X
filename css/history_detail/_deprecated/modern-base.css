@@ -2,7 +2,7 @@
    Paper Burner - Modern Reading Base Styles
    ========================================= */
 
-/* 引入 Inter 字体 */
+/* 引入 Inter 字型 */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
@@ -43,7 +43,7 @@
 
   --leading-tight: 1.25;
   --leading-normal: 1.5;
-  --leading-relaxed: 1.75; /* 适合长文阅读 */
+  --leading-relaxed: 1.75; /* 適合長文閱讀 */
 
   /* --- Layout & Spacing --- */
   --radius-sm: 4px;
@@ -81,7 +81,7 @@ body {
   margin: 0;
 }
 
-/* 优化滚动条体验 */
+/* 最佳化捲軸體驗 */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

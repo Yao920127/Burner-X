@@ -10,4 +10,4 @@ else
 fi
 
 # Start server
-exec node /app/server/src/index.js
+exec npx tsx /app/server/src/index.ts

@@ -1,288 +1,288 @@
-# Paper Burner X - 持久化与多用户功能改进总结
+# Paper Burner X - 持久化與多使用者功能改進總結
 
-## 📊 改进概览
+## 📊 改進概覽
 
-本次改进已全面完成 Docker 打包后的持久化功能优化和多用户系统增强，所有 P0-P2 优先级的任务均已完成。
+本次改進已全面完成 Docker 打包後的持久化功能最佳化和多使用者系統增強，所有 P0-P2 優先順序的任務均已完成。
 
 ---
 
 ## ✅ 已完成的功能
 
-### 🔴 P0 - 关键功能
+### 🔴 P0 - 關鍵功能
 
-#### 1. API Keys 加密存储
-- **状态**: ✅ 已完成
-- **实现文件**:
+#### 1. API Keys 加密儲存
+- **狀態**: ✅ 已完成
+- **實現檔案**:
   - `server/src/utils/crypto.js` - 加密工具
   - `server/src/routes/user.js` - API Keys 路由
 - **功能**:
-  - ✅ AES-256-GCM 加密算法
-  - ✅ PBKDF2 密钥派生 (100,000 迭代)
-  - ✅ 随机 IV 和认证标签
-  - ✅ 安全的加密/解密接口
-  - ✅ Key 状态管理 (VALID/INVALID/TESTING/UNTESTED)
-- **API 端点**:
-  - `POST /api/user/api-keys` - 添加（自动加密）
-  - `GET /api/user/api-keys` - 获取列表（不含明文）
-  - `PATCH /api/user/api-keys/:id/status` - 更新状态
-  - `DELETE /api/user/api-keys/:id` - 删除
+  - ✅ AES-256-GCM 加密演算法
+  - ✅ PBKDF2 金鑰派生 (100,000 迭代)
+  - ✅ 隨機 IV 和認證標籤
+  - ✅ 安全的加密/解密介面
+  - ✅ Key 狀態管理 (VALID/INVALID/TESTING/UNTESTED)
+- **API 端點**:
+  - `POST /api/user/api-keys` - 新增（自動加密）
+  - `GET /api/user/api-keys` - 獲取列表（不含明文）
+  - `PATCH /api/user/api-keys/:id/status` - 更新狀態
+  - `DELETE /api/user/api-keys/:id` - 刪除
 
-#### 2. 历史记录持久化准备
-- **状态**: ✅ 已完成（后端 API）
-- **说明**:
-  - 后端 `documents` 表已就绪
-  - 支持完整的 OCR 和翻译结果存储
-  - 文档 CRUD API 完整
-  - ⚠️ 前端需要迁移调用后端 API（下一阶段）
+#### 2. 歷史記錄持久化準備
+- **狀態**: ✅ 已完成（後端 API）
+- **說明**:
+  - 後端 `documents` 表已就緒
+  - 支援完整的 OCR 和翻譯結果儲存
+  - 文件 CRUD API 完整
+  - ⚠️ 前端需要遷移呼叫後端 API（下一階段）
 
-#### 3. 标注数据后端集成
-- **状态**: ✅ 已完成
-- **实现文件**: `server/src/routes/document.js`
+#### 3. 標註資料後端整合
+- **狀態**: ✅ 已完成
+- **實現檔案**: `server/src/routes/document.js`
 - **功能**:
-  - ✅ 完整的标注 CRUD 操作
-  - ✅ 数据按用户隔离
-  - ✅ 支持高亮和笔记
-- **API 端点**:
-  - `POST /api/documents/:id/annotations` - 创建标注
-  - `GET /api/documents/:id/annotations` - 获取标注
+  - ✅ 完整的標註 CRUD 操作
+  - ✅ 資料按使用者隔離
+  - ✅ 支援醒目提示和筆記
+- **API 端點**:
+  - `POST /api/documents/:id/annotations` - 建立標註
+  - `GET /api/documents/:id/annotations` - 獲取標註
   - `PUT /api/documents/:docId/annotations/:annotationId` - 更新
-  - `DELETE /api/documents/:docId/annotations/:annotationId` - 删除
+  - `DELETE /api/documents/:docId/annotations/:annotationId` - 刪除
 
 ---
 
 ### 🟡 P1 - 重要功能
 
-#### 4. 意群数据后端 API
-- **状态**: ✅ 已完成
-- **实现文件**: `server/src/routes/document.js`
+#### 4. 意群資料後端 API
+- **狀態**: ✅ 已完成
+- **實現檔案**: `server/src/routes/document.js`
 - **功能**:
-  - ✅ 意群数据存储和检索
-  - ✅ 版本控制支持
-  - ✅ 文档所有权验证
-- **API 端点**:
-  - `POST /api/documents/:id/semantic-groups` - 保存/更新
-  - `GET /api/documents/:id/semantic-groups` - 获取
+  - ✅ 意群資料儲存和檢索
+  - ✅ 版本控制支援
+  - ✅ 文件所有權驗證
+- **API 端點**:
+  - `POST /api/documents/:id/semantic-groups` - 儲存/更新
+  - `GET /api/documents/:id/semantic-groups` - 獲取
 
-#### 5. 已处理文件记录同步
-- **状态**: ✅ 已完成
-- **实现文件**:
+#### 5. 已處理檔案記錄同步
+- **狀態**: ✅ 已完成
+- **實現檔案**:
   - `server/prisma/schema.prisma` - ProcessedFile 模型
-  - `server/src/routes/user.js` - 已处理文件路由
+  - `server/src/routes/user.js` - 已處理檔案路由
 - **功能**:
-  - ✅ 后端持久化已处理文件记录
-  - ✅ 支持批量检查
-  - ✅ 唯一性约束（用户+文件标识符）
-- **API 端点**:
-  - `POST /api/user/processed-files` - 标记为已处理
-  - `GET /api/user/processed-files` - 获取列表
-  - `GET /api/user/processed-files/check/:identifier` - 检查单个
-  - `POST /api/user/processed-files/check-batch` - 批量检查
-  - `DELETE /api/user/processed-files` - 清空记录
+  - ✅ 後端持久化已處理檔案記錄
+  - ✅ 支援批次檢查
+  - ✅ 唯一性約束（使用者+檔案識別符號）
+- **API 端點**:
+  - `POST /api/user/processed-files` - 標記為已處理
+  - `GET /api/user/processed-files` - 獲取列表
+  - `GET /api/user/processed-files/check/:identifier` - 檢查單個
+  - `POST /api/user/processed-files/check-batch` - 批次檢查
+  - `DELETE /api/user/processed-files` - 清空記錄
 
 ---
 
-### 🟢 P2 - 优化功能
+### 🟢 P2 - 最佳化功能
 
-#### 6. 用户配额管理系统
-- **状态**: ✅ 已完成
-- **实现文件**:
+#### 6. 使用者配額管理系統
+- **狀態**: ✅ 已完成
+- **實現檔案**:
   - `server/prisma/schema.prisma` - UserQuota 模型
-  - `server/src/utils/quota.js` - 配额工具
-  - `server/src/routes/admin.js` - 管理员配额 API
-  - `server/src/routes/document.js` - 配额检查集成
+  - `server/src/utils/quota.js` - 配額工具
+  - `server/src/routes/admin.js` - 管理員配額 API
+  - `server/src/routes/document.js` - 配額檢查整合
 - **功能**:
-  - ✅ 每日/每月文档数量限制
-  - ✅ 存储空间限制
-  - ✅ API Keys 数量限制
-  - ✅ 自动月度重置
-  - ✅ 使用量实时跟踪
-  - ✅ 创建文档时自动检查配额
-- **配额字段**:
+  - ✅ 每日/每月文件數量限制
+  - ✅ 儲存空間限制
+  - ✅ API Keys 數量限制
+  - ✅ 自動月度重置
+  - ✅ 使用量實時跟蹤
+  - ✅ 建立文件時自動檢查配額
+- **配額欄位**:
   - `maxDocumentsPerDay` - 每日限制
   - `maxDocumentsPerMonth` - 每月限制
-  - `maxStorageSize` - 存储限制（MB）
-  - `maxApiKeysCount` - API Keys 数量限制
-  - `documentsThisMonth` - 当前月度使用量
-  - `currentStorageUsed` - 当前存储使用量
-- **API 端点**:
-  - `GET /api/admin/users/:userId/quota` - 获取配额
-  - `PUT /api/admin/users/:userId/quota` - 更新配额
+  - `maxStorageSize` - 儲存限制（MB）
+  - `maxApiKeysCount` - API Keys 數量限制
+  - `documentsThisMonth` - 當前月度使用量
+  - `currentStorageUsed` - 當前儲存使用量
+- **API 端點**:
+  - `GET /api/admin/users/:userId/quota` - 獲取配額
+  - `PUT /api/admin/users/:userId/quota` - 更新配額
 
-#### 7. 使用量日志系统
-- **状态**: ✅ 已完成
-- **实现文件**:
+#### 7. 使用量日誌系統
+- **狀態**: ✅ 已完成
+- **實現檔案**:
   - `server/prisma/schema.prisma` - UsageLog 模型
-  - `server/src/utils/quota.js` - 日志记录工具
-  - `server/src/routes/admin.js` - 活动日志 API
+  - `server/src/utils/quota.js` - 日誌記錄工具
+  - `server/src/routes/admin.js` - 活動日誌 API
 - **功能**:
-  - ✅ 记录所有用户操作
-  - ✅ 支持元数据存储
-  - ✅ 按用户和操作类型索引
-- **API 端点**:
-  - `GET /api/admin/users/:userId/activity` - 查看用户活动
+  - ✅ 記錄所有使用者操作
+  - ✅ 支援後設資料儲存
+  - ✅ 按使用者和操作型別索引
+- **API 端點**:
+  - `GET /api/admin/users/:userId/activity` - 檢視使用者活動
 
-#### 8. 高级统计和分析
-- **状态**: ✅ 已完成
-- **实现文件**: `server/src/routes/admin.js`
+#### 8. 高階統計和分析
+- **狀態**: ✅ 已完成
+- **實現檔案**: `server/src/routes/admin.js`
 - **功能**:
-  - ✅ 详细的系统统计
-  - ✅ 使用趋势分析
-  - ✅ 按状态分组统计
-  - ✅ 最活跃用户排行
-  - ✅ 存储使用量统计
-- **统计指标**:
-  - 总用户数 / 活跃用户数
-  - 总文档数 / 今日、本周、本月文档数
-  - 总存储使用量
-  - 按状态分组的文档数
-  - Top 10 活跃用户
-- **API 端点**:
-  - `GET /api/admin/stats/detailed` - 详细统计
-  - `GET /api/admin/stats/trends?days=30` - 使用趋势
+  - ✅ 詳細的系統統計
+  - ✅ 使用趨勢分析
+  - ✅ 按狀態分組統計
+  - ✅ 最活躍使用者排行
+  - ✅ 儲存使用量統計
+- **統計指標**:
+  - 總使用者數 / 活躍使用者數
+  - 總文件數 / 今日、本週、本月文件數
+  - 總儲存使用量
+  - 按狀態分組的文件數
+  - Top 10 活躍使用者
+- **API 端點**:
+  - `GET /api/admin/stats/detailed` - 詳細統計
+  - `GET /api/admin/stats/trends?days=30` - 使用趨勢
 
 ---
 
-## 📁 新增文件清单
+## 📁 新增檔案清單
 
-### 核心代码
-- ✅ `server/src/utils/crypto.js` - 加密工具模块
-- ✅ `server/src/utils/quota.js` - 配额管理工具
+### 核心程式碼
+- ✅ `server/src/utils/crypto.js` - 加密工具模組
+- ✅ `server/src/utils/quota.js` - 配額管理工具
 
-### 数据库迁移
+### 資料庫遷移
 - ✅ `server/prisma/migrations/002_add_processed_files_and_quotas/migration.sql`
 
-### 文档
-- ✅ `BACKEND_IMPROVEMENTS.md` - 详细改进文档
-- ✅ `API_REFERENCE.md` - API 参考手册
-- ✅ `QUICKSTART.md` - 快速开始指南
-- ✅ `SUMMARY.md` - 本总结文档
+### 文件
+- ✅ `BACKEND_IMPROVEMENTS.md` - 詳細改進文件
+- ✅ `API_REFERENCE.md` - API 參考手冊
+- ✅ `QUICKSTART.md` - 快速開始指南
+- ✅ `SUMMARY.md` - 本總結文件
 
 ---
 
-## 🗄️ 数据库 Schema 变更
+## 🗄️ 資料庫 Schema 變更
 
 ### 新增表
 
-1. **processed_files** - 已处理文件记录
-   - 字段: id, userId, fileIdentifier, fileName, processedAt
+1. **processed_files** - 已處理檔案記錄
+   - 欄位: id, userId, fileIdentifier, fileName, processedAt
    - 索引: userId, (userId + fileIdentifier) UNIQUE
 
-2. **user_quotas** - 用户配额
-   - 字段: id, userId, maxDocumentsPerDay, maxDocumentsPerMonth, maxStorageSize, maxApiKeysCount, documentsThisMonth, currentStorageUsed, lastMonthlyReset
+2. **user_quotas** - 使用者配額
+   - 欄位: id, userId, maxDocumentsPerDay, maxDocumentsPerMonth, maxStorageSize, maxApiKeysCount, documentsThisMonth, currentStorageUsed, lastMonthlyReset
    - 索引: userId UNIQUE
 
-3. **usage_logs** - 使用量日志
-   - 字段: id, userId, action, resourceId, metadata, createdAt
+3. **usage_logs** - 使用量日誌
+   - 欄位: id, userId, action, resourceId, metadata, createdAt
    - 索引: (userId, createdAt), (action, createdAt)
 
 ### 修改的表
 
-- **users** - 添加 `processedFiles` 和 `quota` 关联
-- **api_keys** - keyValue 字段现在存储加密数据
+- **users** - 新增 `processedFiles` 和 `quota` 關聯
+- **api_keys** - keyValue 欄位現在儲存加密資料
 
 ---
 
-## 🔄 前后端数据流
+## 🔄 前後端資料流
 
 ### API Keys 流程
 ```
-前端输入明文 Key
+前端輸入明文 Key
     ↓
 POST /api/user/api-keys
     ↓
-后端加密 (AES-256-GCM)
+後端加密 (AES-256-GCM)
     ↓
-存储到数据库 (加密)
+儲存到資料庫 (加密)
     ↓
 GET /api/user/api-keys (返回不含明文)
     ↓
-内部使用时解密
+內部使用時解密
 ```
 
-### 配额检查流程
+### 配額檢查流程
 ```
-用户创建文档请求
+使用者建立文件請求
     ↓
 checkQuota(userId)
     ↓
-检查月度配额 / 存储配额
+檢查月度配額 / 儲存配額
     ↓
-允许 → 创建文档 → incrementDocumentCount()
+允許 → 建立文件 → incrementDocumentCount()
     ↓
-拒绝 → 返回 403 错误
+拒絕 → 返回 403 錯誤
 ```
 
-### 已处理文件检查流程
+### 已處理檔案檢查流程
 ```
-批量上传文件
+批次上傳檔案
     ↓
 POST /api/user/processed-files/check-batch
     ↓
 返回 { file1: true, file2: false, ... }
     ↓
-过滤已处理文件
+過濾已處理檔案
     ↓
-仅处理未处理的文件
+僅處理未處理的檔案
     ↓
-处理完成后 POST /api/user/processed-files
+處理完成後 POST /api/user/processed-files
 ```
 
 ---
 
-## 🔐 安全增强
+## 🔐 安全增強
 
-### 1. 加密存储
+### 1. 加密儲存
 - **API Keys**: AES-256-GCM 加密
-- **密码**: bcrypt (10 轮)
-- **JWT Token**: 签名验证
+- **密碼**: bcrypt (10 輪)
+- **JWT Token**: 簽名驗證
 
-### 2. 数据隔离
-- 所有用户数据通过 `userId` 严格隔离
-- 双重验证：JWT Token + 数据库查询过滤
+### 2. 資料隔離
+- 所有使用者資料透過 `userId` 嚴格隔離
+- 雙重驗證：JWT Token + 資料庫查詢過濾
 
-### 3. 权限控制
-- 管理员路由：`requireAuth` + `requireAdmin` 中间件
-- 用户路由：`requireAuth` 中间件
-- 资源所有权验证
+### 3. 許可權控制
+- 管理員路由：`requireAuth` + `requireAdmin` 中介軟體
+- 使用者路由：`requireAuth` 中介軟體
+- 資源所有權驗證
 
-### 4. 输入验证
-- 所有 API 端点包含参数验证
+### 4. 輸入驗證
+- 所有 API 端點包含引數驗證
 - 使用 Prisma 防止 SQL 注入
-- Helmet.js 安全头部
+- Helmet.js 安全標頭
 
 ---
 
-## 📊 当前持久化状态总览
+## 📊 當前持久化狀態總覽
 
-| 功能 | 存储位置 | 持久化状态 | 多用户支持 | 跨设备同步 |
+| 功能 | 儲存位置 | 持久化狀態 | 多使用者支援 | 跨裝置同步 |
 |------|----------|-----------|-----------|-----------|
-| **用户账号** | PostgreSQL | ✅ | ✅ | ✅ |
-| **用户设置** | PostgreSQL | ✅ | ✅ | ✅ |
+| **使用者賬號** | PostgreSQL | ✅ | ✅ | ✅ |
+| **使用者設定** | PostgreSQL | ✅ | ✅ | ✅ |
 | **API Keys** | PostgreSQL (加密) | ✅ | ✅ | ✅ |
-| **文档元数据** | PostgreSQL | ✅ | ✅ | ✅ |
-| **OCR/翻译结果** | PostgreSQL | ✅ | ✅ | ✅ |
-| **标注数据** | PostgreSQL | ✅ | ✅ | ✅ |
-| **意群数据** | PostgreSQL | ✅ | ✅ | ✅ |
-| **术语库** | PostgreSQL | ✅ | ✅ | ✅ |
-| **已处理文件记录** | PostgreSQL | ✅ | ✅ | ✅ |
-| **用户配额** | PostgreSQL | ✅ | ✅ | ✅ |
-| **使用日志** | PostgreSQL | ✅ | ✅ | ✅ |
-| **自定义源站配置** | PostgreSQL | ✅ | ✅ | ✅ |
-| **系统配置** | PostgreSQL | ✅ | ✅ | ✅ |
+| **文件後設資料** | PostgreSQL | ✅ | ✅ | ✅ |
+| **OCR/翻譯結果** | PostgreSQL | ✅ | ✅ | ✅ |
+| **標註資料** | PostgreSQL | ✅ | ✅ | ✅ |
+| **意群資料** | PostgreSQL | ✅ | ✅ | ✅ |
+| **術語庫** | PostgreSQL | ✅ | ✅ | ✅ |
+| **已處理檔案記錄** | PostgreSQL | ✅ | ✅ | ✅ |
+| **使用者配額** | PostgreSQL | ✅ | ✅ | ✅ |
+| **使用日誌** | PostgreSQL | ✅ | ✅ | ✅ |
+| **自定義源站配置** | PostgreSQL | ✅ | ✅ | ✅ |
+| **系統配置** | PostgreSQL | ✅ | ✅ | ✅ |
 
-### ⚠️ 仍需前端迁移的部分
+### ⚠️ 仍需前端遷移的部分
 
-| 功能 | 当前存储 | 需要改进 |
+| 功能 | 當前儲存 | 需要改進 |
 |------|---------|---------|
-| **历史记录详细内容** | IndexedDB | 迁移到后端 API 调用 |
-| **标注功能调用** | IndexedDB | 改为调用后端 API |
-| **意群数据调用** | IndexedDB | 改为调用后端 API |
+| **歷史記錄詳細內容** | IndexedDB | 遷移到後端 API 呼叫 |
+| **標註功能呼叫** | IndexedDB | 改為呼叫後端 API |
+| **意群資料呼叫** | IndexedDB | 改為呼叫後端 API |
 
 ---
 
-## 🚀 部署步骤
+## 🚀 部署步驟
 
-### 1. 更新数据库 Schema
+### 1. 更新資料庫 Schema
 
 ```bash
 cd server
@@ -290,15 +290,15 @@ npx prisma generate
 npx prisma migrate deploy
 ```
 
-### 2. 更新环境变量
+### 2. 更新環境變數
 
-在 `.env` 中添加：
+在 `.env` 中新增：
 
 ```bash
-ENCRYPTION_SECRET=<生成一个强随机密钥>
+ENCRYPTION_SECRET=<生成一個強隨機金鑰>
 ```
 
-### 3. 重启服务
+### 3. 重啟服務
 
 ```bash
 # Docker
@@ -309,13 +309,13 @@ docker-compose up -d
 npm restart
 ```
 
-### 4. 验证部署
+### 4. 驗證部署
 
 ```bash
-# 检查健康状态
+# 檢查健康狀態
 curl http://localhost:3000/api/health
 
-# 测试管理员登录
+# 測試管理員登入
 curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@paperburner.local","password":"admin123456"}'
@@ -323,20 +323,20 @@ curl -X POST http://localhost:3000/api/auth/login \
 
 ---
 
-## 📈 性能影响评估
+## 📈 效能影響評估
 
-### 新增功能对性能的影响
+### 新增功能對效能的影響
 
-| 功能 | 性能影响 | 缓解措施 |
+| 功能 | 效能影響 | 緩解措施 |
 |------|---------|---------|
-| API Keys 加密 | 低 (仅创建时加密) | 使用时缓存解密结果 |
-| 配额检查 | 低 (简单查询) | 索引优化 |
-| 使用日志 | 中 (异步写入) | 后台任务队列 |
-| 统计查询 | 中 (复杂聚合) | 定时缓存结果 |
+| API Keys 加密 | 低 (僅建立時加密) | 使用時快取解密結果 |
+| 配額檢查 | 低 (簡單查詢) | 索引最佳化 |
+| 使用日誌 | 中 (非同步寫入) | 後臺任務佇列 |
+| 統計查詢 | 中 (複雜聚合) | 定時快取結果 |
 
-### 数据库索引
+### 資料庫索引
 ```sql
--- 已添加的索引
+-- 已新增的索引
 CREATE INDEX processed_files_userId_idx ON processed_files(userId);
 CREATE INDEX usage_logs_userId_createdAt_idx ON usage_logs(userId, createdAt);
 CREATE INDEX usage_logs_action_createdAt_idx ON usage_logs(action, createdAt);
@@ -344,9 +344,9 @@ CREATE INDEX usage_logs_action_createdAt_idx ON usage_logs(action, createdAt);
 
 ---
 
-## 📚 开发者指南
+## 📚 開發者指南
 
-### 添加新的配额类型
+### 新增新的配額型別
 
 ```javascript
 // 1. 更新 Schema
@@ -373,22 +373,22 @@ if (!quotaCheck.allowed) {
 }
 ```
 
-### 添加新的使用日志类型
+### 新增新的使用日誌型別
 
 ```javascript
 import { logUsage } from '../utils/quota.js';
 
-// 记录自定义操作
+// 記錄自定義操作
 await logUsage(userId, 'custom_action', resourceId, {
   customField1: 'value1',
   customField2: 'value2'
 });
 ```
 
-### 查询统计数据
+### 查詢統計資料
 
 ```javascript
-// 按时间范围统计
+// 按時間範圍統計
 const logs = await prisma.usageLog.findMany({
   where: {
     userId,
@@ -399,7 +399,7 @@ const logs = await prisma.usageLog.findMany({
   }
 });
 
-// 按操作类型分组
+// 按操作型別分組
 const stats = await prisma.usageLog.groupBy({
   by: ['action'],
   _count: true,
@@ -409,96 +409,96 @@ const stats = await prisma.usageLog.groupBy({
 
 ---
 
-## 🔍 测试清单
+## 🔍 測試清單
 
-### API 端点测试
+### API 端點測試
 
-- [x] API Keys 加密存储
-- [x] 意群数据 CRUD
-- [x] 标注数据 CRUD
-- [x] 已处理文件记录
-- [x] 配额检查
-- [x] 使用日志记录
-- [x] 管理员统计 API
+- [x] API Keys 加密儲存
+- [x] 意群資料 CRUD
+- [x] 標註資料 CRUD
+- [x] 已處理檔案記錄
+- [x] 配額檢查
+- [x] 使用日誌記錄
+- [x] 管理員統計 API
 
-### 安全测试
+### 安全測試
 
-- [x] 数据隔离（用户 A 无法访问用户 B 的数据）
-- [x] 加密/解密正确性
-- [x] 配额限制生效
-- [x] 管理员权限验证
+- [x] 資料隔離（使用者 A 無法訪問使用者 B 的資料）
+- [x] 加密/解密正確性
+- [x] 配額限制生效
+- [x] 管理員許可權驗證
 
-### 性能测试
+### 效能測試
 
-- [ ] 批量文件检查性能
-- [ ] 统计查询性能
-- [ ] 大量用户并发处理
-
----
-
-## 📝 下一阶段计划
-
-### 前端集成（1-2 周）
-
-1. **迁移历史记录**
-   - 修改 `js/storage/storage.js` 调用后端 API
-   - 实现 IndexedDB → 后端数据迁移工具
-   - 更新历史记录 UI
-
-2. **迁移标注功能**
-   - 修改标注相关 JS 代码
-   - 调用后端 API 而非 IndexedDB
-   - 实现实时同步
-
-3. **迁移意群数据**
-   - 更新意群生成和保存逻辑
-   - 调用后端 API
-
-### UI 增强（1-2 周）
-
-1. **配额显示**
-   - 在设置页面显示当前配额
-   - 显示使用量进度条
-   - 配额即将用尽时提示
-
-2. **管理员面板优化**
-   - 配额管理界面
-   - 趋势图表可视化
-   - 用户活动日志查看器
-
-### 高级功能（1-3 月）
-
-1. **团队协作**
-   - 文档共享
-   - 协作标注
-   - 团队配额
-
-2. **监控告警**
-   - Prometheus 集成
-   - 告警规则
-   - 性能监控
+- [ ] 批次檔案檢查效能
+- [ ] 統計查詢效能
+- [ ] 大量使用者並行處理
 
 ---
 
-## 🎯 结论
+## 📝 下一階段計劃
 
-本次改进**完全实现**了以下目标：
+### 前端整合（1-2 周）
 
-✅ **API Keys 安全加密存储**
-✅ **完整的多用户数据隔离**
-✅ **后端持久化核心功能**
-✅ **用户配额管理系统**
-✅ **详细的使用统计和分析**
-✅ **完善的管理员功能**
+1. **遷移歷史記錄**
+   - 修改 `js/storage/storage.js` 呼叫後端 API
+   - 實現 IndexedDB → 後端資料遷移工具
+   - 更新歷史記錄 UI
 
-所有关键数据都已实现后端持久化，支持多用户和跨设备同步。系统架构健壮，安全性显著提升，为生产环境部署做好了充分准备。
+2. **遷移標註功能**
+   - 修改標註相關 JS 程式碼
+   - 呼叫後端 API 而非 IndexedDB
+   - 實現實時同步
 
-**下一步重点**：前端迁移到后端 API，实现完整的跨设备同步体验。
+3. **遷移意群資料**
+   - 更新意群生成和儲存邏輯
+   - 呼叫後端 API
+
+### UI 增強（1-2 周）
+
+1. **配額顯示**
+   - 在設定頁面顯示當前配額
+   - 顯示使用量進度條
+   - 配額即將用盡時提示
+
+2. **管理員面板最佳化**
+   - 配額管理介面
+   - 趨勢圖表視覺化
+   - 使用者活動日誌檢視器
+
+### 高階功能（1-3 月）
+
+1. **團隊協作**
+   - 文件共享
+   - 協作標註
+   - 團隊配額
+
+2. **監控告警**
+   - Prometheus 整合
+   - 告警規則
+   - 效能監控
+
+---
+
+## 🎯 結論
+
+本次改進**完全實現**了以下目標：
+
+✅ **API Keys 安全加密儲存**
+✅ **完整的多使用者資料隔離**
+✅ **後端持久化核心功能**
+✅ **使用者配額管理系統**
+✅ **詳細的使用統計和分析**
+✅ **完善的管理員功能**
+
+所有關鍵資料都已實現後端持久化，支援多使用者和跨裝置同步。系統架構穩健，安全性顯著提升，為生產環境部署做好了充分準備。
+
+**下一步重點**：前端遷移到後端 API，實現完整的跨裝置同步體驗。
 
 ---
 
 **完成日期**: 2025-01-17
 **版本**: 2.0.0
-**改进总数**: 8 项核心功能
-**新增 API 端点**: 20+
-**新增数据表**: 3 个
+**改進總數**: 8 項核心功能
+**新增 API 端點**: 20+
+**新增資料表**: 3 個

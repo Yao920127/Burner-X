@@ -1,42 +1,42 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Paper Burner X - 开源的、在浏览器中即开即用的 AI 工作站，专为扫除海量的 PDF 文献、复杂的公式和跨语言的障碍。支持前端 Agent 驱动的智能检索、高性能批量处理和完全本地化部署。">
-    <title>Paper Burner X - 开源 AI 文献工作站</title>
+    <meta name="description" content="Paper Burner X - 開源的、在瀏覽器中即開即用的 AI 工作站，專為掃除海量的 PDF 文獻、複雜的公式和跨語言的障礙。支援前端 Agent 驅動的智慧檢索、高效能批次處理和完全本地化部署。">
+    <title>Paper Burner X - 開源 AI 文獻工作站</title>
     <link rel="icon" type="image/svg+xml" href="../../public/pure.svg">
-    <!-- Tailwind CSS & 依赖库 -->
+    <!-- Tailwind CSS & 依賴庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://gcore.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
-    <!-- GitHub Stars 统一获取模块 -->
-    <script src="../../js/utils/github-stars.js"></script>
-    <!-- 后端模式未登录门禁（在有后端部署时，直接要求登录） -->
-    <script src="/js/boot/backend-gate.js"></script>
+    <!-- GitHub Stars 統一獲取模組 -->
+    <script src="../../js/utils/github-stars.ts"></script>
+    <!-- 後端模式未登入門禁（在有後端部署時，直接要求登入） -->
+    <script src="/js/boot/backend-gate.ts"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <style>
-        /* 谷歌字体 Inter (更专业、现代) */
+        /* 谷歌字型 Inter (更專業、現代) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        /* 基础字体设置 */
+        /* 基礎字型設定 */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        /* 背景渐变 - 更加细腻 */
+        /* 背景漸變 - 更加細膩 */
         .gradient-bg {
             /* background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%); */
-            background-color: #F3F6FA; /* 主题背景色 */
+            background-color: #F3F6FA; /* 主題背景色 */
         }
-        /* 卡片渐变 */
+        /* 卡片漸變 */
         .gradient-card {
             background: linear-gradient(135deg, #ffffff 0%, #f9fbff 100%);
         }
-        /* 通用过渡效果 */
+        /* 通用過渡效果 */
         .transition-all {
             transition: all 0.3s ease;
         }
-        /* 文件列表项样式 */
+        /* 檔案列表項樣式 */
         .file-list-item {
             display: flex;
             align-items: center;
@@ -50,22 +50,22 @@
         .file-list-item:last-child {
             margin-bottom: 0;
         }
-        /* API Key 输入框样式 */
+        /* API Key 輸入欄位樣式 */
         textarea.api-key-input {
             min-height: 60px; /* 最小高度 */
-            resize: vertical; /* 允许垂直方向调整大小 */
+            resize: vertical; /* 允許垂直方向調整大小 */
         }
-        /* 闪烁提示动画基类 */
+        /* 閃爍提示動畫基類 */
         .flash-tip-anim {
             opacity: 0;
             transition: opacity 0.5s;
             will-change: opacity;
         }
-        /* 闪烁提示显示状态 */
+        /* 閃爍提示顯示狀態 */
         .flash-tip-anim.show {
             opacity: 1;
         }
-        /* 闪烁提示隐藏状态 */
+        /* 閃爍提示隱藏狀態 */
         .flash-tip-anim.hide {
             opacity: 0;
         }
@@ -90,7 +90,7 @@
             font-size: 1.25rem;
         }
 
-        /* Premium Commercial Gradient Background - 增强纵深感 */
+        /* Premium Commercial Gradient Background - 增強縱深感 */
         .ocean-gradient-bg {
             background-color: #FAFBFC;
             background-image:
@@ -101,7 +101,7 @@
                 radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.12) 0px, transparent 50%),
                 radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.12) 0px, transparent 50%),
                 radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 0.12) 0px, transparent 50%);
-            background-attachment: fixed; /* 视差效果 */
+            background-attachment: fixed; /* 視差效果 */
         }
 
         /* Modern Sticky Header */
@@ -224,7 +224,7 @@
         }
 
         .select-anim {
-          /* 原有文字渐变动画可删除或保留 */
+          /* 原有文字漸變動畫可刪除或保留 */
         }
         .select-anim-bg {
           position: relative;
@@ -566,7 +566,7 @@
         <div id="headerBannerPill" class="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center">
              <div class="header-pill cursor-pointer" onclick="this.style.display='none'">
                 <iconify-icon icon="carbon:information-filled" class="text-blue-500" width="16"></iconify-icon>
-                <span>📚 全新 Agent 升级，支持多种检索工具</span>
+                <span>📚 全新 Agent 升級，支援多種檢索工具</span>
                 <iconify-icon icon="carbon:close" class="text-gray-400 hover:text-gray-600 ml-1" width="14"></iconify-icon>
             </div>
         </div>
@@ -601,37 +601,37 @@
                 <!-- Hero Carousel Container -->
                 <div class="hero-carousel-container relative" style="min-height: 520px;">
 
-                    <!-- Slide 1: 阅读优先 -->
+                    <!-- Slide 1: 閱讀優先 -->
                     <div class="hero-carousel-item active">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-5 md:mb-7 leading-tight tracking-tight hero-title">
-                            先读懂，再借助 AI<br class="hidden sm:block">
-                            <span class="select-anim-bg">让深度阅读与智能辅助完美结合</span>
+                            先讀懂，再借助 AI<br class="hidden sm:block">
+                            <span class="select-anim-bg">讓深度閱讀與智慧輔助完美結合</span>
                         </h1>
                         <p class="text-xs text-gray-500 mb-4 max-w-3xl mx-auto italic">
-                            "在学习初期阶段延迟引入 AI 工具，优先促进自我驱动的认知建构。此种模式可在不牺牲工具效率的前提下，最大化长期神经发展与认知自主性（cognitive autonomy）"
+                            "在學習初期階段延遲引入 AI 工具，優先促進自我驅動的認知建構。此種模式可在不犧牲工具效率的前提下，最大化長期神經發展與認知自主性（cognitive autonomy）"
                             <a href="https://arxiv.org/pdf/2506.08872v1" target="_blank" class="text-blue-600 hover:underline ml-1">[arXiv:2506.08872]</a>
                         </p>
                         <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto hero-subtitle leading-relaxed">
-                            原译对照阅读、学术公式增强、长文本智能检索，陪你读懂每一篇论文
+                            原譯對照閱讀、學術公式增強、長文字智慧檢索，陪你讀懂每一篇論文
                         </p>
 
                         <!-- Feature Badges -->
                         <div class="feature-badges-container flex flex-wrap items-center justify-center gap-2.5 mb-10 max-w-4xl mx-auto px-4">
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:view" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                原译对照
+                                原譯對照
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:rule" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                公式增强
+                                公式增強
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:bot" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                长文本 Agent
+                                長文字 Agent
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:notebook" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                标注高亮
+                                標註醒目提示
                             </div>
                         </div>
 
@@ -639,44 +639,44 @@
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <a href="../../index.html" class="cta-enter-app group relative px-10 py-4 md:px-12 md:py-5 bg-gradient-to-r from-[#6366F1] to-[#3B82F6] text-white rounded-xl hover:from-[#4F46E5] hover:to-[#2563EB] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-500/50 text-lg md:text-xl font-bold flex items-center shadow-2xl hover:shadow-blue-500/30 transform hover:scale-105">
                                 <iconify-icon icon="carbon:launch" class="mr-3 group-hover:translate-x-1 transition-transform" width="28"></iconify-icon>
-                                开始使用
-                                <span class="ml-2 text-sm font-normal opacity-90">免费无需注册</span>
+                                開始使用
+                                <span class="ml-2 text-sm font-normal opacity-90">免費無需註冊</span>
                             </a>
                             <a href="#features" class="px-8 py-4 bg-white/90 backdrop-blur-sm text-gray-700 border-2 border-gray-200 rounded-xl hover:bg-white hover:border-blue-300 hover:text-blue-600 transition-all text-lg font-semibold flex items-center shadow-md hover:shadow-lg">
                                 <iconify-icon icon="carbon:list-checked" class="mr-2" width="24"></iconify-icon>
-                                了解功能特性
+                                瞭解功能特性
                             </a>
                         </div>
                     </div>
 
-                    <!-- Slide 2: 高效翻译 -->
+                    <!-- Slide 2: 高效翻譯 -->
                     <div class="hero-carousel-item">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-5 md:mb-7 leading-tight tracking-tight hero-title">
-                            专业翻译，也可以很快<br class="hidden sm:block">
-                            <span class="select-anim-bg">术语一致、批量处理、自由配置</span>
+                            專業翻譯，也可以很快<br class="hidden sm:block">
+                            <span class="select-anim-bg">術語一致、批次處理、自由配置</span>
                         </h1>
                         <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto hero-subtitle leading-relaxed">
-                            不只是翻译，更懂你的专业领域和翻译偏好<br>
-                            <span class="text-base text-gray-500">自定义术语库、提示词池、多模型并发，甚至支持整个代码库的翻译</span>
+                            不只是翻譯，更懂你的專業領域和翻譯偏好<br>
+                            <span class="text-base text-gray-500">自定義術語庫、提示詞池、多模型並行，甚至支援整個程式碼庫的翻譯</span>
                         </p>
 
                         <!-- Feature Badges -->
                         <div class="feature-badges-container flex flex-wrap items-center justify-center gap-2.5 mb-10 max-w-4xl mx-auto px-4">
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:book" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                术语库
+                                術語庫
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:flash" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                批量并发
+                                批次並行
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:settings-adjust" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                提示词池
+                                提示詞池
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:code" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                GitHub 仓库
+                                GitHub 倉庫
                             </div>
                         </div>
 
@@ -684,36 +684,36 @@
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <a href="../../index.html" class="cta-enter-app group relative px-10 py-4 md:px-12 md:py-5 bg-gradient-to-r from-[#6366F1] to-[#3B82F6] text-white rounded-xl hover:from-[#4F46E5] hover:to-[#2563EB] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-500/50 text-lg md:text-xl font-bold flex items-center shadow-2xl hover:shadow-blue-500/30 transform hover:scale-105">
                                 <iconify-icon icon="carbon:launch" class="mr-3 group-hover:translate-x-1 transition-transform" width="28"></iconify-icon>
-                                开始使用
-                                <span class="ml-2 text-sm font-normal opacity-90">免费无需注册</span>
+                                開始使用
+                                <span class="ml-2 text-sm font-normal opacity-90">免費無需註冊</span>
                             </a>
                             <a href="#features" class="px-8 py-4 bg-white/90 backdrop-blur-sm text-gray-700 border-2 border-gray-200 rounded-xl hover:bg-white hover:border-blue-300 hover:text-blue-600 transition-all text-lg font-semibold flex items-center shadow-md hover:shadow-lg">
                                 <iconify-icon icon="carbon:list-checked" class="mr-2" width="24"></iconify-icon>
-                                了解功能特性
+                                瞭解功能特性
                             </a>
                         </div>
                     </div>
 
-                    <!-- Slide 3: 分享协作 -->
+                    <!-- Slide 3: 分享協作 -->
                     <div class="hero-carousel-item">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-5 md:mb-7 leading-tight tracking-tight hero-title">
-                            知识需要流转和分享<br class="hidden sm:block">
-                            <span class="select-anim-bg">让阅读成果轻松传递给团队</span>
+                            知識需要流轉和分享<br class="hidden sm:block">
+                            <span class="select-anim-bg">讓閱讀成果輕鬆傳遞給團隊</span>
                         </h1>
                         <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto hero-subtitle leading-relaxed">
-                            从个人阅读到团队协作，一步之遥<br>
-                            <span class="text-base text-gray-500">多格式导出、保留文档结构、快速分享，让知识不止于个人</span>
+                            從個人閱讀到團隊協作，一步之遙<br>
+                            <span class="text-base text-gray-500">多格式匯出、保留文件結構、快速分享，讓知識不止於個人</span>
                         </p>
 
                         <!-- Feature Badges -->
                         <div class="feature-badges-container flex flex-wrap items-center justify-center gap-2.5 mb-10 max-w-4xl mx-auto px-4">
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:document-export" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                多格式导出
+                                多格式匯出
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:folder" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                保留结构
+                                保留結構
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:share" class="inline-block mr-1.5" width="16"></iconify-icon>
@@ -721,7 +721,7 @@
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:cloud-offline" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                纯浏览器端
+                                純瀏覽器端
                             </div>
                         </div>
 
@@ -729,44 +729,44 @@
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <a href="../../index.html" class="cta-enter-app group relative px-10 py-4 md:px-12 md:py-5 bg-gradient-to-r from-[#6366F1] to-[#3B82F6] text-white rounded-xl hover:from-[#4F46E5] hover:to-[#2563EB] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-500/50 text-lg md:text-xl font-bold flex items-center shadow-2xl hover:shadow-blue-500/30 transform hover:scale-105">
                                 <iconify-icon icon="carbon:launch" class="mr-3 group-hover:translate-x-1 transition-transform" width="28"></iconify-icon>
-                                开始使用
-                                <span class="ml-2 text-sm font-normal opacity-90">免费无需注册</span>
+                                開始使用
+                                <span class="ml-2 text-sm font-normal opacity-90">免費無需註冊</span>
                             </a>
                             <a href="#features" class="px-8 py-4 bg-white/90 backdrop-blur-sm text-gray-700 border-2 border-gray-200 rounded-xl hover:bg-white hover:border-blue-300 hover:text-blue-600 transition-all text-lg font-semibold flex items-center shadow-md hover:shadow-lg">
                                 <iconify-icon icon="carbon:list-checked" class="mr-2" width="24"></iconify-icon>
-                                了解功能特性
+                                瞭解功能特性
                             </a>
                         </div>
                     </div>
 
-                    <!-- Slide 4: 简单部署 -->
+                    <!-- Slide 4: 簡單部署 -->
                     <div class="hero-carousel-item">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-5 md:mb-7 leading-tight tracking-tight hero-title">
-                            无需繁琐部署，打开即用<br class="hidden sm:block">
-                            <span class="select-anim-bg">你的 API Key，你的数据，你做主</span>
+                            無需繁瑣部署，開啟即用<br class="hidden sm:block">
+                            <span class="select-anim-bg">你的 API Key，你的資料，你做主</span>
                         </h1>
                         <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto hero-subtitle leading-relaxed">
-                            纯前端项目，无需服务器，无需配置环境<br>
-                            <span class="text-base text-gray-500">BYOK（自带密钥）设计，让你安心使用自己的 AI 服务，数据完全掌控</span>
+                            純前端專案，無需伺服器，無需配置環境<br>
+                            <span class="text-base text-gray-500">BYOK（自帶金鑰）設計，讓你安心使用自己的 AI 服務，資料完全掌控</span>
                         </p>
 
                         <!-- Feature Badges -->
                         <div class="feature-badges-container flex flex-wrap items-center justify-center gap-2.5 mb-10 max-w-4xl mx-auto px-4">
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:cloud-offline" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                纯前端项目
+                                純前端專案
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:license" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                BYOK 设计
+                                BYOK 設計
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:rocket" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                开箱即用
+                                開箱即用
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:security" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                数据安全
+                                資料安全
                             </div>
                         </div>
 
@@ -774,40 +774,40 @@
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <a href="../../index.html" class="cta-enter-app group relative px-10 py-4 md:px-12 md:py-5 bg-gradient-to-r from-[#6366F1] to-[#3B82F6] text-white rounded-xl hover:from-[#4F46E5] hover:to-[#2563EB] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-500/50 text-lg md:text-xl font-bold flex items-center shadow-2xl hover:shadow-blue-500/30 transform hover:scale-105">
                                 <iconify-icon icon="carbon:launch" class="mr-3 group-hover:translate-x-1 transition-transform" width="28"></iconify-icon>
-                                开始使用
-                                <span class="ml-2 text-sm font-normal opacity-90">免费无需注册</span>
+                                開始使用
+                                <span class="ml-2 text-sm font-normal opacity-90">免費無需註冊</span>
                             </a>
                             <a href="#features" class="px-8 py-4 bg-white/90 backdrop-blur-sm text-gray-700 border-2 border-gray-200 rounded-xl hover:bg-white hover:border-blue-300 hover:text-blue-600 transition-all text-lg font-semibold flex items-center shadow-md hover:shadow-lg">
                                 <iconify-icon icon="carbon:list-checked" class="mr-2" width="24"></iconify-icon>
-                                了解功能特性
+                                瞭解功能特性
                             </a>
                         </div>
                     </div>
 
-                    <!-- Slide 5: Agent 智能助手 -->
+                    <!-- Slide 5: Agent 智慧助手 -->
                     <div class="hero-carousel-item">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-5 md:mb-7 leading-tight tracking-tight hero-title">
-                            和学术 Agent 一起<br class="hidden sm:block">
-                            <span class="select-anim-bg">点燃你的阅读力！</span>
+                            和學術 Agent 一起<br class="hidden sm:block">
+                            <span class="select-anim-bg">點燃你的閱讀力！</span>
                         </h1>
                         <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto hero-subtitle leading-relaxed">
-                            全新升级的智能 Agent，专为长文本场景深度优化<br>
-                            <span class="text-base text-gray-500">内置向量检索、多轮对话、上下文理解，让 AI 真正读懂你的论文</span>
+                            全新升級的智慧 Agent，專為長文字場景深度最佳化<br>
+                            <span class="text-base text-gray-500">內建向量檢索、多輪對話、上下文理解，讓 AI 真正讀懂你的論文</span>
                         </p>
 
                         <!-- Feature Badges -->
                         <div class="feature-badges-container flex flex-wrap items-center justify-center gap-2.5 mb-10 max-w-4xl mx-auto px-4">
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:upgrade" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                Agent 升级
+                                Agent 升級
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:search-advanced" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                向量检索
+                                向量檢索
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:chat-bot" class="inline-block mr-1.5" width="16"></iconify-icon>
-                                多轮对话
+                                多輪對話
                             </div>
                             <div class="stats-badge px-4 py-2.5 rounded-full text-xs md:text-sm font-semibold text-blue-700 whitespace-nowrap">
                                 <iconify-icon icon="carbon:network-3" class="inline-block mr-1.5" width="16"></iconify-icon>
@@ -819,12 +819,12 @@
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <a href="../../index.html" class="cta-enter-app group relative px-10 py-4 md:px-12 md:py-5 bg-gradient-to-r from-[#6366F1] to-[#3B82F6] text-white rounded-xl hover:from-[#4F46E5] hover:to-[#2563EB] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-500/50 text-lg md:text-xl font-bold flex items-center shadow-2xl hover:shadow-blue-500/30 transform hover:scale-105">
                                 <iconify-icon icon="carbon:launch" class="mr-3 group-hover:translate-x-1 transition-transform" width="28"></iconify-icon>
-                                开始使用
-                                <span class="ml-2 text-sm font-normal opacity-90">免费无需注册</span>
+                                開始使用
+                                <span class="ml-2 text-sm font-normal opacity-90">免費無需註冊</span>
                             </a>
                             <a href="#features" class="px-8 py-4 bg-white/90 backdrop-blur-sm text-gray-700 border-2 border-gray-200 rounded-xl hover:bg-white hover:border-blue-300 hover:text-blue-600 transition-all text-lg font-semibold flex items-center shadow-md hover:shadow-lg">
                                 <iconify-icon icon="carbon:list-checked" class="mr-2" width="24"></iconify-icon>
-                                了解功能特性
+                                瞭解功能特性
                             </a>
                         </div>
                     </div>
@@ -845,37 +845,37 @@
                         <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center transform transition-transform group-hover:scale-110">
                             <iconify-icon icon="carbon:bot" class="text-3xl text-purple-600"></iconify-icon>
                         </div>
-                        <div class="text-sm text-gray-700 font-semibold">对话式阅读</div>
+                        <div class="text-sm text-gray-700 font-semibold">對話式閱讀</div>
                     </div>
                     <div class="text-center group">
                         <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center transform transition-transform group-hover:scale-110">
                             <iconify-icon icon="carbon:flash" class="text-3xl text-orange-600"></iconify-icon>
                         </div>
-                        <div class="text-sm text-gray-700 font-semibold">高速并发翻译</div>
+                        <div class="text-sm text-gray-700 font-semibold">高速並行翻譯</div>
                     </div>
                     <div class="text-center group">
                         <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center transform transition-transform group-hover:scale-110">
                             <iconify-icon icon="carbon:book" class="text-3xl text-blue-600"></iconify-icon>
                         </div>
-                        <div class="text-sm text-gray-700 font-semibold">术语库协同</div>
+                        <div class="text-sm text-gray-700 font-semibold">術語庫協同</div>
                     </div>
                     <div class="text-center group">
                         <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 flex items-center justify-center transform transition-transform group-hover:scale-110">
                             <iconify-icon icon="carbon:document-multiple-02" class="text-3xl text-indigo-600"></iconify-icon>
                         </div>
-                        <div class="text-sm text-gray-700 font-semibold">多格式支持</div>
+                        <div class="text-sm text-gray-700 font-semibold">多格式支援</div>
                     </div>
                     <div class="text-center group col-span-2 md:col-span-1">
                         <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center transform transition-transform group-hover:scale-110">
                             <iconify-icon icon="carbon:cloud-offline" class="text-3xl text-green-600"></iconify-icon>
                         </div>
-                        <div class="text-sm text-gray-700 font-semibold">本地隐私保护</div>
+                        <div class="text-sm text-gray-700 font-semibold">本地隱私保護</div>
                     </div>
                 </div>
 
                 <!-- Moved and Restyled Tip Paragraph -->
                 <p class="text-xs text-gray-500 mt-16 max-w-2xl mx-auto">
-                    💡 纯浏览器端运行，无需安装配置，即开即用
+                    💡 純瀏覽器端執行，無需安裝配置，即開即用
                 </p>
             </section>
 
@@ -883,10 +883,10 @@
             <section class="steps-section py-16 md:py-24">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-                        只需三步，开启深度阅读
+                        只需三步，開啟深度閱讀
                     </h2>
                     <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                        简单直观的工作流，让复杂的文献处理变得轻松自如
+                        簡單直觀的工作流，讓複雜的文獻處理變得輕鬆自如
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto px-4">
@@ -896,9 +896,9 @@
                             <iconify-icon icon="carbon:cloud-upload"></iconify-icon>
                             <div class="step-number">1</div>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">上传文档</h3>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">上傳文件</h3>
                         <p class="text-gray-600 leading-relaxed">
-                            拖拽 PDF、Word 或 Markdown 文件到浏览器。所有处理均在本地完成，安全快速。
+                            拖拽 PDF、Word 或 Markdown 檔案到瀏覽器。所有處理均在本地完成，安全快速。
                         </p>
                     </div>
                     <!-- Step 2 -->
@@ -907,9 +907,9 @@
                             <iconify-icon icon="carbon:data-enrichment"></iconify-icon>
                             <div class="step-number" style="background: #8b5cf6;">2</div>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">智能解析</h3>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">智慧解析</h3>
                         <p class="text-gray-600 leading-relaxed">
-                            AI 自动识别文档结构、提取目录、解析公式和表格，生成精准的对照译文。
+                            AI 自動識別文件結構、提取目錄、解析公式和表格，生成精準的對照譯文。
                         </p>
                     </div>
                     <!-- Step 3 -->
@@ -918,9 +918,9 @@
                             <iconify-icon icon="carbon:chat-bot"></iconify-icon>
                             <div class="step-number" style="background: #10b981;">3</div>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">对话阅读</h3>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">對話閱讀</h3>
                         <p class="text-gray-600 leading-relaxed">
-                            在阅读界面与 AI 助手实时对话。划词翻译、深度追问、整理笔记，一气呵成。
+                            在閱讀介面與 AI 助手實時對話。劃詞翻譯、深度追問、整理筆記，一氣呵成。
                         </p>
                     </div>
                 </div>
@@ -931,10 +931,10 @@
                 <div class="text-center mb-14">
                     <span class="inline-block px-5 py-2.5 bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 rounded-full text-sm font-bold mb-5 border border-blue-100">核心功能</span>
                     <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-5 features-title">
-                        让文献阅读更高效的工具
+                        讓文獻閱讀更高效的工具
                     </h2>
                     <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                        从智能对话到翻译管理，覆盖文献阅读的全流程需求
+                        從智慧對話到翻譯管理，覆蓋文獻閱讀的全流程需求
                     </p>
                 </div>
 
@@ -948,13 +948,13 @@
                                 <div class="feature-icon-ring mb-5 text-purple-600">
                                     <iconify-icon icon="carbon:bot" width="32"></iconify-icon>
                                 </div>
-                                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">智能对话式阅读</h3>
+                                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">智慧對話式閱讀</h3>
                                 <p class="text-sm md:text-base text-gray-600 leading-relaxed mb-6">
-                                    看不懂某个概念？想快速了解某段内容？直接问 AI 助手。内置多轮对话与长文本检索引擎，支持上下文理解和知识关联，让复杂论文的理解变得轻松自然。
+                                    看不懂某個概念？想快速瞭解某段內容？直接問 AI 助手。內建多輪對話與長文字檢索引擎，支援上下文理解和知識關聯，讓複雜論文的理解變得輕鬆自然。
                                 </p>
                                 <div class="feature-meta">
-                                    <span class="bg-purple-50 text-purple-700 border border-purple-200">多轮对话</span>
-                                    <span class="bg-purple-50 text-purple-700 border border-purple-200">智能检索</span>
+                                    <span class="bg-purple-50 text-purple-700 border border-purple-200">多輪對話</span>
+                                    <span class="bg-purple-50 text-purple-700 border border-purple-200">智慧檢索</span>
                                     <span class="bg-purple-50 text-purple-700 border border-purple-200">上下文理解</span>
                                 </div>
                             </div>
@@ -968,13 +968,13 @@
                         <div class="feature-icon-ring mb-5 text-blue-600">
                             <iconify-icon icon="carbon:settings-adjust" width="32"></iconify-icon>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">灵活的模型配置</h3>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">靈活的模型配置</h3>
                         <p class="text-sm md:text-base text-gray-600 leading-relaxed mb-4">
-                            自由选择 AI 服务商，配置自定义模型端点和 API Key。支持多源轮询和提示词管理，打造专属工作流。
+                            自由選擇 AI 服務商，配置自定義模型端點和 API Key。支援多源輪詢和提示詞管理，打造專屬工作流。
                         </p>
                         <div class="feature-meta mt-auto">
                             <span class="bg-blue-50 text-blue-700 border border-blue-200">BYOK</span>
-                            <span class="bg-blue-50 text-blue-700 border border-blue-200">多源轮询</span>
+                            <span class="bg-blue-50 text-blue-700 border border-blue-200">多源輪詢</span>
                         </div>
                     </article>
 
@@ -983,13 +983,13 @@
                         <div class="feature-icon-ring mb-5 text-orange-600">
                             <iconify-icon icon="carbon:flash" width="32"></iconify-icon>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">高效翻译与术语管理</h3>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">高效翻譯與術語管理</h3>
                         <p class="text-sm md:text-base text-gray-600 leading-relaxed mb-4">
-                            支持多文件并发翻译，配合智能任务队列，长篇论文也能在数十秒内完成。专业术语库协同工作，确保准确性。
+                            支援多檔案並行翻譯，配合智慧任務佇列，長篇論文也能在數十秒內完成。專業術語庫協同工作，確保準確性。
                         </p>
                         <div class="feature-meta mt-auto">
-                            <span class="bg-orange-50 text-orange-700 border border-orange-200">并发处理</span>
-                            <span class="bg-orange-50 text-orange-700 border border-orange-200">术语库</span>
+                            <span class="bg-orange-50 text-orange-700 border border-orange-200">並行處理</span>
+                            <span class="bg-orange-50 text-orange-700 border border-orange-200">術語庫</span>
                         </div>
                     </article>
 
@@ -1000,13 +1000,13 @@
                                 <div class="feature-icon-ring mb-5 text-indigo-600">
                                     <iconify-icon icon="carbon:document-multiple-02" width="32"></iconify-icon>
                                 </div>
-                                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">完整的阅读工具链</h3>
+                                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">完整的閱讀工具鏈</h3>
                                 <p class="text-sm md:text-base text-gray-600 leading-relaxed mb-6">
-                                    原译对照、历史版本、TOC 快速导航、多彩标注笔记，支持 PDF、DOCX、Markdown 等多格式导入导出。一站式满足从阅读到整理的全部需求。
+                                    原譯對照、歷史版本、TOC 快速導航、多彩標註筆記，支援 PDF、DOCX、Markdown 等多格式匯入匯出。一站式滿足從閱讀到整理的全部需求。
                                 </p>
                                 <div class="feature-meta">
-                                    <span class="bg-indigo-50 text-indigo-700 border border-indigo-200">多格式支持</span>
-                                    <span class="bg-indigo-50 text-indigo-700 border border-indigo-200">原译对照</span>
+                                    <span class="bg-indigo-50 text-indigo-700 border border-indigo-200">多格式支援</span>
+                                    <span class="bg-indigo-50 text-indigo-700 border border-indigo-200">原譯對照</span>
                                     <span class="bg-indigo-50 text-indigo-700 border border-indigo-200">版本管理</span>
                                 </div>
                             </div>
@@ -1019,7 +1019,7 @@
                 <div class="mt-10 text-center">
                     <a href="../../index.html" id="enterOcrFeaturesBtn" class="px-6 py-3 bg-gradient-to-r from-[#2563eb] to-[#38bdf8] text-white rounded-xl hover:from-[#1d4ed8] hover:to-[#0ea5e9] transition-all focus:outline-none focus:ring-4 focus:ring-blue-500/50 text-md font-semibold inline-flex items-center mx-auto shadow-lg hover:shadow-xl transform hover:scale-105">
                         <iconify-icon icon="carbon:rocket" class="mr-2" width="20"></iconify-icon>
-                        开始使用 Paper Burner X
+                        開始使用 Paper Burner X
                     </a>
                 </div>
             </section>
@@ -1030,10 +1030,10 @@
                     <div class="text-center">
                         <h2 class="text-3xl md:text-4xl font-semibold text-gray-800 flex items-center justify-center">
                             <iconify-icon icon="carbon:compass" class="mr-3 text-[#5782F3]" width="36"></iconify-icon>
-                            愿景与路线
+                            願景與路線
                         </h2>
                         <p class="mt-4 text-sm md:text-base text-gray-500 max-w-2xl mx-auto leading-relaxed">
-                            我们持续打磨浏览器端的 Paper Burner X，让文献处理真正做到「即开即用、一步到位」。
+                            我們持續打磨瀏覽器端的 Paper Burner X，讓文獻處理真正做到「即開即用、一步到位」。
                         </p>
                     </div>
 
@@ -1041,24 +1041,24 @@
                         <article class="vision-card vision-card--mission md:col-span-2">
                             <h3 class="text-xl md:text-2xl text-gray-700 mb-3 flex items-center">
                                 <iconify-icon icon="carbon:earth" class="mr-2 text-[#5782F3]" width="24"></iconify-icon>
-                                我们的愿景
+                                我們的願景
                             </h3>
                             <p class="text-gray-600 text-sm md:text-base leading-relaxed">
-                                我们希望每个研究者都能轻松地阅读和理解文献，把更多时间用在真正重要的研究上。Paper Burner X 集成了智能对话、翻译、术语管理与阅读工具，完全运行在浏览器中，无需安装、配置简单，随时随地都能开始工作。
+                                我們希望每個研究者都能輕鬆地閱讀和理解文獻，把更多時間用在真正重要的研究上。Paper Burner X 整合了智慧對話、翻譯、術語管理與閱讀工具，完全執行在瀏覽器中，無需安裝、配置簡單，隨時隨地都能開始工作。
                             </p>
                             <div class="vision-meta">
-                                <span>纯浏览器端</span>
-                                <span>开箱即用</span>
-                                <span>智能辅助</span>
-                                <span>隐私保护</span>
+                                <span>純瀏覽器端</span>
+                                <span>開箱即用</span>
+                                <span>智慧輔助</span>
+                                <span>隱私保護</span>
                             </div>
                             <p class="mt-4 text-xs text-gray-400 italic">
-                                灵感来自
+                                靈感來自
                                 <a href="https://github.com/baoyudu/paper-burner" target="_blank" class="text-[#5782F3] hover:text-blue-600 underline">Paper Burner</a>
-                                开源项目，我们在此基础上持续优化迭代<br>
-                                OCR功能基于
+                                開源專案，我們在此基礎上持續最佳化迭代<br>
+                                OCR功能基於
                                 <a href="https://mistral.ai" target="_blank" class="text-[#5782F3] hover:text-blue-600 underline">Mistral OCR</a>
-                                ，我们将在此基础上持续适配更多OCR
+                                ，我們將在此基礎上持續適配更多OCR
                             </p>
                         </article>
                     </div>
@@ -1077,7 +1077,7 @@
         // Initialize a global store for stoppable animations (e.g., looping ones)
         window.stoppableLandingPageAnimations = [];
 
-        // Fetch GitHub Stars (使用统一模块)
+        // Fetch GitHub Stars (使用統一模組)
         var githubStarsTag = document.getElementById('githubStarsTag');
         var githubStarsCount = document.getElementById('githubStarsCount');
         if (githubStarsTag && githubStarsCount && window.GitHubStars) {

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>调试压缩表格修复</title>
+    <title>除錯壓縮表格修復</title>
     <style>
         body {
             font-family: 'Courier New', monospace;
@@ -30,12 +30,12 @@
     </style>
 </head>
 <body>
-    <h1>🐛 调试压缩表格修复</h1>
+    <h1>🐛 除錯壓縮表格修復</h1>
 
     <div id="output"></div>
 
     <script>
-        const compressedTable = `| | | | 五分位数 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 规模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
+        const compressedTable = `| | | | 五分位數 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 規模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
 
         const output = document.getElementById('output');
         const logs = [];
@@ -45,79 +45,79 @@
             console.log(message);
         }
 
-        // 测试正则匹配
-        log('=== 测试 1: 检测分隔符 ===');
+        // 測試正則比對
+        log('=== 測試 1: 檢測分隔符 ===');
         const separatorPattern = /\|\s*:?-+:?\s*\|/;
-        log(`正则: ${separatorPattern}`);
-        log(`测试结果: ${separatorPattern.test(compressedTable)}`);
+        log(`正則: ${separatorPattern}`);
+        log(`測試結果: ${separatorPattern.test(compressedTable)}`);
 
-        // 查找分隔符位置
-        log('\n=== 测试 2: 查找分隔符位置 ===');
+        // 查詢分隔符位置
+        log('\n=== 測試 2: 查詢分隔符位置 ===');
         const fullSeparatorMatch = compressedTable.match(/(\|\s*:?-+:?\s*)+\|/);
         if (fullSeparatorMatch) {
             log(`找到分隔符: "${fullSeparatorMatch[0]}"`);
             log(`起始位置: ${fullSeparatorMatch.index}`);
-            log(`长度: ${fullSeparatorMatch[0].length}`);
+            log(`長度: ${fullSeparatorMatch[0].length}`);
         } else {
             log('未找到分隔符！');
         }
 
-        // 统计管道符
-        log('\n=== 测试 3: 统计管道符 ===');
+        // 統計管道符
+        log('\n=== 測試 3: 統計管道符 ===');
         const pipeCount = (compressedTable.match(/\|/g) || []).length;
-        log(`管道符数量: ${pipeCount}`);
-        log(`长度: ${compressedTable.length}`);
+        log(`管道符數量: ${pipeCount}`);
+        log(`長度: ${compressedTable.length}`);
 
-        // 测试列数识别
+        // 測試列數識別
         if (fullSeparatorMatch) {
-            log('\n=== 测试 4: 识别列数 ===');
+            log('\n=== 測試 4: 識別列數 ===');
             const separator = fullSeparatorMatch[0];
             const separatorPipes = (separator.match(/\|/g) || []).length;
-            const columnCount = separatorPipes - 1; // 列数 = 管道符数 - 1
+            const columnCount = separatorPipes - 1; // 列數 = 管道符數 - 1
             log(`分隔符管道符: ${separatorPipes}`);
-            log(`列数: ${columnCount}`);
+            log(`列數: ${columnCount}`);
 
             // 提取各部分
-            log('\n=== 测试 5: 提取表格部分 ===');
+            log('\n=== 測試 5: 提取表格部分 ===');
             const separatorIndex = fullSeparatorMatch.index;
             const separatorLength = fullSeparatorMatch[0].length;
 
             const beforeSeparator = compressedTable.substring(0, separatorIndex);
             const afterSeparator = compressedTable.substring(separatorIndex + separatorLength);
 
-            log(`表头部分 (${beforeSeparator.length} 字符):`);
+            log(`表標頭分 (${beforeSeparator.length} 字元):`);
             log(`  "${beforeSeparator.substring(0, 100)}..."`);
-            log(`\n数据部分 (${afterSeparator.length} 字符):`);
+            log(`\n資料部分 (${afterSeparator.length} 字元):`);
             log(`  "${afterSeparator.substring(0, 100)}..."`);
 
-            // 计算每行需要的管道符数量
-            log('\n=== 测试 6: 按列数分割 ===');
-            const pipesPerRow = columnCount + 1; // 每行管道符 = 列数 + 1
-            log(`每行需要 ${pipesPerRow} 个管道符`);
+            // 計算每行需要的管道符數量
+            log('\n=== 測試 6: 按列數分割 ===');
+            const pipesPerRow = columnCount + 1; // 每行管道符 = 列數 + 1
+            log(`每行需要 ${pipesPerRow} 個管道符`);
 
-            // 分割表头
-            log('\n提取表头行:');
+            // 分割表頭
+            log('\n提取表頭行:');
             const headerPipes = [];
             for (let i = 0; i < beforeSeparator.length && headerPipes.length < pipesPerRow; i++) {
                 if (beforeSeparator[i] === '|') {
                     headerPipes.push(i);
                 }
             }
-            log(`表头中找到 ${headerPipes.length} 个管道符，位置: ${headerPipes.slice(0, 5)}...`);
+            log(`表頭中找到 ${headerPipes.length} 個管道符，位置: ${headerPipes.slice(0, 5)}...`);
 
             if (headerPipes.length >= pipesPerRow) {
                 const headerRow = beforeSeparator.substring(0, headerPipes[pipesPerRow - 1] + 1);
-                log(`表头行: "${headerRow}"`);
+                log(`表頭行: "${headerRow}"`);
             }
 
-            // 分割数据行
-            log('\n提取数据行:');
+            // 分割資料行
+            log('\n提取資料行:');
             let remaining = afterSeparator.trim();
             let rowNum = 1;
             const dataRows = [];
 
-            while (remaining.length > 0 && rowNum <= 5) { // 最多提取5行用于调试
-                // 跳过开头的管道符
+            while (remaining.length > 0 && rowNum <= 5) { // 最多提取5行用於除錯
+                // 跳過開頭的管道符
                 if (remaining.startsWith('|')) {
                     remaining = remaining.slice(1).trim();
                 }
@@ -143,8 +143,8 @@
                 rowNum++;
             }
 
-            // 组合结果
-            log('\n=== 测试 7: 组合多行表格 ===');
+            // 組合結果
+            log('\n=== 測試 7: 組合多行表格 ===');
             const headerRow = beforeSeparator.substring(0, headerPipes[pipesPerRow - 1] + 1);
             const fixedTable = [
                 headerRow.trim(),
@@ -152,11 +152,11 @@
                 ...dataRows
             ].join('\n');
 
-            log('修复后的表格:');
+            log('修復後的表格:');
             log(fixedTable);
         }
 
-        // 显示日志
+        // 顯示日誌
         const logDiv = document.createElement('div');
         logDiv.className = 'log';
         logDiv.textContent = logs.join('\n');

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>公式渲染问题测试</title>
+    <title>公式渲染問題測試</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -45,22 +45,22 @@
     </style>
 </head>
 <body>
-    <h1>公式渲染问题测试</h1>
+    <h1>公式渲染問題測試</h1>
 
     <div class="test-case">
-        <div class="test-title">问题1: 简单单位公式</div>
+        <div class="test-title">問題1: 簡單單位公式</div>
         <div class="source" id="source1"></div>
         <div class="result" id="result1"></div>
     </div>
 
     <div class="test-case">
-        <div class="test-title">问题2: 段落中的多个公式</div>
+        <div class="test-title">問題2: 段落中的多個公式</div>
         <div class="source" id="source2"></div>
         <div class="result" id="result2"></div>
     </div>
 
     <div class="test-case">
-        <div class="test-title">测试3: 其他类似公式</div>
+        <div class="test-title">測試3: 其他類似公式</div>
         <div class="source" id="source3"></div>
         <div class="result" id="result3"></div>
     </div>
@@ -68,16 +68,16 @@
     <script>
         const testCases = [
             {
-                title: '问题1',
+                title: '問題1',
                 input: '$1\\mathrm{\\;m}/\\mathrm{s}$'
             },
             {
-                title: '问题2',
-                input: '(a) 在 ${10}\\mathrm{\\;{min}}$ 时，${\\mathrm{{CO}}}_{2}$ 在 ${1.5}\\mathrm{\\;m}$ 处 和 1.1 $\\mathrm{m}$ 处，对于 $8\\mathrm{{person}}/{\\mathrm{m}}^{2}$ 的模拟，我们仍使用了 $4\\mathrm{{person}}/{\\mathrm{m}}^{2}$ 的模型'
+                title: '問題2',
+                input: '(a) 在 ${10}\\mathrm{\\;{min}}$ 時，${\\mathrm{{CO}}}_{2}$ 在 ${1.5}\\mathrm{\\;m}$ 處 和 1.1 $\\mathrm{m}$ 處，對於 $8\\mathrm{{person}}/{\\mathrm{m}}^{2}$ 的模擬，我們仍使用了 $4\\mathrm{{person}}/{\\mathrm{m}}^{2}$ 的模型'
             },
             {
-                title: '测试3',
-                input: '速度为 $1\\mathrm{m}/\\mathrm{s}$，质量为 $2\\mathrm{kg}$'
+                title: '測試3',
+                input: '速度為 $1\\mathrm{m}/\\mathrm{s}$，質量為 $2\\mathrm{kg}$'
             }
         ];
 
@@ -91,11 +91,11 @@
                 const rendered = MarkdownProcessorAST.render(testCase.input);
                 resultEl.innerHTML = rendered;
             } catch (error) {
-                resultEl.innerHTML = `<span style="color: red;">错误: ${error.message}</span>`;
+                resultEl.innerHTML = `<span style="color: red;">錯誤: ${error.message}</span>`;
             }
         });
 
-        // 显示诊断信息
+        // 顯示診斷資訊
         console.log('MarkdownProcessorAST Metrics:', MarkdownProcessorAST.getMetrics());
     </script>
 </body>

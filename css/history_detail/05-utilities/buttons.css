@@ -1,46 +1,46 @@
 /**
- * Unified Button System - 统一按钮尺寸系统
+ * Unified Button System - 統一按鈕尺寸系統
  *
- * 职责：全局浮动按钮尺寸标准化
- * 作用域：TOC、Chatbot、沉浸模式等浮动按钮
- * 依赖：variables.css
+ * 職責：全域浮動按鈕尺寸標準化
+ * 作用域：TOC、Chatbot、沉浸模式等浮動按鈕
+ * 依賴：variables.css
  *
  * 提取自：unified-button-sizes.css
  *
  * 包含：
- * - 按钮尺寸变量系统
- * - 圆形按钮样式类
- * - 响应式尺寸调整
- * - 无障碍支持
+ * - 按鈕尺寸變數系統
+ * - 圓形按鈕樣式類
+ * - 響應式尺寸調整
+ * - 無障礙支援
  */
 
-/* ==================== 1. 按钮尺寸变量系统 ==================== */
+/* ==================== 1. 按鈕尺寸變數系統 ==================== */
 
 :root {
-  /* 桌面端按钮尺寸（适中尺寸，不会太小） */
-  --btn-small-size: 40px;    /* TOC按钮等 */
+  /* 桌面端按鈕尺寸（適中尺寸，不會太小） */
+  --btn-small-size: 40px;    /* TOC按鈕等 */
   --btn-medium-size: 44px;   /* Chatbot等 */
-  --btn-large-size: 42px;    /* 沉浸式按钮等 */
+  --btn-large-size: 42px;    /* 沉浸式按鈕等 */
 
-  /* 移动端按钮尺寸（适度缩小但保持可用性） */
+  /* 行動裝置按鈕尺寸（適度縮小但保持可用性） */
   --btn-small-mobile: 36px;
   --btn-medium-mobile: 40px;
   --btn-large-mobile: 44px;
 
-  /* 对应的图标尺寸 */
+  /* 對應的圖示尺寸 */
   --btn-icon-small: 18px;
   --btn-icon-medium: 20px;
   --btn-icon-large: 19px;
 
-  /* 移动端图标尺寸 */
+  /* 行動裝置圖示尺寸 */
   --btn-icon-small-mobile: 16px;
   --btn-icon-medium-mobile: 18px;
   --btn-icon-large-mobile: 18px;
 }
 
-/* ==================== 2. 基础按钮样式 ==================== */
+/* ==================== 2. 基礎按鈕樣式 ==================== */
 
-/* Tiny Round Button (小型圆形按钮) - 极简低调风格 */
+/* Tiny Round Button (小型圓形按鈕) - 極簡低調風格 */
 .tiny-round-btn {
   border-radius: 50% !important;
   background-color: rgba(255, 255, 255, 0.9) !important;
@@ -53,7 +53,7 @@
   justify-content: center !important;
   cursor: pointer !important;
   padding: 0 !important;
-  opacity: 0.6; /* 默认低透明度，减少视觉干扰 */
+  opacity: 0.6; /* 預設低透明度，減少視覺干擾 */
   transition: all 0.2s ease !important;
 
   width: var(--btn-small-size) !important;
@@ -74,14 +74,14 @@
   background-color: #f8fafc !important;
 }
 
-/* 移动端适配 */
+/* 行動裝置適配 */
 @media (max-width: 768px) {
   .tiny-round-btn {
-    opacity: 0.8; /* 移动端稍微不那么透明，因为没有 hover */
+    opacity: 0.8; /* 行動裝置稍微不那麼透明，因為沒有 hover */
   }
 }
 
-/* Medium Round Button (中型圆形按钮) */
+/* Medium Round Button (中型圓形按鈕) */
 .medium-round-btn {
   border-radius: 50% !important;
   background-color: var(--color-primary) !important;
@@ -106,7 +106,7 @@
   transform: scale(1.08);
 }
 
-/* Large Round Button (大型圆形按钮) */
+/* Large Round Button (大型圓形按鈕) */
 .big-round-btn,
 .large-round-btn {
   border-radius: 50% !important;
@@ -133,7 +133,7 @@
   transform: scale(1.08);
 }
 
-/* ==================== 3. 图标样式 ==================== */
+/* ==================== 3. 圖示樣式 ==================== */
 
 .tiny-round-btn > i,
 .medium-round-btn > i,
@@ -144,9 +144,9 @@
   padding: 0 !important;
 }
 
-/* ==================== 4. 特定按钮尺寸覆盖 ==================== */
+/* ==================== 4. 特定按鈕尺寸覆蓋 ==================== */
 
-/* 沉浸式布局按钮 */
+/* 沉浸式版面按鈕 */
 #toggle-immersive-btn {
   width: var(--btn-large-size) !important;
   height: var(--btn-large-size) !important;
@@ -160,7 +160,7 @@
   font-size: var(--btn-icon-medium) !important;
 }
 
-/* Chatbot FAB按钮样式 - 极简低调风格（与 floatingHistoryBtn 一致） */
+/* Chatbot FAB按鈕樣式 - 極簡低調風格（與 floatingHistoryBtn 一致） */
 .chatbot-fab-button {
   width: var(--btn-medium-size) !important;
   height: var(--btn-medium-size) !important;
@@ -175,7 +175,7 @@
   justify-content: center !important;
   cursor: pointer !important;
   padding: 0 !important;
-  opacity: 0.6; /* 默认低透明度，减少视觉干扰 */
+  opacity: 0.6; /* 預設低透明度，減少視覺干擾 */
   transition: all 0.2s ease !important;
   outline: none !important;
 }
@@ -198,9 +198,9 @@
   background-color: #f8fafc !important;
 }
 
-/* ==================== 5. 响应式设计 ==================== */
+/* ==================== 5. 響應式設計 ==================== */
 
-/* 平板设备优化 (768px - 1024px) */
+/* 平板裝置最佳化 (768px - 1024px) */
 @media (max-width: 1024px) and (min-width: 769px) {
   .tiny-round-btn {
     width: 38px !important;
@@ -237,7 +237,7 @@
   }
 }
 
-/* 移动端响应式设计 (700px以下) */
+/* 行動裝置響應式設計 (700px以下) */
 @media (max-width: 700px) {
   :root {
     --btn-small-size: var(--btn-small-mobile);
@@ -276,7 +276,7 @@
   .chatbot-fab-button {
     width: var(--btn-medium-mobile) !important;
     height: var(--btn-medium-mobile) !important;
-    opacity: 0.8; /* 移动端稍微不那么透明，因为没有 hover */
+    opacity: 0.8; /* 行動裝置稍微不那麼透明，因為沒有 hover */
   }
 
   .chatbot-fab-button i {
@@ -290,7 +290,7 @@
   }
 }
 
-/* 极小屏幕设备 (400px以下) */
+/* 極小螢幕裝置 (400px以下) */
 @media (max-width: 400px) {
   .tiny-round-btn {
     width: 34px !important;
@@ -327,9 +327,9 @@
   }
 }
 
-/* ==================== 6. 无障碍支持 ==================== */
+/* ==================== 6. 無障礙支援 ==================== */
 
-/* 减少动画偏好 */
+/* 減少動畫偏好 */
 @media (prefers-reduced-motion: reduce) {
   .tiny-round-btn,
   .medium-round-btn,
@@ -346,7 +346,7 @@
   }
 }
 
-/* 高对比度模式支持 */
+/* 高對比度模式支援 */
 @media (prefers-contrast: high) {
   .tiny-round-btn,
   .medium-round-btn,
@@ -357,7 +357,7 @@
   }
 }
 
-/* ==================== 7. 暗色模式适配 ==================== */
+/* ==================== 7. 暗色模式適配 ==================== */
 
 @media (prefers-color-scheme: dark) {
   .tiny-round-btn {

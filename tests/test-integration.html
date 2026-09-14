@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>集成层演示</title>
+    <title>整合層演示</title>
     <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -115,10 +115,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔗 AST 集成层演示</h1>
+        <h1>🔗 AST 整合層演示</h1>
 
         <div class="info-panel">
-            <h3>当前架构信息</h3>
+            <h3>當前架構資訊</h3>
             <div id="archInfo"></div>
             <div class="metrics" id="metrics"></div>
         </div>
@@ -126,11 +126,11 @@
         <div class="info-panel">
             <h3>📚 API 使用示例</h3>
 
-            <h4 style="margin-top: 20px;">1. 智能渲染（自动选择 AST 或旧版）</h4>
-            <div class="code-example">// 简单渲染（无注释）
+            <h4 style="margin-top: 20px;">1. 智慧渲染（自動選擇 AST 或舊版）</h4>
+            <div class="code-example">// 簡單渲染（無註釋）
 const html = MarkdownIntegration.smartRender(markdown, images);
 
-// 带注释渲染
+// 帶註釋渲染
 const annotations = [{ text: 'test', id: 'ann-1' }];
 const html = MarkdownIntegration.smartRender(
     markdown,
@@ -140,15 +140,15 @@ const html = MarkdownIntegration.smartRender(
 );</div>
 
             <h4 style="margin-top: 20px;">2. 替代 createCustomMarkdownRenderer</h4>
-            <div class="code-example">// 旧版（不再工作）
+            <div class="code-example">// 舊版（不再工作）
 const renderer = createCustomMarkdownRenderer(annotations, 'ocr', ...);
 marked(md, { renderer });
 
-// 新版（使用集成层）
+// 新版（使用整合層）
 const config = MarkdownIntegration.createAnnotationConfig(annotations, 'ocr');
 const html = config.render(markdown, images);</div>
 
-            <h4 style="margin-top: 20px;">3. 批量渲染 tokens</h4>
+            <h4 style="margin-top: 20px;">3. 批次渲染 tokens</h4>
             <div class="code-example">const tokens = marked.lexer(markdown);
 const htmlArray = MarkdownIntegration.renderTokens(
     tokens,
@@ -159,43 +159,43 @@ const htmlArray = MarkdownIntegration.renderTokens(
         </div>
 
         <div class="test-section">
-            <h3>🧪 实时测试</h3>
-            <button onclick="testSimple()">测试 1: 简单渲染</button>
-            <button onclick="testWithAnnotations()">测试 2: 带注释渲染</button>
-            <button onclick="testBatch()">测试 3: 批量渲染</button>
-            <button onclick="showMetrics()">显示性能指标</button>
+            <h3>🧪 實時測試</h3>
+            <button onclick="testSimple()">測試 1: 簡單渲染</button>
+            <button onclick="testWithAnnotations()">測試 2: 帶註釋渲染</button>
+            <button onclick="testBatch()">測試 3: 批次渲染</button>
+            <button onclick="showMetrics()">顯示效能指標</button>
             <div class="result" id="result"></div>
         </div>
     </div>
 
-    <!-- 依赖库 -->
+    <!-- 依賴庫 -->
     <script src="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>
 
-    <!-- 处理器 -->
+    <!-- 處理器 -->
     <script src="js/processing/markdown_processor_enhanced.js"></script>
     <script src="js/processing/annotation_plugin_ast.js"></script>
     <script src="js/processing/markdown_processor_ast.js"></script>
     <script src="js/processing/markdown_processor_integration.js"></script>
 
     <script>
-        // 显示架构信息
+        // 顯示架構資訊
         function updateArchInfo() {
             const arch = MarkdownIntegration.getActiveArchitecture();
             const archInfo = document.getElementById('archInfo');
 
             archInfo.innerHTML = `
                 <div style="font-size: 18px; margin-top: 10px;">
-                    当前架构: <span class="success">${arch}</span>
+                    當前架構: <span class="success">${arch}</span>
                 </div>
                 <div style="margin-top: 10px; color: #64748b;">
-                    ${arch === 'AST' ? '✓ 使用 markdown-it + AST 插件系统' : '⚠ 使用旧版渲染器'}
+                    ${arch === 'AST' ? '✓ 使用 markdown-it + AST 外掛系統' : '⚠ 使用舊版渲染器'}
                 </div>
             `;
         }
 
-        // 显示性能指标
+        // 顯示效能指標
         function showMetrics() {
             const metrics = MarkdownIntegration.getMetrics();
             const metricsDiv = document.getElementById('metrics');
@@ -212,9 +212,9 @@ const htmlArray = MarkdownIntegration.renderTokens(
             metricsDiv.innerHTML = cards;
         }
 
-        // 测试 1: 简单渲染
+        // 測試 1: 簡單渲染
         function testSimple() {
-            const markdown = `# 简单渲染测试
+            const markdown = `# 簡單渲染測試
 
 This is a **test** with formula: $x^2 + y^2 = z^2$
 
@@ -229,7 +229,7 @@ This is a **test** with formula: $x^2 + y^2 = z^2$
             document.getElementById('result').innerHTML = `
                 <div style="margin-bottom: 15px;">
                     <strong class="success">✓ 渲染成功</strong>
-                    <span style="color: #64748b; margin-left: 10px;">耗时: ${time.toFixed(2)} ms</span>
+                    <span style="color: #64748b; margin-left: 10px;">耗時: ${time.toFixed(2)} ms</span>
                 </div>
                 ${html}
             `;
@@ -237,9 +237,9 @@ This is a **test** with formula: $x^2 + y^2 = z^2$
             console.log('Simple render:', time.toFixed(2), 'ms');
         }
 
-        // 测试 2: 带注释渲染
+        // 測試 2: 帶註釋渲染
         function testWithAnnotations() {
-            const markdown = `# 注释渲染测试
+            const markdown = `# 註釋渲染測試
 
 The word **test** appears multiple times in this test document.
 We can annotate the word test and it will be highlighted.`;
@@ -260,9 +260,9 @@ We can annotate the word test and it will be highlighted.`;
 
             document.getElementById('result').innerHTML = `
                 <div style="margin-bottom: 15px;">
-                    <strong class="success">✓ 带注释渲染成功</strong>
+                    <strong class="success">✓ 帶註釋渲染成功</strong>
                     <span style="color: #64748b; margin-left: 10px;">
-                        ${annotations.length} 个注释 | 耗时: ${time.toFixed(2)} ms
+                        ${annotations.length} 個註釋 | 耗時: ${time.toFixed(2)} ms
                     </span>
                 </div>
                 ${html}
@@ -271,7 +271,7 @@ We can annotate the word test and it will be highlighted.`;
             console.log('Annotation render:', time.toFixed(2), 'ms');
         }
 
-        // 测试 3: 批量渲染
+        // 測試 3: 批次渲染
         function testBatch() {
             const markdown = `# Heading 1
 
@@ -298,9 +298,9 @@ Paragraph 2 with more text.
 
             document.getElementById('result').innerHTML = `
                 <div style="margin-bottom: 15px;">
-                    <strong class="success">✓ 批量渲染成功</strong>
+                    <strong class="success">✓ 批次渲染成功</strong>
                     <span style="color: #64748b; margin-left: 10px;">
-                        ${tokens.length} 个块 | 耗时: ${time.toFixed(2)} ms
+                        ${tokens.length} 個塊 | 耗時: ${time.toFixed(2)} ms
                     </span>
                 </div>
                 ${htmlArray.join('\n')}
@@ -309,7 +309,7 @@ Paragraph 2 with more text.
             console.log('Batch render:', tokens.length, 'tokens in', time.toFixed(2), 'ms');
         }
 
-        // 页面加载时显示架构信息
+        // 頁面載入時顯示架構資訊
         window.addEventListener('load', () => {
             updateArchInfo();
             showMetrics();

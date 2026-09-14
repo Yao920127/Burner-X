@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>花括号开头公式测试</title>
+    <title>花括號開頭公式測試</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -55,8 +55,8 @@
     </style>
 </head>
 <body>
-    <h1>🔍 花括号开头公式测试</h1>
-    <p><strong>问题：</strong> <code>${...}</code> 格式的公式无法渲染</p>
+    <h1>🔍 花括號開頭公式測試</h1>
+    <p><strong>問題：</strong> <code>${...}</code> 格式的公式無法渲染</p>
 
     <div id="test-container"></div>
 
@@ -81,14 +81,14 @@
             const div = document.createElement('div');
             div.className = 'test-case';
 
-            // 标题
+            // 標題
             const title = document.createElement('div');
             title.style.fontWeight = 'bold';
             title.style.marginBottom = '8px';
-            title.textContent = `测试 ${i + 1}`;
+            title.textContent = `測試 ${i + 1}`;
             div.appendChild(title);
 
-            // 源码
+            // 原始碼
             const source = document.createElement('div');
             source.className = 'source';
             source.textContent = test.input;
@@ -121,7 +121,7 @@
             div.appendChild(astLabel);
             div.appendChild(astResult);
 
-            // KaTeX 直接渲染（参考）
+            // KaTeX 直接渲染（參考）
             const katexLabel = document.createElement('div');
             katexLabel.style.fontSize = '12px';
             katexLabel.style.marginTop = '8px';
@@ -133,7 +133,7 @@
             try {
                 katex.render(test.katex, katexDiv, { throwOnError: false });
             } catch (error) {
-                katexDiv.textContent = `KaTeX 错误: ${error.message}`;
+                katexDiv.textContent = `KaTeX 錯誤: ${error.message}`;
             }
 
             div.appendChild(katexLabel);
@@ -142,7 +142,7 @@
             container.appendChild(div);
         });
 
-        // 总结
+        // 總結
         setTimeout(() => {
             const summary = document.createElement('div');
             summary.style.marginTop = '30px';
@@ -154,11 +154,11 @@
             if (passCount === testCases.length) {
                 summary.style.background = '#d4edda';
                 summary.style.color = '#155724';
-                summary.textContent = `✅ 完美！${passCount}/${testCases.length} 测试通过`;
+                summary.textContent = `✅ 完美！${passCount}/${testCases.length} 測試透過`;
             } else {
                 summary.style.background = '#fff3cd';
                 summary.style.color = '#856404';
-                summary.textContent = `⚠️ ${passCount}/${testCases.length} 测试通过`;
+                summary.textContent = `⚠️ ${passCount}/${testCases.length} 測試透過`;
             }
 
             container.appendChild(summary);

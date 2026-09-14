@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>KaTeX 渐进式渲染性能测试</title>
+  <title>KaTeX 漸進式渲染效能測試</title>
   <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <style>
     body {
@@ -155,69 +155,69 @@
 </head>
 <body>
   <div class="header">
-    <h1>⚡ KaTeX 渐进式渲染性能测试</h1>
-    <p>测试目标：首次可见内容 &lt; 300ms，用户感知速度提升 10 倍</p>
+    <h1>⚡ KaTeX 漸進式渲染效能測試</h1>
+    <p>測試目標：首次可見內容 &lt; 300ms，使用者感知速度提升 10 倍</p>
   </div>
 
   <div class="test-controls">
-    <h2>测试控制</h2>
+    <h2>測試控制</h2>
     <div class="button-group">
-      <button class="btn-primary" onclick="testProgressive()">🚀 测试渐进式渲染</button>
-      <button class="btn-secondary" onclick="testTraditional()">🐌 测试传统渲染</button>
-      <button class="btn-danger" onclick="clearResults()">🗑️ 清除结果</button>
+      <button class="btn-primary" onclick="testProgressive()">🚀 測試漸進式渲染</button>
+      <button class="btn-secondary" onclick="testTraditional()">🐌 測試傳統渲染</button>
+      <button class="btn-danger" onclick="clearResults()">🗑️ 清除結果</button>
     </div>
     <div>
       <label>
         <input type="checkbox" id="useRealMessage" checked>
-        使用真实复杂消息（15+ 公式 + 表格）
+        使用真實複雜訊息（15+ 公式 + 表格）
       </label>
     </div>
   </div>
 
   <div class="results">
     <div class="metric-card">
-      <h3>首次可见时间</h3>
+      <h3>首次可見時間</h3>
       <div class="metric-value metric-info" id="firstVisibleTime">--</div>
-      <small>目标: &lt; 300ms</small>
+      <small>目標: &lt; 300ms</small>
     </div>
     <div class="metric-card">
       <h3>全部公式渲染完成</h3>
       <div class="metric-value metric-info" id="allFormulasTime">--</div>
-      <small>总渲染时间</small>
+      <small>總渲染時間</small>
     </div>
     <div class="metric-card">
-      <h3>公式数量</h3>
+      <h3>公式數量</h3>
       <div class="metric-value metric-info" id="formulaCount">--</div>
-      <small>总计</small>
+      <small>總計</small>
     </div>
     <div class="metric-card">
-      <h3>性能提升</h3>
+      <h3>效能提升</h3>
       <div class="metric-value metric-good" id="improvement">--</div>
-      <small>相比传统渲染</small>
+      <small>相比傳統渲染</small>
     </div>
   </div>
 
   <div class="comparison">
-    <h3>渲染进度</h3>
+    <h3>渲染進度</h3>
     <div class="progress-bar">
       <div class="progress-fill" id="progressBar" style="width: 0%;">0%</div>
     </div>
-    <div id="progressText" style="margin-top: 10px; color: #718096;">等待测试...</div>
+    <div id="progressText" style="margin-top: 10px; color: #718096;">等待測試...</div>
   </div>
 
   <div class="render-output">
-    <h3>渲染输出预览</h3>
+    <h3>渲染輸出預覽</h3>
     <div id="renderOutput"></div>
   </div>
 
   <div class="log" id="logOutput"></div>
 
-  <!-- 依赖库 -->
+  <!-- 依賴庫 -->
   <script src="https://gcore.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script src="https://gcore.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 
-  <!-- 加载测试所需的模块 -->
+  <!-- 載入測試所需的模組 -->
   <script src="../../js/chatbot/utils/safe-markdown-render.js"></script>
   <script src="../../js/chatbot/utils/katex-cache.js"></script>
   <script src="../../js/chatbot/utils/markdown-katex-render-cached.js"></script>
@@ -238,67 +238,67 @@
       });
     }
 
-    // 测试数据：真实的复杂消息
-    const REAL_COMPLEX_MESSAGE = `# Fama-MacBeth 回归分析总结
+    // 測試資料：真實的複雜訊息
+    const REAL_COMPLEX_MESSAGE = `# Fama-MacBeth 迴歸分析總結
 
-## 一、方法论概述
+## 一、方法論概述
 
-Fama-MacBeth 回归是一种**两步回归方法**，主要用于面板数据分析：
+Fama-MacBeth 迴歸是一種**兩步迴歸方法**，主要用於面板資料分析：
 
-1. **第一步（时间序列回归）**：对每个时间点 $t$ 进行横截面回归
+1. **第一步（時間序列迴歸）**：對每個時間點 $t$ 進行橫截面迴歸
    $$r_{i,t} = \\alpha_t + \\beta_t X_{i,t} + \\varepsilon_{i,t}$$
 
-2. **第二步（横截面平均）**：计算系数的时间序列均值和 t 统计量
+2. **第二步（橫截面平均）**：計算係數的時間序列均值和 t 統計量
    $$\\bar{\\beta} = \\frac{1}{T}\\sum_{t=1}^{T}\\beta_t$$
 
-## 二、关键假设
+## 二、關鍵假設
 
-### 2.1 基本假设
+### 2.1 基本假設
 
-| 假设 | 描述 | 重要性 |
+| 假設 | 描述 | 重要性 |
 |------|------|--------|
-| 独立同分布 | 横截面误差项独立 | ⭐⭐⭐ |
-| 时间稳定性 | 系数随时间稳定 | ⭐⭐⭐ |
-| 无自相关 | 时间序列无相关性 | ⭐⭐ |
+| 獨立同分布 | 橫截面誤差項獨立 | ⭐⭐⭐ |
+| 時間穩定性 | 係數隨時間穩定 | ⭐⭐⭐ |
+| 無自相關 | 時間序列無相關性 | ⭐⭐ |
 
-### 2.2 数学表达
+### 2.2 數學表達
 
-误差项的协方差矩阵：
+誤差項的協方差矩陣：
 
 $$\\text{Var}(\\varepsilon_t) = \\sigma^2 I_N$$
 
-其中 $I_N$ 是 $N \\times N$ 单位矩阵。
+其中 $I_N$ 是 $N \\times N$ 單位矩陣。
 
-## 三、统计推断
+## 三、統計推斷
 
-### 3.1 标准误估计
+### 3.1 標準誤估計
 
-使用 Newey-West 调整的标准误：
+使用 Newey-West 調整的標準誤：
 
 $$SE(\\bar{\\beta}) = \\sqrt{\\frac{1}{T}\\sum_{t=1}^{T}(\\beta_t - \\bar{\\beta})^2}$$
 
-### 3.2 t 统计量
+### 3.2 t 統計量
 
 $$t = \\frac{\\bar{\\beta}}{SE(\\bar{\\beta})} \\sim t_{T-1}$$
 
-### 3.3 显著性检验
+### 3.3 顯著性檢驗
 
-在显著性水平 $\\alpha$ 下：
-- 如果 $|t| > t_{\\alpha/2, T-1}$，则拒绝 $H_0: \\beta = 0$
-- 临界值通常为 $t_{0.025, \\infty} \\approx 1.96$（双侧检验）
+在顯著性水平 $\\alpha$ 下：
+- 如果 $|t| > t_{\\alpha/2, T-1}$，則拒絕 $H_0: \\beta = 0$
+- 臨界值通常為 $t_{0.025, \\infty} \\approx 1.96$（雙側檢驗）
 
-## 四、实证应用案例
+## 四、實證應用案例
 
-### 4.1 CAPM 检验
+### 4.1 CAPM 檢驗
 
-检验资本资产定价模型：
+檢驗資本資產定價模型：
 
 $$E[r_i] - r_f = \\beta_i (E[r_m] - r_f)$$
 
 其中：
-- $r_i$：资产 i 的收益率
-- $r_f$：无风险收益率
-- $r_m$：市场收益率
+- $r_i$：資產 i 的收益率
+- $r_f$：無風險收益率
+- $r_m$：市場收益率
 - $\\beta_i = \\frac{\\text{Cov}(r_i, r_m)}{\\text{Var}(r_m)}$
 
 ### 4.2 Fama-French 三因子模型
@@ -306,38 +306,38 @@ $$E[r_i] - r_f = \\beta_i (E[r_m] - r_f)$$
 $$r_{i,t} - r_{f,t} = \\alpha_i + \\beta_{1i}(r_{m,t} - r_{f,t}) + \\beta_{2i}SMB_t + \\beta_{3i}HML_t + \\varepsilon_{i,t}$$
 
 其中：
-- $SMB_t$：小盘股减大盘股收益（Size Premium）
-- $HML_t$：高账面市值比减低账面市值比收益（Value Premium）
+- $SMB_t$：小盤股減大盤股收益（Size Premium）
+- $HML_t$：高賬面市值比減低賬面市值比收益（Value Premium）
 
-## 五、优缺点分析
+## 五、優缺點分析
 
-### 5.1 优点
+### 5.1 優點
 
-1. **控制横截面相关性**：通过时间平均自动消除横截面相关
-2. **稳健标准误**：Fama-MacBeth 标准误对横截面相关性稳健
-3. **简单易实现**：计算过程直观，易于编程实现
+1. **控制橫截面相關性**：透過時間平均自動消除橫截面相關
+2. **穩健標準誤**：Fama-MacBeth 標準誤對橫截面相關性穩健
+3. **簡單易實現**：計算過程直觀，易於程式設計實現
 
-### 5.2 缺点
+### 5.2 缺點
 
-1. **假设严格**：要求系数时间稳定性
-2. **效率损失**：相比固定效应模型可能损失效率
-3. **时间序列相关**：需要处理时间序列自相关问题
+1. **假設嚴格**：要求係數時間穩定性
+2. **效率損失**：相比固定效應模型可能損失效率
+3. **時間序列相關**：需要處理時間序列自相關問題
 
-## 六、改进方法
+## 六、改進方法
 
-### 6.1 Driscoll-Kraay 标准误
+### 6.1 Driscoll-Kraay 標準誤
 
-适用于面板数据的异方差和自相关一致性（HAC）估计：
+適用於面板資料的異方差和自相關一致性（HAC）估計：
 
 $$\\hat{V}_{DK} = (X'X)^{-1}\\left[\\sum_{j=-q}^{q}w_j\\sum_{t=j+1}^{T}u_t u_{t-j}'\\right](X'X)^{-1}$$
 
-### 6.2 聚类稳健标准误
+### 6.2 聚類穩健標準誤
 
-按时间或个体聚类：
+按時間或個體聚類：
 
 $$\\hat{V}_{cluster} = (X'X)^{-1}\\left[\\sum_{g=1}^{G}X_g'u_g u_g' X_g\\right](X'X)^{-1}$$
 
-## 七、Python 实现示例
+## 七、Python 實現示例
 
 \`\`\`python
 import numpy as np
@@ -346,28 +346,28 @@ from scipy import stats
 
 def fama_macbeth_regression(returns, factors):
     """
-    Fama-MacBeth 两步回归
+    Fama-MacBeth 兩步迴歸
 
-    参数:
-    - returns: (T x N) 收益率矩阵
-    - factors: (T x K) 因子矩阵
+    引數:
+    - returns: (T x N) 收益率矩陣
+    - factors: (T x K) 因子矩陣
 
     返回:
-    - betas: (K,) 因子风险溢价
-    - t_stats: (K,) t 统计量
+    - betas: (K,) 因子風險溢價
+    - t_stats: (K,) t 統計量
     """
     T, N = returns.shape
     K = factors.shape[1]
 
-    # 第一步：时间序列回归
+    # 第一步：時間序列迴歸
     betas_t = np.zeros((T, K))
     for t in range(T):
-        # 横截面回归
+        # 橫截面迴歸
         X = factors[t].reshape(-1, K)
         y = returns[t]
         betas_t[t] = np.linalg.lstsq(X, y, rcond=None)[0]
 
-    # 第二步：横截面平均
+    # 第二步：橫截面平均
     betas = np.mean(betas_t, axis=0)
     se = np.std(betas_t, axis=0, ddof=1) / np.sqrt(T)
     t_stats = betas / se
@@ -381,44 +381,44 @@ returns = np.random.randn(T, N) * 0.02
 factors = np.random.randn(T, K)
 
 betas, t_stats = fama_macbeth_regression(returns, factors)
-print(f"因子风险溢价: {betas}")
-print(f"t 统计量: {t_stats}")
+print(f"因子風險溢價: {betas}")
+print(f"t 統計量: {t_stats}")
 \`\`\`
 
-## 八、总结
+## 八、總結
 
-Fama-MacBeth 回归是**资产定价实证研究的标准工具**，特别适用于：
+Fama-MacBeth 迴歸是**資產定價實證研究的標準工具**，特別適用於：
 
-1. 检验资产定价模型（CAPM、APT、Fama-French 等）
-2. 估计风险溢价和因子载荷
-3. 控制横截面相关性的面板数据分析
+1. 檢驗資產定價模型（CAPM、APT、Fama-French 等）
+2. 估計風險溢價和因子載荷
+3. 控制橫截面相關性的面板資料分析
 
-**核心公式回顾**：
+**核心公式回顧**：
 
 $$\\bar{\\beta} = \\frac{1}{T}\\sum_{t=1}^{T}\\beta_t, \\quad SE(\\bar{\\beta}) = \\sqrt{\\frac{1}{T(T-1)}\\sum_{t=1}^{T}(\\beta_t - \\bar{\\beta})^2}$$
 
 $$t = \\frac{\\bar{\\beta}}{SE(\\bar{\\beta})} \\sim t_{T-1}$$`;
 
-    const SIMPLE_TEST_MESSAGE = `# 简单测试消息
+    const SIMPLE_TEST_MESSAGE = `# 簡單測試訊息
 
-这是一个包含几个公式的测试：
+這是一個包含幾個公式的測試：
 
-行内公式：$E = mc^2$ 和 $a^2 + b^2 = c^2$
+行內公式：$E = mc^2$ 和 $a^2 + b^2 = c^2$
 
-块级公式：
+塊級公式：
 
 $$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
 
 $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
 
-更多内容...`;
+更多內容...`;
 
     let logEntries = [];
     let traditionalTime = null;
     let progressiveTime = null;
 
     function log(message, type = 'info') {
-      const timestamp = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+      const timestamp = new Date().toLocaleTimeString('zh-TW', { hour12: false });
       const entry = `[${timestamp}] ${message}`;
       logEntries.push({ message: entry, type });
 
@@ -447,35 +447,35 @@ $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
     }
 
     async function testProgressive() {
-      log('开始渐进式渲染测试', 'info');
+      log('開始漸進式渲染測試', 'info');
       clearResults();
 
       const useRealMessage = document.getElementById('useRealMessage').checked;
       const markdown = useRealMessage ? REAL_COMPLEX_MESSAGE : SIMPLE_TEST_MESSAGE;
 
-      updateProgress(10, '准备测试数据...');
+      updateProgress(10, '準備測試資料...');
       await sleep(100);
 
-      // 清空输出区域
+      // 清空輸出區域
       const renderOutput = document.getElementById('renderOutput');
       renderOutput.innerHTML = '';
 
-      updateProgress(20, '开始渲染...');
+      updateProgress(20, '開始渲染...');
 
-      // 记录开始时间
+      // 記錄開始時間
       const startTime = performance.now();
 
-      // 使用渐进式渲染
+      // 使用漸進式渲染
       const html = window.renderWithKatexStreaming(markdown);
       renderOutput.innerHTML = html;
 
-      // 记录首次可见时间（Markdown 渲染完成）
+      // 記錄首次可見時間（Markdown 渲染完成）
       const firstVisibleTime = performance.now() - startTime;
       updateMetric('firstVisibleTime', `${firstVisibleTime.toFixed(1)}ms`,
         firstVisibleTime < 300 ? 'metric-good' : firstVisibleTime < 500 ? 'metric-warning' : 'metric-bad');
-      log(`✅ 首次可见: ${firstVisibleTime.toFixed(1)}ms`, 'success');
+      log(`✅ 首次可見: ${firstVisibleTime.toFixed(1)}ms`, 'success');
 
-      updateProgress(50, '文本内容已可见，公式正在后台渲染...');
+      updateProgress(50, '文字內容已可見，公式正在後臺渲染...');
 
       // 等待所有公式渲染完成
       await waitForFormulas();
@@ -487,53 +487,53 @@ $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
       updateMetric('formulaCount', formulaCount, 'metric-info');
 
       log(`✅ 全部渲染完成: ${totalTime.toFixed(1)}ms`, 'success');
-      log(`📊 共渲染 ${formulaCount} 个公式`, 'info');
+      log(`📊 共渲染 ${formulaCount} 個公式`, 'info');
 
-      updateProgress(100, `✅ 渲染完成！首次可见 ${firstVisibleTime.toFixed(1)}ms，总耗时 ${totalTime.toFixed(1)}ms`);
+      updateProgress(100, `✅ 渲染完成！首次可見 ${firstVisibleTime.toFixed(1)}ms，總耗時 ${totalTime.toFixed(1)}ms`);
 
       progressiveTime = { first: firstVisibleTime, total: totalTime };
       updateComparison();
 
-      // 显示缓存统计
+      // 顯示快取統計
       if (window.getKatexCacheStats) {
         const stats = window.katexCache.getStats();
-        log(`📈 缓存统计: ${stats.hitRate} 命中率, ${stats.hits} 命中, ${stats.misses} 未命中`, 'info');
+        log(`📈 快取統計: ${stats.hitRate} 命中率, ${stats.hits} 命中, ${stats.misses} 未命中`, 'info');
       }
     }
 
     async function testTraditional() {
-      log('开始传统渲染测试（对照组）', 'info');
+      log('開始傳統渲染測試（對照組）', 'info');
       clearResults();
 
       const useRealMessage = document.getElementById('useRealMessage').checked;
       const markdown = useRealMessage ? REAL_COMPLEX_MESSAGE : SIMPLE_TEST_MESSAGE;
 
-      updateProgress(10, '准备测试数据...');
+      updateProgress(10, '準備測試資料...');
       await sleep(100);
 
-      // 清空输出区域
+      // 清空輸出區域
       const renderOutput = document.getElementById('renderOutput');
       renderOutput.innerHTML = '';
 
-      updateProgress(30, '传统方式渲染中（阻塞主线程）...');
+      updateProgress(30, '傳統方式渲染中（阻塞主執行緒）...');
 
-      // 记录开始时间
+      // 記錄開始時間
       const startTime = performance.now();
 
-      // 临时禁用渐进式渲染
+      // 臨時禁用漸進式渲染
       const originalEnable = window.katexProgressiveRenderer ?
         window.PROGRESSIVE_CONFIG?.ENABLE : false;
 
       if (window.katexProgressiveRenderer) {
-        // 直接使用传统渲染
+        // 直接使用傳統渲染
         const cacheRender = window.renderKatexCached || katex.renderToString;
 
-        // 保存原始函数
+        // 儲存原始函式
         const progressiveRender = window.renderWithKatexStreaming;
 
-        // 临时使用非缓存版本
+        // 臨時使用非快取版本
         window.renderWithKatexStreaming = function(md) {
-          // 使用传统同步渲染所有公式
+          // 使用傳統同步渲染所有公式
           md = md.replace(/\$\$([\s\S]+?)\$\$/g, function(_, tex) {
             try {
               const html = katex.renderToString(tex.trim(), {
@@ -568,7 +568,7 @@ $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
         const html = window.renderWithKatexStreaming(markdown);
         renderOutput.innerHTML = html;
 
-        // 恢复原始函数
+        // 恢復原始函式
         window.renderWithKatexStreaming = progressiveRender;
       }
 
@@ -580,10 +580,10 @@ $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
       updateMetric('allFormulasTime', `${totalTime.toFixed(1)}ms`, 'metric-info');
       updateMetric('formulaCount', formulaCount, 'metric-info');
 
-      log(`⏱️ 传统渲染完成: ${totalTime.toFixed(1)}ms（阻塞主线程）`, 'warning');
-      log(`📊 共渲染 ${formulaCount} 个公式`, 'info');
+      log(`⏱️ 傳統渲染完成: ${totalTime.toFixed(1)}ms（阻塞主執行緒）`, 'warning');
+      log(`📊 共渲染 ${formulaCount} 個公式`, 'info');
 
-      updateProgress(100, `完成！总耗时 ${totalTime.toFixed(1)}ms（主线程阻塞）`);
+      updateProgress(100, `完成！總耗時 ${totalTime.toFixed(1)}ms（主執行緒阻塞）`);
 
       traditionalTime = { first: totalTime, total: totalTime };
       updateComparison();
@@ -591,7 +591,7 @@ $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
 
     async function waitForFormulas() {
       return new Promise((resolve) => {
-        // 检查是否还有占位符
+        // 檢查是否還有佔位符
         const checkInterval = setInterval(() => {
           const placeholders = document.querySelectorAll('.katex-placeholder');
           if (placeholders.length === 0) {
@@ -619,7 +619,7 @@ $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
         const improvementText = improvement > 0 ? `${improvement.toFixed(1)}%` : '0%';
         updateMetric('improvement', improvementText, improvement > 50 ? 'metric-good' : 'metric-warning');
 
-        log(`🎯 性能提升: ${improvementText} (${traditionalTime.first.toFixed(1)}ms → ${progressiveTime.first.toFixed(1)}ms)`, 'success');
+        log(`🎯 效能提升: ${improvementText} (${traditionalTime.first.toFixed(1)}ms → ${progressiveTime.first.toFixed(1)}ms)`, 'success');
       }
     }
 
@@ -629,11 +629,11 @@ $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
       updateMetric('allFormulasTime', '--', 'metric-info');
       updateMetric('formulaCount', '--', 'metric-info');
       updateMetric('improvement', '--', 'metric-info');
-      updateProgress(0, '等待测试...');
+      updateProgress(0, '等待測試...');
 
       logEntries = [];
       document.getElementById('logOutput').innerHTML = '';
-      log('测试结果已清除', 'info');
+      log('測試結果已清除', 'info');
     }
 
     function sleep(ms) {
@@ -641,9 +641,9 @@ $$\\frac{\\partial f}{\\partial x} = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$$
     }
 
     // 初始化
-    log('🚀 KaTeX 渐进式渲染测试工具已加载', 'success');
-    log('💡 提示: 点击"测试渐进式渲染"查看优化效果', 'info');
-    log(`📦 渐进式渲染已${window.katexProgressiveRenderer ? '启用' : '禁用'}`,
+    log('🚀 KaTeX 漸進式渲染測試工具已載入', 'success');
+    log('💡 提示: 點選"測試漸進式渲染"檢視最佳化效果', 'info');
+    log(`📦 漸進式渲染已${window.katexProgressiveRenderer ? '啟用' : '禁用'}`,
       window.katexProgressiveRenderer ? 'success' : 'warning');
   </script>
 </body>

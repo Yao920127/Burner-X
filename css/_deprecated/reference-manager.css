@@ -1,11 +1,11 @@
 /* css/reference-manager.css */
-/* 参考文献管理器主样式文件 - 导入各模块样式 */
+/* 參考文獻管理器主樣式檔案 - 匯入各模組樣式 */
 
-/* 基础样式 - 模态框、工具栏、表格 */
+/* 基礎樣式 - 模態框、工具列、表格 */
 @import url('./reference-manager-base.css');
 
-/* 详情页样式 - 悬浮面板、引用链接、详情卡片 */
+/* 詳情頁樣式 - 懸浮面板、參考連結、詳情卡片 */
 @import url('./reference-manager-detail.css');
 
-/* 元数据丰富样式 - 配置模态框 */
+/* 後設資料豐富樣式 - 配置模態框 */
 @import url('./reference-manager-enrichment.css');

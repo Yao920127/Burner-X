@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>测试页：翻译备择库</title>
+  <title>測試頁：翻譯備擇庫</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/iconify-icon@1.0.7/dist/iconify-icon.min.js"></script>
 </head>
 <body class="bg-gray-50">
   <div class="max-w-5xl mx-auto p-6">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">测试：翻译备择库（术语库）</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">測試：翻譯備擇庫（術語庫）</h1>
 
-    <!-- 控制区：开关与导入导出 -->
+    <!-- 控制區：開關與匯入匯出 -->
     <div class="bg-white rounded-lg border p-4 mb-6">
       <div class="flex items-center justify-between mb-3">
         <label class="flex items-center text-sm text-gray-700 select-none">
           <input id="enableGlossaryToggleTest" type="checkbox" class="rounded mr-2">
-          启用翻译备择库（保存到全局设置）
+          啟用翻譯備擇庫（儲存到全域設定）
         </label>
         <div class="flex items-center gap-2">
-          <button id="addGlossarySetBtn" class="px-3 py-1.5 text-sm border rounded hover:bg-gray-50">新增术语库</button>
-          <button id="importGlossarySetBtn" class="px-3 py-1.5 text-sm border rounded hover:bg-gray-50">导入术语库</button>
+          <button id="addGlossarySetBtn" class="px-3 py-1.5 text-sm border rounded hover:bg-gray-50">新增術語庫</button>
+          <button id="importGlossarySetBtn" class="px-3 py-1.5 text-sm border rounded hover:bg-gray-50">匯入術語庫</button>
           <input id="importGlossarySetFile" type="file" accept="application/json" class="hidden">
-          <button id="exportAllGlossarySetsBtn" class="px-3 py-1.5 text-sm border rounded hover:bg-gray-50">导出全部术语库</button>
+          <button id="exportAllGlossarySetsBtn" class="px-3 py-1.5 text-sm border rounded hover:bg-gray-50">匯出全部術語庫</button>
         </div>
       </div>
       <div id="glossarySetsTable" class="border border-dashed border-gray-300 rounded p-3 bg-white mb-3"></div>
@@ -31,27 +31,27 @@
       </div>
     </div>
 
-    <!-- 预览区：输入原文并查看命中与注入效果 -->
+    <!-- 預覽區：輸入原文並檢視命中與注入效果 -->
     <div class="bg-white rounded-lg border p-4">
-      <h2 class="text-lg font-semibold text-gray-800 mb-3">分块注入预览</h2>
+      <h2 class="text-lg font-semibold text-gray-800 mb-3">分塊注入預覽</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label class="block text-sm text-gray-700 mb-1">原文分块内容</label>
-          <textarea id="sampleText" rows="8" class="w-full border rounded px-3 py-2 text-sm" placeholder="在此粘贴一段文本，包含你希望命中的术语..."></textarea>
+          <label class="block text-sm text-gray-700 mb-1">原文分塊內容</label>
+          <textarea id="sampleText" rows="8" class="w-full border rounded px-3 py-2 text-sm" placeholder="在此貼上一段文字，包含你希望命中的術語..."></textarea>
         </div>
         <div>
-          <label class="block text-sm text-gray-700 mb-1">目标语言（用于展示）</label>
+          <label class="block text-sm text-gray-700 mb-1">目標語言（用於展示）</label>
           <input id="previewTargetLang" type="text" value="中文" class="w-full border rounded px-3 py-2 text-sm mb-3" />
-          <button id="previewBtn" class="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">预览命中与注入</button>
+          <button id="previewBtn" class="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">預覽命中與注入</button>
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <div class="text-sm text-gray-700 mb-1">命中术语</div>
+          <div class="text-sm text-gray-700 mb-1">命中術語</div>
           <div id="matchList" class="text-sm bg-gray-50 border rounded p-2 h-40 overflow-auto"></div>
         </div>
         <div>
-          <div class="text-sm text-gray-700 mb-1">注入到 System Prompt 的术语指引</div>
+          <div class="text-sm text-gray-700 mb-1">注入到 System Prompt 的術語指引</div>
           <textarea id="injectionPreview" rows="8" class="w-full border rounded px-3 py-2 text-sm" readonly></textarea>
         </div>
       </div>
@@ -62,7 +62,7 @@
   <script src="js/process/glossary.js"></script>
   <script src="js/ui/glossary-ui.js"></script>
   <script>
-    // 初始化：同步开关状态
+    // 初始化：同步開關狀態
     document.addEventListener('DOMContentLoaded', function() {
       try {
         const st = loadSettings();
@@ -71,14 +71,14 @@
       } catch (e) {}
     });
 
-    // 保存开关到全局设置
+    // 儲存開關到全域設定
     document.getElementById('enableGlossaryToggleTest').addEventListener('change', function() {
       const st = loadSettings();
       st.enableGlossary = !!this.checked;
       saveSettings(st);
     });
 
-    // 预览按钮逻辑
+    // 預覽按鈕邏輯
     document.getElementById('previewBtn').addEventListener('click', function() {
       const text = document.getElementById('sampleText').value || '';
       const lang = document.getElementById('previewTargetLang').value || '中文';
@@ -90,7 +90,7 @@
       try {
         const matches = (typeof getGlossaryMatchesForText === 'function') ? getGlossaryMatchesForText(text) : [];
         if (!matches || matches.length === 0) {
-          listEl.innerHTML = '<div class="text-gray-500">无命中</div>';
+          listEl.innerHTML = '<div class="text-gray-500">無命中</div>';
           injEl.value = '';
           return;
         }
@@ -99,7 +99,7 @@
         const instr = (typeof buildGlossaryInstruction === 'function') ? buildGlossaryInstruction(matches, lang) : '';
         injEl.value = instr;
       } catch (e) {
-        listEl.innerHTML = `<div class="text-red-600">错误：${escapeHtml(e.message)}</div>`;
+        listEl.innerHTML = `<div class="text-red-600">錯誤：${escapeHtml(e.message)}</div>`;
       }
     });
 

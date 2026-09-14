@@ -1,22 +1,22 @@
 /* ==========================
- * Markdown 内容通用样式
+ * Markdown 內容通用樣式
  * ========================== */
 .content-wrapper {
   background: var(--panel-bg);
-  padding: 32px; /* 增加内边距，提升阅读呼吸感 */
+  padding: 32px; /* 增加內邊距，提升閱讀呼吸感 */
   border-radius: var(--radius-md);
   border: 1px solid var(--color-slate-200);
-  box-shadow: var(--shadow-sm); /* 轻微阴影增加层次 */
+  box-shadow: var(--shadow-sm); /* 輕微陰影增加層次 */
 }
 
 .markdown-body {
   font-family: var(--font-sans);
-  font-size: 1.05rem; /* 稍微调大字号，提升沉浸感 */
+  font-size: 1.05rem; /* 稍微調大字號，提升沉浸感 */
   line-height: var(--leading-relaxed);
   color: var(--color-slate-800);
 }
 
-/* 图片和代码块样式已迁移至 markdown-modern.css */
+/* 圖片和程式碼塊樣式已遷移至 markdown-modern.css */
 
 h2 {
   margin-top: 0;
@@ -32,7 +32,7 @@ h2 {
   font-size: var(--text-sm);
   margin-bottom: 24px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--color-slate-100); /* 增加分割线 */
+  border-bottom: 1px solid var(--color-slate-100); /* 增加分割線 */
 }
 
 .meta-info {
@@ -356,9 +356,9 @@ h2 {
   }
 }
 
-/* ==================== 图片和表格居中样式 ==================== */
+/* ==================== 圖片和表格居中樣式 ==================== */
 
-/* 从 history_detail_inline_styles.css 迁移 */
+/* 從 history_detail_inline_styles.css 遷移 */
 
 .markdown-body img {
   display: block;
@@ -372,6 +372,6 @@ h2 {
   display: table;
   margin-left: auto;
   margin-right: auto;
-  /* width: auto; */  /* 默认，表格将根据内容调整大小 */
+  /* width: auto; */  /* 預設，表格將根據內容調整大小 */
 }
 

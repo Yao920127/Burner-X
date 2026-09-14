@@ -1,6 +1,6 @@
-/* 调整TOC模式选择器样式 */
+/* 調整TOC模式選擇器樣式 */
 .toc-mode-selector {
-  display: none; /* 默认隐藏，由JavaScript控制显示 */
+  display: none; /* 預設隱藏，由JavaScript控制顯示 */
   gap: 4px;
   margin: 6px 8px;
   padding: 4px;
@@ -15,41 +15,41 @@
   border-radius: 4px;
   background-color: #fff;
   cursor: pointer;
-  font-size: 11px; /* 减小字体大小 */
+  font-size: 11px; /* 減小字型大小 */
   transition: all 0.2s ease;
 }
 
-/* 多行TOC文本布局 */
+/* 多行TOC文字版面 */
 #toc-list .toc-text {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   line-height: 1.5;
   width: 100%;
-  padding: 0; /* 移除内边距 */
-  margin: 0; /* 移除外边距 */
+  padding: 0; /* 移除內邊距 */
+  margin: 0; /* 移除外邊距 */
 }
 
 #toc-list li.has-children > a .toc-text {
   padding-left: 0;
 }
 
-/* 针对不同级别标题的文本缩进调整 */
+/* 針對不同級別標題的文字縮排調整 */
 #toc-list li.toc-h2 a .toc-text {
-  padding-left: 4px; /* 减小缩进 */
+  padding-left: 4px; /* 減小縮排 */
 }
 
 #toc-list li.toc-h3 a .toc-text {
-  padding-left: 4px; /* 减小缩进 */
+  padding-left: 4px; /* 減小縮排 */
 }
 
 #toc-list li.toc-h4 a .toc-text,
 #toc-list li.toc-h5 a .toc-text,
 #toc-list li.toc-h6 a .toc-text {
-  padding-left: 4px; /* 减小缩进 */
+  padding-left: 4px; /* 減小縮排 */
 }
 
-/* 图表标题在TOC中的特殊样式 */
+/* 圖表標題在TOC中的特殊樣式 */
 #toc-list li.toc-caption a::before {
   content: "📊 ";
   margin-right: 4px;
@@ -65,8 +65,8 @@
   background-color: rgba(37, 99, 235, 0.1);
 }
 
-/* TOC 结构化标题样式 */
-/* 通用结构化标题样式 */
+/* TOC 結構化標題樣式 */
+/* 通用結構化標題樣式 */
 .toc-structured .toc-prefix {
   font-weight: bold;
   color: #0066cc;
@@ -74,30 +74,30 @@
   display: inline-block;
 }
 
-/* 章节标题样式（如"第一章"） */
+/* 章節標題樣式（如"第一章"） */
 .toc-structure-chapter .toc-prefix {
   color: #d32f2f;
   font-size: 1.1em;
 }
 
-/* 数字编号标题样式（如"1.1"） */
+/* 數字編號標題樣式（如"1.1"） */
 .toc-structure-numeric .toc-prefix {
   font-family: 'Consolas', monospace;
   letter-spacing: 0.5px;
 }
 
-/* 罗马数字标题样式 */
+/* 羅馬數字標題樣式 */
 .toc-structure-roman .toc-prefix {
   font-style: italic;
   color: #6a1b9a;
 }
 
-/* 字母标题样式 */
+/* 字母標題樣式 */
 .toc-structure-letter .toc-prefix {
   color: #00695c;
 }
 
-/* 添加toc-content类的样式 */
+/* 新增toc-content類的樣式 */
 .toc-content {
   display: inline-block;
   flex: 1;
@@ -108,25 +108,25 @@
   font-weight: normal; /* 普通字重 */
 }
 
-/* 可以通过首字符样式强调，但不单独拿出来 */
+/* 可以透過首字元樣式強調，但不單獨拿出來 */
 .toc-content::first-letter {
   font-weight: 600; /* 稍微加粗首字母 */
-  color: #2563eb; /* 首字母使用蓝色 */
+  color: #2563eb; /* 首字母使用藍色 */
 }
 
-/* 结构化标题内容的特殊处理 */
+/* 結構化標題內容的特殊處理 */
 .toc-structured .toc-content {
   padding-left: 0;
-  margin-left: 2px; /* 与前缀之间添加小间距 */
+  margin-left: 2px; /* 與字首之間新增小間距 */
 }
 
-/* 结构化标题缩进优化 */
-/* 第一级（章节）不缩进 */
+/* 結構化標題縮排最佳化 */
+/* 第一級（章節）不縮排 */
 #toc-list > li.toc-structured {
   padding-left: 0;
 }
 
-/* 各级结构化标题的缩进 */
+/* 各級結構化標題的縮排 */
 #toc-list .toc-structured.toc-h1 { padding-left: 0; }
 #toc-list .toc-structured.toc-h2 { padding-left: 12px; }
 #toc-list .toc-structured.toc-h3 { padding-left: 24px; }
@@ -134,37 +134,37 @@
 #toc-list .toc-structured.toc-h5 { padding-left: 48px; }
 #toc-list .toc-structured.toc-h6 { padding-left: 60px; }
 
-/* 图表标题作为子项的样式调整 */
+/* 圖表標題作為子項的樣式調整 */
 .toc-caption {
   font-style: italic;
   color: #616161;
-  padding-left: 12px !important; /* 覆盖默认缩进，确保图表标题作为子项正确缩进 */
+  padding-left: 12px !important; /* 覆蓋預設縮排，確保圖表標題作為子項正確縮排 */
 }
 
-/* 结构化标题的图表子项缩进 */
+/* 結構化標題的圖表子項縮排 */
 .toc-structured + li.toc-caption {
   padding-left: 24px !important;
 }
 
-/* 图表图标样式 */
+/* 圖表圖示樣式 */
 .toc-chart-icon {
   margin-right: 4px;
   font-size: 0.9em;
   opacity: 0.8;
 }
 
-/* 表格和图表的不同样式 */
+/* 表格和圖表的不同樣式 */
 .toc-caption:hover {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
-/* 图表标题悬停效果 */
+/* 圖表標題懸停效果 */
 .toc-caption:hover .toc-chart-icon {
   opacity: 1;
 }
 
-/* 强化层级视觉效果 */
-/* 为结构化标题添加微妙的左边框，表示层级 */
+/* 強化層級視覺效果 */
+/* 為結構化標題新增微妙的左邊框，表示層級 */
 .toc-structured {
   border-left: none;
   position: relative;
@@ -186,7 +186,7 @@
   border-left: 3px solid rgba(0, 102, 204, 0.25);
 }
 
-/* 图表标题与其父级关联 */
+/* 圖表標題與其父級關聯 */
 .toc-caption {
   position: relative;
 }
@@ -200,35 +200,35 @@
   border-left: 2px dotted rgba(97, 97, 97, 0.2);
 }
 
-/* 优化折叠按钮与结构化标题的对齐 */
+/* 最佳化摺疊按鈕與結構化標題的對齊 */
 .toc-structured .toc-toggle {
   margin-right: 4px;
 }
 
-/* 强化TOC的视觉层级 */
+/* 強化TOC的視覺層級 */
 #toc-list ul.toc-children {
   margin-left: 0;
   border-left: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* 简单数字列表项样式 */
+/* 簡單數字列表項樣式 */
 .toc-simple-numbered {
   position: relative;
 }
 
-/* 简单数字列表前缀样式 */
+/* 簡單數字列表字首樣式 */
 .toc-simple-numbered .toc-prefix {
   color: #2563eb;
   font-weight: bold;
   font-size: 0.9em;
 }
 
-/* 增加简单数字列表项的缩进，使其看起来更像子项 */
+/* 增加簡單數字列表項的縮排，使其看起來更像子項 */
 #toc-list li.toc-simple-numbered {
   padding-left: 12px !important;
 }
 
-/* 添加连接线，显示层级关系 */
+/* 新增連線線，顯示層級關係 */
 .toc-simple-numbered::before {
   content: '';
   position: absolute;
@@ -238,12 +238,12 @@
   border-left: 2px dotted rgba(37, 99, 235, 0.3);
 }
 
-/* 简单数字列表项悬停效果 */
+/* 簡單數字列表項懸停效果 */
 .toc-simple-numbered:hover::before {
   border-left-color: rgba(37, 99, 235, 0.6);
 }
 
-/* 调整不同结构下的简单数字列表缩进 */
+/* 調整不同結構下的簡單數字列表縮排 */
 .toc-structure-numeric + .toc-simple-numbered,
 .toc-structure-chapter + .toc-simple-numbered,
 .toc-structure-roman + .toc-simple-numbered,
@@ -252,13 +252,13 @@
   margin-left: 12px;
 }
 
-/* 保持简单数字列表项之间的连续性 */
+/* 保持簡單數字列表項之間的連續性 */
 .toc-simple-numbered + .toc-simple-numbered {
   margin-top: 0;
   border-top: none;
 }
 
-/* 带空格多级编号标题样式 */
+/* 帶空格多級編號標題樣式 */
 .toc-spaced-numeric .toc-prefix {
   font-family: 'Consolas', monospace;
   letter-spacing: 0.5px;
@@ -266,17 +266,17 @@
   font-weight: bold;
 }
 
-/* 带空格多级编号标题悬停效果 */
+/* 帶空格多級編號標題懸停效果 */
 .toc-spaced-numeric:hover {
   background-color: rgba(0, 102, 204, 0.05);
 }
 
-/* 确保带空格多级编号标题与标准数字编号具有相同的缩进 */
+/* 確保帶空格多級編號標題與標準數字編號具有相同的縮排 */
 #toc-list .toc-spaced-numeric {
-  padding-left: inherit; /* 继承标准数字编号的缩进 */
+  padding-left: inherit; /* 繼承標準數字編號的縮排 */
 }
 
-/* 优化带空格多级编号与其子项的连接线 */
+/* 最佳化帶空格多級編號與其子項的連線線 */
 .toc-spaced-numeric + li:not(.toc-spaced-numeric):before {
   content: '';
   position: absolute;
@@ -286,16 +286,16 @@
   border-left: 2px dotted rgba(0, 102, 204, 0.2);
 }
 
-/* TOC展开模式样式 */
+/* TOC展開模式樣式 */
 #toc-popup {
   transition: width 0.3s ease-in-out;
 }
 
 #toc-popup.toc-expanded {
-  width: 440px; /* 展开模式宽度为原来的2倍 */
+  width: 440px; /* 展開模式寬度為原來的2倍 */
 }
 
-/* 展开按钮样式 */
+/* 展開按鈕樣式 */
 #toc-expand-btn {
   position: absolute;
   right: 10px;
@@ -318,24 +318,24 @@
   background-color: rgba(59, 130, 246, 0.1);
 }
 
-/* 控制非展开模式下的文本显示 */
+/* 控制非展開模式下的文字顯示 */
 #toc-popup:not(.toc-expanded) .toc-text {
-  max-height: 3.9em; /* 三行文本的高度 */
+  max-height: 3.9em; /* 三行文字的高度 */
   overflow: hidden;
   text-overflow: ellipsis;
-  /* 保持flex布局，但限制显示行数 */
+  /* 保持flex版面，但限制顯示行數 */
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* 限制显示3行 */
+  -webkit-line-clamp: 3; /* 限制顯示3行 */
   -webkit-box-orient: vertical;
 }
 
-/* 非展开模式下也保持首字符的显示 */
+/* 非展開模式下也保持首字元的顯示 */
 #toc-popup:not(.toc-expanded) .toc-content::first-letter {
   font-weight: 600;
   color: #2563eb;
 }
 
-/* 在展开模式下取消文本限制 */
+/* 在展開模式下取消文字限制 */
 #toc-popup.toc-expanded .toc-text {
   max-height: none;
   display: flex;
@@ -344,7 +344,7 @@
   -webkit-line-clamp: unset;
 }
 
-/* TOC底部控制按钮区域 */
+/* TOC底部控制按鈕區域 */
 .toc-controls {
   padding: 8px 12px;
   text-align: center;
@@ -368,19 +368,19 @@
   background-color: rgba(59, 130, 246, 0.1);
 }
 
-/* 结构化标题的首字母样式特殊处理，避免与前缀冲突 */
+/* 結構化標題的首字母樣式特殊處理，避免與字首衝突 */
 .toc-structured .toc-content::first-letter {
-  font-weight: normal; /* 恢复普通字重，避免与前缀重叠强调 */
-  color: inherit; /* 使用继承的颜色，避免与前缀重叠强调 */
+  font-weight: normal; /* 恢復普通字重，避免與字首重疊強調 */
+  color: inherit; /* 使用繼承的顏色，避免與字首重疊強調 */
 }
 
-/* 图表标题的特殊样式处理 */
+/* 圖表標題的特殊樣式處理 */
 .toc-caption .toc-content {
-  font-style: italic; /* 保持图表标题的斜体 */
-  color: #2563eb; /* 保持蓝色 */
+  font-style: italic; /* 保持圖表標題的斜體 */
+  color: #2563eb; /* 保持藍色 */
 }
 
-/* 图表标题的首字母保持与其他内容一致 */
+/* 圖表標題的首字母保持與其他內容一致 */
 .toc-caption .toc-content::first-letter {
   font-weight: inherit;
   color: inherit;

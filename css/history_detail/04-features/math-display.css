@@ -1,7 +1,7 @@
 /* css/math-display-fix.css */
-/* 专门修复数学公式显示问题的样式 */
+/* 專門修復數學公式顯示問題的樣式 */
 
-/* 修复块级数学公式显示 */
+/* 修復塊級數學公式顯示 */
 .katex-display-fixed {
     display: block !important;
     margin: 16px auto !important;
@@ -12,7 +12,7 @@
     line-height: 1.2;
 }
 
-/* 确保使用改进容器时，内部的 KaTeX display 元素也为右侧编号预留空间 */
+/* 確保使用改進容器時，內部的 KaTeX display 元素也為右側編號預留空間 */
 .katex-display-fixed .katex-display {
     display: block;
     width: 100%;
@@ -36,13 +36,13 @@
     margin-left: 0.5em;
 }
 
-/* 防止在改进容器下主体公式仍然占满右侧空间 */
+/* 防止在改進容器下主體公式仍然佔滿右側空間 */
 .katex-display-fixed > .katex,
 .katex-display-fixed .katex-display > .katex {
     max-width: calc(100% - 4.25em);
 }
 
-/* 修复行内数学公式显示 */
+/* 修復行內數學公式顯示 */
 .katex-inline-fixed {
     display: inline !important;
     margin: 0 2px !important;
@@ -50,7 +50,7 @@
     line-height: 1;
 }
 
-/* 改进的数学错误显示 */
+/* 改進的數學錯誤顯示 */
 .math-error-block {
     display: block;
     margin: 16px 0;
@@ -78,21 +78,21 @@
     cursor: help;
 }
 
-/* 段落内数学公式的间距修复 */
+/* 段落內數學公式的間距修復 */
 p .katex-inline-fixed,
 p .katex-inline,
 p .math-error-inline {
     margin: 0 0.1em;
 }
 
-/* 防止数学公式在段落中造成不当换行 */
+/* 防止數學公式在段落中造成不當換行 */
 p {
     line-height: 1.6;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
-/* 确保数学公式不会被截断 */
+/* 確保數學公式不會被截斷 */
 .katex {
     white-space: nowrap;
 }
@@ -102,7 +102,7 @@ p {
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    /* 隐藏滚动条，但保留横向滚动能力 */
+    /* 隱藏捲軸，但保留橫向滾動能力 */
     -ms-overflow-style: none;      /* IE/Edge */
     scrollbar-width: none;         /* Firefox */
 }
@@ -111,7 +111,7 @@ p {
     display: none;                  /* Chrome/Safari */
 }
 
-/* 移动设备上的数学公式优化 */
+/* 移動裝置上的數學公式最佳化 */
 @media (max-width: 768px) {
     .katex-display-fixed {
         font-size: 0.9em;
@@ -133,7 +133,7 @@ p {
         padding: 1px 4px;
     }
 
-    /* 移动端（OCR/翻译）：单行 + 横向滚动（更稳），避免换行过猛 */
+    /* 行動裝置（OCR/翻譯）：單行 + 橫向滾動（更穩），避免換行過猛 */
     .content-wrapper .katex-display,
     .content-wrapper .katex-display-fixed {
         padding-right: 3.25em !important;
@@ -162,7 +162,7 @@ p {
     }
 }
 
-/* OCR/翻译视图（content-wrapper）强制不裁剪多行公式（所有屏幕） */
+/* OCR/翻譯檢視（content-wrapper）強制不裁剪多行公式（所有螢幕） */
 .content-wrapper .katex-display,
 .content-wrapper .katex-display-fixed {
     overflow-y: visible !important;
@@ -173,9 +173,9 @@ p {
 }
 .content-wrapper .katex { overflow: visible !important; white-space: normal !important; }
 
-/* 超小屏（手机）布局：将右侧编号换到下一行右对齐，释放公式宽度 */
+/* 超小屏（手機）版面：將右側編號換到下一行右對齊，釋放公式寬度 */
 @media (max-width: 640px) {
-    /* 释放右侧留白，主体公式可占满整行 */
+    /* 釋放右側留白，主體公式可佔滿整行 */
     .markdown-body .katex-display,
     .align-content.markdown-body .katex-display,
     .katex-block .katex-display,
@@ -192,7 +192,7 @@ p {
         max-width: 100% !important;
     }
 
-    /* 将标签/编号移到公式下方，靠右对齐 */
+    /* 將標籤/編號移到公式下方，靠右對齊 */
     .markdown-body .katex-display .tag,
     .markdown-body .katex-display .katex-tag,
     .align-content.markdown-body .katex-display .tag,
@@ -211,21 +211,21 @@ p {
         text-align: right !important;
     }
 
-    /* 手机端适度放大以提升可读性 */
+    /* 手機端適度放大以提升可讀性 */
     .katex-display,
     .katex-display-fixed {
         font-size: 1.05em;
     }
 }
 
-/* 数学公式和中文文本的间距优化 */
+/* 數學公式和中文文字的間距最佳化 */
 .katex-inline-fixed + .katex-inline-fixed,
 .katex-inline + .katex-inline-fixed,
 .katex-inline-fixed + .katex-inline {
     margin-left: 0.2em;
 }
 
-/* 修复长公式在容器中的显示 */
+/* 修復長公式在容器中的顯示 */
 .markdown-body .katex-display-fixed,
 .content-wrapper .katex-display-fixed {
     max-width: 100%;
@@ -233,7 +233,7 @@ p {
     margin-right: auto;
 }
 
-/* 公式渲染加载状态 */
+/* 公式渲染載入狀態 */
 .math-loading {
     background-color: #f7fafc;
     border-radius: 4px;
@@ -248,7 +248,7 @@ p {
     50% { opacity: 0.5; }
 }
 
-/* 深色模式下的数学错误样式 */
+/* 深色模式下的數學錯誤樣式 */
 @media (prefers-color-scheme: dark) {
     .math-error-block {
         background-color: #742a2a;
@@ -268,7 +268,7 @@ p {
     }
 }
 
-/* 高对比度模式支持 */
+/* 高對比度模式支援 */
 @media (prefers-contrast: high) {
     .katex-display-fixed,
     .katex-inline-fixed {
@@ -283,7 +283,7 @@ p {
     }
 }
 
-/* 无障碍支持 */
+/* 無障礙支援 */
 .katex-display-fixed:focus,
 .katex-inline-fixed:focus,
 .math-error-block:focus,
@@ -292,7 +292,7 @@ p {
     outline-offset: 2px;
 }
 
-/* 打印样式 */
+/* 列印樣式 */
 @media print {
     .katex-display-fixed,
     .katex-inline-fixed {
@@ -307,7 +307,7 @@ p {
     }
 }
 
-/* 修复特定容器中的数学公式显示 */
+/* 修復特定容器中的數學公式顯示 */
 .align-content.markdown-body .katex-display-fixed {
     margin: 12px 0;
 }
@@ -316,7 +316,7 @@ p {
     margin: 0 1px;
 }
 
-/* 防止数学公式影响行高 */
+/* 防止數學公式影響行高 */
 .align-content.markdown-body p {
     line-height: 1.6;
 }
@@ -325,7 +325,7 @@ p {
     vertical-align: middle;
 }
 
-/* ===== 最终覆盖：强制行间公式为块级并为右标留足空间 ===== */
+/* ===== 最終覆蓋：強制行間公式為塊級併為右標留足空間 ===== */
 .markdown-body .katex-display,
 .align-content.markdown-body .katex-display,
 .katex-block .katex-display,
@@ -335,7 +335,7 @@ p {
     width: 100% !important;
     position: relative !important;
     text-align: center !important;
-    padding-right: 5em !important; /* 为右侧编号预留空间 */
+    padding-right: 5em !important; /* 為右側編號預留空間 */
     box-sizing: border-box !important;
 }
 
@@ -344,7 +344,7 @@ p {
 .katex-block .katex-display > .katex,
 .katex-display-fixed > .katex,
 .katex-display > .katex {
-    max-width: calc(100% - 5em) !important; /* 防止主体覆盖右标 */
+    max-width: calc(100% - 5em) !important; /* 防止主體覆蓋右標 */
 }
 
 .markdown-body .katex-display .tag,

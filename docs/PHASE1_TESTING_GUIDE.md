@@ -1,74 +1,74 @@
-# Phase 1 性能优化测试指南
+# Phase 1 效能最佳化測試指南
 
 > **完成日期**: 2025-11-12
-> **优化项目**: 防抖、正则提升、定时器优化
-> **状态**: ✅ 已完成实施，待测试验证
+> **最佳化專案**: 防抖、正則提升、定時器最佳化
+> **狀態**: ✅ 已完成實施，待測試驗證
 
 ---
 
-## 📦 已应用的优化
+## 📦 已應用的最佳化
 
-### ✅ 1. 历史记录搜索防抖 (history.js)
-**文件**: `js/history/history.js` (+20 lines)
-**修改内容**:
-- 添加了防抖函数实现
-- 创建了 `debouncedRenderHistoryList` (300ms 延迟)
-- 替换了搜索输入事件处理器中的直接调用
+### ✅ 1. 歷史記錄搜尋防抖 (history.js)
+**檔案**: `js/history/history.js` (+20 lines)
+**修改內容**:
+- 新增了防抖函式實現
+- 建立了 `debouncedRenderHistoryList` (300ms 延遲)
+- 替換了搜尋輸入事件處理器中的直接呼叫
 
-**预期效果**:
-- 快速输入时减少 70-90% 的渲染次数
-- 用户输入流畅度提升
-- CPU 占用降低
+**預期效果**:
+- 快速輸入時減少 70-90% 的渲染次數
+- 使用者輸入流暢度提升
+- CPU 佔用降低
 
 ---
 
-### ✅ 2. 正则表达式提升 (markdown_processor_ast.js)
-**文件**: `js/processing/markdown_processor_ast.js` (+16 lines)
-**修改内容**:
-- 将 7 个正则表达式提升到模块级常量 `MATH_DELIMITER_PATTERNS`
+### ✅ 2. 正規表示式提升 (markdown_processor_ast.js)
+**檔案**: `js/processing/markdown_processor_ast.js` (+16 lines)
+**修改內容**:
+- 將 7 個正規表示式提升到模組級常量 `MATH_DELIMITER_PATTERNS`
 - 使用 `Object.freeze()` 防止意外修改
-- 避免函数调用时重复编译正则表达式
+- 避免函式呼叫時重複編譯正規表示式
 
-**预期效果**:
-- 大文档处理速度提升 10-15%
-- 减少正则编译开销（特别是在循环中）
-
----
-
-### ✅ 3. 轮询定时器优化 (annotations_summary_modal.js)
-**文件**: `js/annotations/annotations_summary_modal.js` (+36 lines)
-**修改内容**:
-- 将 `setInterval` 替换为可管理的定时器
-- 添加页面可见性检测 (`document.hidden`)
-- 添加页面卸载时的清理逻辑
-
-**预期效果**:
-- 页面隐藏时跳过执行，减少 50% 后台 CPU 占用
-- 避免定时器泄漏
+**預期效果**:
+- 大文件處理速度提升 10-15%
+- 減少正則編譯開銷（特別是在迴圈中）
 
 ---
 
-## 🧪 测试计划
+### ✅ 3. 輪詢定時器最佳化 (annotations_summary_modal.js)
+**檔案**: `js/annotations/annotations_summary_modal.js` (+36 lines)
+**修改內容**:
+- 將 `setInterval` 替換為可管理的定時器
+- 新增頁面可見性檢測 (`document.hidden`)
+- 新增頁面解除安裝時的清理邏輯
 
-### 测试 1: 历史记录搜索防抖
+**預期效果**:
+- 頁面隱藏時跳過執行，減少 50% 後臺 CPU 佔用
+- 避免定時器洩漏
 
-#### 测试步骤
-1. 打开应用主页面
-2. 点击"显示历史"按钮，打开历史记录面板
-3. 在搜索框中快速输入文本（如 "test"，4 个字符）
-4. 打开浏览器开发者工具 Console 面板
+---
 
-#### 验证方法 A: 控制台计数
-在 Console 中运行以下代码来监控渲染次数：
+## 🧪 測試計劃
+
+### 測試 1: 歷史記錄搜尋防抖
+
+#### 測試步驟
+1. 開啟應用主頁面
+2. 點選"顯示歷史"按鈕，開啟歷史記錄面板
+3. 在搜尋框中快速輸入文字（如 "test"，4 個字元）
+4. 開啟瀏覽器開發者工具 Console 面板
+
+#### 驗證方法 A: 主控台計數
+在 Console 中執行以下程式碼來監控渲染次數：
 
 ```javascript
-// 监控渲染次数
+// 監控渲染次數
 (function() {
     let renderCount = 0;
     const originalRender = window.renderHistoryList;
 
     if (typeof originalRender !== 'undefined') {
-        // 包装原函数
+        // 包裝原函式
         const originalFunc = originalRender.bind(window);
         window.renderHistoryList = function() {
             renderCount++;
@@ -77,183 +77,183 @@
         };
     }
 
-    // 重置计数
+    // 重置計數
     window.resetRenderCount = () => {
         renderCount = 0;
         console.log('[Render Count] 已重置');
     };
 
-    console.log('[监控已启动] 现在可以测试搜索功能了');
+    console.log('[監控已啟動] 現在可以測試搜尋功能了');
 })();
 ```
 
-**预期结果**:
-- 快速输入 "test" (4个字符)
-- ✅ **优化后**: 只触发 **1 次**渲染（停止输入 300ms 后）
-- ❌ **优化前**: 会触发 **4 次**渲染（每次按键一次）
+**預期結果**:
+- 快速輸入 "test" (4個字元)
+- ✅ **最佳化後**: 只觸發 **1 次**渲染（停止輸入 300ms 後）
+- ❌ **最佳化前**: 會觸發 **4 次**渲染（每次按鍵一次）
 
-#### 验证方法 B: Performance API
+#### 驗證方法 B: Performance API
 ```javascript
-// 使用 Performance API 测量
+// 使用 Performance API 測量
 performance.clearMarks();
 performance.clearMeasures();
 
-// 在搜索框中输入，然后等待 500ms，在控制台运行：
+// 在搜尋框中輸入，然後等待 500ms，在主控台執行：
 const entries = performance.getEntriesByType('measure');
-console.log('性能测量:', entries);
+console.log('效能測量:', entries);
 ```
 
-#### 边界情况测试
-- [ ] 快速输入后立即删除文本
-- [ ] 输入中文（IME 输入法）
-- [ ] 粘贴长文本
-- [ ] 连续快速搜索不同关键词
+#### 邊界情況測試
+- [ ] 快速輸入後立即刪除文字
+- [ ] 輸入中文（IME 輸入法）
+- [ ] 貼上長文字
+- [ ] 連續快速搜尋不同關鍵詞
 
 ---
 
-### 测试 2: 正则表达式提升
+### 測試 2: 正規表示式提升
 
-#### 测试步骤
-1. 准备一个包含大量数学公式的测试文档（如学术论文 PDF）
-2. 上传文档进行 OCR 和翻译处理
-3. 使用 Performance API 测量处理时间
+#### 測試步驟
+1. 準備一個包含大量數學公式的測試文件（如學術論文 PDF）
+2. 上傳文件進行 OCR 和翻譯處理
+3. 使用 Performance API 測量處理時間
 
-#### 验证方法: 性能对比
-在 Console 中运行以下代码来测量正则处理性能：
+#### 驗證方法: 效能對比
+在 Console 中執行以下程式碼來測量正則處理效能：
 
 ```javascript
-// 测试正则表达式性能
+// 測試正規表示式效能
 (function() {
-    // 模拟包含数学公式的文本
+    // 模擬包含數學公式的文字
     const testText = `
-这是一个测试文本，包含多个数学公式：
+這是一個測試文字，包含多個數學公式：
 $$ E = mc^2 $$
-行内公式 $ x^2 + y^2 = z^2 $ 和另一个 $ a + b = c $
+行內公式 $ x^2 + y^2 = z^2 $ 和另一個 $ a + b = c $
 $$
 \\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}
 $$
-`.repeat(100); // 重复 100 次，模拟大文档
+`.repeat(100); // 重複 100 次，模擬大文件
 
-    // 查找 normalizeMathDelimiters 函数
-    // 注意：这需要在处理文档时才能访问到该函数
-    console.log('[测试] 请上传包含数学公式的文档进行处理');
-    console.log('[测试] 在处理过程中，查看 Console 是否有性能日志');
+    // 查詢 normalizeMathDelimiters 函式
+    // 注意：這需要在處理文件時才能訪問到該函式
+    console.log('[測試] 請上傳包含數學公式的文件進行處理');
+    console.log('[測試] 在處理過程中，檢視 Console 是否有效能日誌');
 })();
 ```
 
-**手动测试步骤**:
-1. 上传测试文档：`tests/fixtures/math-paper.pdf`（如果存在）
-2. 开始处理
-3. 观察 Console 输出的处理时间
-4. 对比优化前后的时间差异
+**手動測試步驟**:
+1. 上傳測試文件：`tests/fixtures/math-paper.pdf`（如果存在）
+2. 開始處理
+3. 觀察 Console 輸出的處理時間
+4. 對比最佳化前後的時間差異
 
-**预期结果**:
-- ✅ 处理速度提升 **10-15%**（特别是包含大量公式的文档）
-- ✅ Console 无错误信息
-- ✅ 数学公式识别和格式化正确
+**預期結果**:
+- ✅ 處理速度提升 **10-15%**（特別是包含大量公式的文件）
+- ✅ Console 無錯誤資訊
+- ✅ 數學公式識別和格式化正確
 
-#### 功能回归测试
-使用现有的测试页面验证公式处理功能：
+#### 功能迴歸測試
+使用現有的測試頁面驗證公式處理功能：
 
 ```bash
-# 在浏览器中打开以下测试页面
+# 在瀏覽器中開啟以下測試頁面
 start tests/test-formula-issues.html
 start tests/test-katex-fixes.html
 start tests/test-katex-errors.html
 ```
 
-**验证点**:
-- [ ] 行内公式 `$ ... $` 正确识别
-- [ ] 块公式 `$$ ... $$` 正确识别
-- [ ] OCR 错误修复功能正常（如 `$\$ ... \$` → `$$ ... $$`）
-- [ ] 转义序列处理正确
-- [ ] 无误将普通文本识别为公式
+**驗證點**:
+- [ ] 行內公式 `$ ... $` 正確識別
+- [ ] 塊公式 `$$ ... $$` 正確識別
+- [ ] OCR 錯誤修復功能正常（如 `$\$ ... \$` → `$$ ... $$`）
+- [ ] 轉義序列處理正確
+- [ ] 無誤將普通文字識別為公式
 
 ---
 
-### 测试 3: 轮询定时器优化
+### 測試 3: 輪詢定時器最佳化
 
-#### 测试步骤
-1. 打开应用主页面
-2. 打开批注功能（需要有文档内容）
-3. 打开浏览器任务管理器 (Shift + Esc)
-4. 切换到另一个标签页
+#### 測試步驟
+1. 開啟應用主頁面
+2. 開啟批註功能（需要有文件內容）
+3. 開啟瀏覽器工作管理員 (Shift + Esc)
+4. 切換到另一個分頁
 
-#### 验证方法 A: 任务管理器监控
+#### 驗證方法 A: 工作管理員監控
 ```
-步骤：
-1. Chrome 任务管理器 (Shift + Esc)
-2. 找到 Paper-Burner 标签页
-3. 观察 CPU 占用
+步驟：
+1. Chrome 工作管理員 (Shift + Esc)
+2. 找到 Paper-Burner 分頁
+3. 觀察 CPU 佔用
 
-预期结果：
-- 标签页可见时：CPU 0.5-2%（正常轮询）
-- 标签页隐藏时：CPU 0% 或接近 0%（跳过执行）
+預期結果：
+- 分頁可見時：CPU 0.5-2%（正常輪詢）
+- 分頁隱藏時：CPU 0% 或接近 0%（跳過執行）
 ```
 
-#### 验证方法 B: Console 日志
-在 Console 中运行以下代码来监控轮询行为：
+#### 驗證方法 B: Console 日誌
+在 Console 中執行以下程式碼來監控輪詢行為：
 
 ```javascript
-// 监控轮询执行
+// 監控輪詢執行
 (function() {
     let callCount = 0;
     const startTime = Date.now();
 
-    // 包装 checkForNewColors 函数
+    // 包裝 checkForNewColors 函式
     if (typeof checkForNewColors !== 'undefined') {
         const original = checkForNewColors;
         checkForNewColors = function() {
             callCount++;
             const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
             const isHidden = document.hidden;
-            console.log(`[Polling] ${elapsed}s - 第 ${callCount} 次调用 | 页面隐藏: ${isHidden}`);
+            console.log(`[Polling] ${elapsed}s - 第 ${callCount} 次呼叫 | 頁面隱藏: ${isHidden}`);
             return original.apply(this, arguments);
         };
     }
 
-    console.log('[监控已启动] 请切换标签页测试');
+    console.log('[監控已啟動] 請切換分頁測試');
 })();
 ```
 
-**测试场景**:
-1. 页面可见 10 秒 → 应该执行约 10 次
-2. 切换到其他标签 10 秒 → 应该 **0 次**执行（或日志显示"页面隐藏: true"但跳过处理）
-3. 切回标签 → 恢复执行
+**測試場景**:
+1. 頁面可見 10 秒 → 應該執行約 10 次
+2. 切換到其他標籤 10 秒 → 應該 **0 次**執行（或日誌顯示"頁面隱藏: true"但跳過處理）
+3. 切回標籤 → 恢復執行
 
-**预期结果**:
-- ✅ 页面隐藏时，轮询函数内部的逻辑被跳过
-- ✅ 页面显示时，轮询正常执行
-- ✅ 关闭页面时，定时器被正确清理（无 console 错误）
+**預期結果**:
+- ✅ 頁面隱藏時，輪詢函式內部的邏輯被跳過
+- ✅ 頁面顯示時，輪詢正常執行
+- ✅ 關閉頁面時，定時器被正確清理（無 console 錯誤）
 
-#### 边界情况测试
-- [ ] 打开多个 Paper-Burner 标签页，只有当前标签执行轮询
-- [ ] 最小化浏览器窗口
-- [ ] 电脑锁屏状态
-- [ ] 长时间隐藏后切回（确保恢复正常）
+#### 邊界情況測試
+- [ ] 開啟多個 Paper-Burner 分頁，只有當前標籤執行輪詢
+- [ ] 最小化瀏覽器視窗
+- [ ] 電腦鎖屏狀態
+- [ ] 長時間隱藏後切回（確保恢復正常）
 
 ---
 
-## 🎯 性能基准测试
+## 🎯 效能基準測試
 
-### 基准测试套件
+### 基準測試套件
 
-创建性能测试脚本 `tests/performance/phase1-benchmark.html`:
+建立效能測試腳本 `tests/performance/phase1-benchmark.html`:
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Phase 1 性能基准测试</title>
+    <title>Phase 1 效能基準測試</title>
 </head>
 <body>
-    <h1>Phase 1 性能基准测试</h1>
+    <h1>Phase 1 效能基準測試</h1>
     <div id="results"></div>
 
     <script>
-    // 测试 1: 防抖函数性能
+    // 測試 1: 防抖函式效能
     async function testDebounce() {
-        console.log('=== 测试防抖函数 ===');
+        console.log('=== 測試防抖函式 ===');
 
         function debounce(fn, delay) {
             let timer = null;
@@ -270,7 +270,7 @@ start tests/test-katex-errors.html
         let callCount = 0;
         const testFn = debounce(() => callCount++, 300);
 
-        // 模拟快速输入
+        // 模擬快速輸入
         const startTime = performance.now();
         for (let i = 0; i < 10; i++) {
             testFn();
@@ -281,11 +281,11 @@ start tests/test-katex-errors.html
         await new Promise(resolve => setTimeout(resolve, 400));
         const endTime = performance.now();
 
-        console.log(`快速触发 10 次，实际执行: ${callCount} 次`);
-        console.log(`耗时: ${(endTime - startTime).toFixed(2)}ms`);
+        console.log(`快速觸發 10 次，實際執行: ${callCount} 次`);
+        console.log(`耗時: ${(endTime - startTime).toFixed(2)}ms`);
 
         return {
-            test: '防抖函数',
+            test: '防抖函式',
             triggers: 10,
             actualCalls: callCount,
             reduction: `${((1 - callCount / 10) * 100).toFixed(0)}%`,
@@ -293,13 +293,13 @@ start tests/test-katex-errors.html
         };
     }
 
-    // 测试 2: 正则表达式性能
+    // 測試 2: 正規表示式效能
     async function testRegexPerformance() {
-        console.log('=== 测试正则表达式性能 ===');
+        console.log('=== 測試正規表示式效能 ===');
 
         const testText = '$$ E = mc^2 $$ 和 $ x + y $ '.repeat(1000);
 
-        // 方法 1: 每次创建新正则（优化前）
+        // 方法 1: 每次建立新正則（最佳化前）
         const start1 = performance.now();
         for (let i = 0; i < 100; i++) {
             testText.replace(/\$\$/g, '$$');
@@ -307,7 +307,7 @@ start tests/test-katex-errors.html
         const end1 = performance.now();
         const time1 = end1 - start1;
 
-        // 方法 2: 使用预编译正则（优化后）
+        // 方法 2: 使用預編譯正則（最佳化後）
         const regex = /\$\$/g;
         const start2 = performance.now();
         for (let i = 0; i < 100; i++) {
@@ -317,30 +317,30 @@ start tests/test-katex-errors.html
         const end2 = performance.now();
         const time2 = end2 - start2;
 
-        console.log(`动态创建正则: ${time1.toFixed(2)}ms`);
-        console.log(`预编译正则: ${time2.toFixed(2)}ms`);
-        console.log(`性能提升: ${((1 - time2 / time1) * 100).toFixed(1)}%`);
+        console.log(`動態建立正則: ${time1.toFixed(2)}ms`);
+        console.log(`預編譯正則: ${time2.toFixed(2)}ms`);
+        console.log(`效能提升: ${((1 - time2 / time1) * 100).toFixed(1)}%`);
 
         return {
-            test: '正则表达式',
+            test: '正規表示式',
             dynamicTime: `${time1.toFixed(2)}ms`,
             precompiledTime: `${time2.toFixed(2)}ms`,
             improvement: `${((1 - time2 / time1) * 100).toFixed(1)}%`
         };
     }
 
-    // 运行所有测试
+    // 執行所有測試
     async function runAllTests() {
         const results = [];
 
         results.push(await testDebounce());
         results.push(await testRegexPerformance());
 
-        // 显示结果
+        // 顯示結果
         const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = '<h2>测试结果</h2>' +
+        resultsDiv.innerHTML = '<h2>測試結果</h2>' +
             '<table border="1" cellpadding="10">' +
-            '<tr><th>测试项</th><th>指标</th><th>结果</th></tr>' +
+            '<tr><th>測試項</th><th>指標</th><th>結果</th></tr>' +
             results.map(r =>
                 Object.entries(r).map(([key, value]) =>
                     `<tr><td>${r.test}</td><td>${key}</td><td>${value}</td></tr>`
@@ -348,147 +348,147 @@ start tests/test-katex-errors.html
             ).join('') +
             '</table>';
 
-        console.log('=== 测试完成 ===');
+        console.log('=== 測試完成 ===');
         console.table(results);
     }
 
-    // 页面加载后自动运行
+    // 頁面載入後自動執行
     window.addEventListener('load', runAllTests);
     </script>
 </body>
 </html>
 ```
 
-### 运行基准测试
+### 執行基準測試
 
 ```bash
-# 在浏览器中打开测试页面
+# 在瀏覽器中開啟測試頁面
 start tests/performance/phase1-benchmark.html
 
-# 或者在开发者工具 Console 中直接运行测试函数
+# 或者在開發者工具 Console 中直接執行測試函式
 ```
 
 ---
 
-## ✅ 验收标准
+## ✅ 驗收標準
 
-### Phase 1 完成的标准
+### Phase 1 完成的標準
 
-- [x] **代码质量**
-  - [x] 所有修改都有清晰的注释
-  - [x] 代码风格一致
-  - [x] 无语法错误
-  - [x] 通过 ESLint/代码审查
+- [x] **程式碼質量**
+  - [x] 所有修改都有清晰的註釋
+  - [x] 程式碼風格一致
+  - [x] 無語法錯誤
+  - [x] 透過 ESLint/程式碼審查
 
-- [ ] **功能测试**
-  - [ ] 历史记录搜索功能正常
-  - [ ] 数学公式处理功能正常
-  - [ ] 批注颜色更新功能正常
-  - [ ] 无新增 bug
+- [ ] **功能測試**
+  - [ ] 歷史記錄搜尋功能正常
+  - [ ] 數學公式處理功能正常
+  - [ ] 批註顏色更新功能正常
+  - [ ] 無新增 bug
 
-- [ ] **性能测试**
-  - [ ] 搜索防抖：渲染次数减少 > 70%
-  - [ ] 正则提升：处理速度提升 > 10%
-  - [ ] 定时器优化：后台 CPU 占用减少 > 50%
+- [ ] **效能測試**
+  - [ ] 搜尋防抖：渲染次數減少 > 70%
+  - [ ] 正則提升：處理速度提升 > 10%
+  - [ ] 定時器最佳化：後臺 CPU 佔用減少 > 50%
 
-- [ ] **兼容性测试**
+- [ ] **相容性測試**
   - [ ] Chrome/Edge (Chromium)
   - [ ] Firefox
-  - [ ] Safari (如适用)
+  - [ ] Safari (如適用)
 
-- [ ] **文档**
-  - [x] 优化计划文档完整
-  - [x] 测试指南完整
-  - [ ] 性能对比数据记录
+- [ ] **文件**
+  - [x] 最佳化計劃文件完整
+  - [x] 測試指南完整
+  - [ ] 效能對比資料記錄
 
 ---
 
-## 🔄 回滚计划
+## 🔄 回滾計劃
 
-如果测试发现问题，可以回滚特定文件：
+如果測試發現問題，可以回滾特定檔案：
 
 ```bash
-# 回滚单个文件
+# 回滾單個檔案
 git checkout HEAD -- js/history/history.js
 
-# 回滚所有 Phase 1 修改
+# 回滾所有 Phase 1 修改
 git checkout HEAD -- js/history/history.js
 git checkout HEAD -- js/processing/markdown_processor_ast.js
 git checkout HEAD -- js/annotations/annotations_summary_modal.js
 
-# 或者回滚整个 commit（如果已经提交）
+# 或者回滾整個 commit（如果已經提交）
 git revert <commit-hash>
 ```
 
 ---
 
-## 📊 性能数据记录表
+## 📊 效能資料記錄表
 
-请在测试完成后填写实际测试数据：
+請在測試完成後填寫實際測試資料：
 
-| 优化项 | 测试场景 | 优化前 | 优化后 | 提升 | 测试人 | 测试日期 |
+| 最佳化項 | 測試場景 | 最佳化前 | 最佳化後 | 提升 | 測試人 | 測試日期 |
 |--------|----------|--------|--------|------|--------|----------|
-| 搜索防抖 | 快速输入4个字符 | ___次渲染 | ___次渲染 | ___%↓ | | |
-| 搜索防抖 | 输入流畅度（主观） | ___ | ___ | | | |
-| 正则提升 | 处理1000行文档 | ___ms | ___ms | ___%↓ | | |
-| 正则提升 | 公式识别准确率 | ___% | ___% | | | |
-| 定时器优化 | 页面隐藏 CPU 占用 | ___%  | ___% | ___%↓ | | |
-| 定时器优化 | 多标签页内存占用 | ___MB | ___MB | ___%↓ | | |
+| 搜尋防抖 | 快速輸入4個字元 | ___次渲染 | ___次渲染 | ___%↓ | | |
+| 搜尋防抖 | 輸入流暢度（主觀） | ___ | ___ | | | |
+| 正則提升 | 處理1000行文件 | ___ms | ___ms | ___%↓ | | |
+| 正則提升 | 公式識別準確率 | ___% | ___% | | | |
+| 定時器最佳化 | 頁面隱藏 CPU 佔用 | ___%  | ___% | ___%↓ | | |
+| 定時器最佳化 | 多分頁記憶體佔用 | ___MB | ___MB | ___%↓ | | |
 
 ---
 
-## 📝 测试日志模板
+## 📝 測試日誌模板
 
 ```markdown
-## 测试日志 - [日期]
+## 測試日誌 - [日期]
 
-### 测试人员
+### 測試人員
 - 姓名：
-- 环境：浏览器版本 / 操作系统
+- 環境：瀏覽器版本 / 作業系統
 
-### 测试结果
+### 測試結果
 
-#### 1. 历史记录搜索防抖
-- [ ] 通过
-- [ ] 失败
-- 问题描述：
-- 性能数据：
+#### 1. 歷史記錄搜尋防抖
+- [ ] 透過
+- [ ] 失敗
+- 問題描述：
+- 效能資料：
 
-#### 2. 正则表达式提升
-- [ ] 通过
-- [ ] 失败
-- 问题描述：
-- 性能数据：
+#### 2. 正規表示式提升
+- [ ] 透過
+- [ ] 失敗
+- 問題描述：
+- 效能資料：
 
-#### 3. 轮询定时器优化
-- [ ] 通过
-- [ ] 失败
-- 问题描述：
-- 性能数据：
+#### 3. 輪詢定時器最佳化
+- [ ] 透過
+- [ ] 失敗
+- 問題描述：
+- 效能資料：
 
-### 总体评价
-- [ ] 建议合并
-- [ ] 需要修复后重测
-- [ ] 建议回滚
+### 總體評價
+- [ ] 建議合併
+- [ ] 需要修復後重測
+- [ ] 建議回滾
 
-### 备注
+### 備註
 
 
 ```
 
 ---
 
-## 🚀 后续步骤
+## 🚀 後續步驟
 
-Phase 1 测试通过后：
+Phase 1 測試透過後：
 
-1. ✅ 将优化合并到 `optimize/frontend-performance` 分支
-2. ✅ 创建详细的性能对比报告
-3. ➡️ 开始 **Phase 2: 中等风险优化**（LRU 缓存、DOM 缓存）
-4. ➡️ 规划 Phase 3 和 Phase 4
+1. ✅ 將最佳化合併到 `optimize/frontend-performance` 分支
+2. ✅ 建立詳細的效能對比報告
+3. ➡️ 開始 **Phase 2: 中等風險最佳化**（LRU 快取、DOM 快取）
+4. ➡️ 規劃 Phase 3 和 Phase 4
 
 ---
 
-**祝测试顺利！** 🎉
+**祝測試順利！** 🎉
 
-如有任何问题或发现bug，请及时记录并反馈。
+如有任何問題或發現bug，請及時記錄並反饋。

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Search Proxy - 测试页面</title>
+    <title>Academic Search Proxy - 測試頁面</title>
     <style>
         * {
             margin: 0;
@@ -243,10 +243,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔬 Academic Search Proxy 测试</h1>
-        <p class="subtitle">测试 Cloudflare Worker 代理服务</p>
+        <h1>🔬 Academic Search Proxy 測試</h1>
+        <p class="subtitle">測試 Cloudflare Worker 代理服務</p>
 
-        <!-- 配置区域 -->
+        <!-- 配置區域 -->
         <div class="config-section">
             <h2>⚙️ 代理配置</h2>
 
@@ -260,77 +260,77 @@
             <div class="form-group">
                 <label>使用模式</label>
                 <select id="usageMode" onchange="toggleModeConfig()">
-                    <option value="passthrough">方案一：透传模式（推荐）</option>
-                    <option value="shared">方案二：共享密钥模式</option>
+                    <option value="passthrough">方案一：透傳模式（推薦）</option>
+                    <option value="shared">方案二：共享金鑰模式</option>
                 </select>
             </div>
 
-            <!-- 方案一：透传模式配置 -->
+            <!-- 方案一：透傳模式配置 -->
             <div id="passthroughConfig" style="display: block;">
                 <div class="form-group">
-                    <label>Semantic Scholar API Key（可选）</label>
+                    <label>Semantic Scholar API Key（可選）</label>
                     <input type="text" id="s2ApiKey" placeholder="你的 Semantic Scholar API Key">
-                    <small style="color: #666; font-size: 12px;">留空表示不使用 API Key（20次/分钟限制）</small>
+                    <small style="color: #666; font-size: 12px;">留空表示不使用 API Key（20次/分鐘限制）</small>
                 </div>
                 <div class="form-group">
-                    <label>PubMed API Key（可选）</label>
+                    <label>PubMed API Key（可選）</label>
                     <input type="text" id="pubmedApiKey" placeholder="你的 PubMed API Key">
                     <small style="color: #666; font-size: 12px;">留空表示不使用 API Key（3次/秒限制）</small>
                 </div>
             </div>
 
-            <!-- 方案二：共享密钥模式配置 -->
+            <!-- 方案二：共享金鑰模式配置 -->
             <div id="sharedConfig" style="display: none;">
                 <div class="form-group">
-                    <label>Auth Key（必须）⚠️</label>
+                    <label>Auth Key（必須）⚠️</label>
                     <input type="password" id="authKey" placeholder="Worker 的 AUTH_SECRET">
-                    <small style="color: #666; font-size: 12px;">向 Worker 部署者获取此密钥</small>
+                    <small style="color: #666; font-size: 12px;">向 Worker 部署者獲取此金鑰</small>
                 </div>
             </div>
 
-            <!-- 启用代理 -->
+            <!-- 啟用代理 -->
             <div class="form-group checkbox-group">
                 <input type="checkbox" id="useProxy" checked>
-                <label for="useProxy" style="margin: 0;">启用代理（对 PubMed 和 Semantic Scholar）</label>
+                <label for="useProxy" style="margin: 0;">啟用代理（對 PubMed 和 Semantic Scholar）</label>
             </div>
         </div>
 
-        <!-- 使用说明 -->
+        <!-- 使用說明 -->
         <div class="info-box">
-            <h3>📖 使用说明</h3>
+            <h3>📖 使用說明</h3>
             <p>
-                <strong>本地测试：</strong><br>
-                1. 启动 Worker：<code>cd workers/academic-search-proxy && npx wrangler dev</code><br>
-                2. 确认代理地址：<code>http://localhost:8787</code><br><br>
-                <strong>生产环境：</strong><br>
-                1. 部署 Worker 后，填入你的 Worker URL<br>
-                2. 选择使用模式（推荐方案一）<br>
-                3. 方案一：填入你自己的 API Key（可选）<br>
-                4. 方案二：填入 Worker 的 Auth Key（必须）<br><br>
-                <strong>测试范围：</strong><br>
-                - <strong>CrossRef、OpenAlex</strong>：直接访问（支持 CORS）<br>
-                - <strong>PubMed、Semantic Scholar、arXiv</strong>：通过代理访问（解决 CORS）
+                <strong>本地測試：</strong><br>
+                1. 啟動 Worker：<code>cd workers/academic-search-proxy && npx wrangler dev</code><br>
+                2. 確認代理地址：<code>http://localhost:8787</code><br><br>
+                <strong>生產環境：</strong><br>
+                1. 部署 Worker 後，填入你的 Worker URL<br>
+                2. 選擇使用模式（推薦方案一）<br>
+                3. 方案一：填入你自己的 API Key（可選）<br>
+                4. 方案二：填入 Worker 的 Auth Key（必須）<br><br>
+                <strong>測試範圍：</strong><br>
+                - <strong>CrossRef、OpenAlex</strong>：直接訪問（支援 CORS）<br>
+                - <strong>PubMed、Semantic Scholar、arXiv</strong>：透過代理訪問（解決 CORS）
             </p>
         </div>
 
-        <!-- 健康检查 -->
+        <!-- 健康檢查 -->
         <div class="test-section">
-            <h2>🏥 健康检查</h2>
+            <h2>🏥 健康檢查</h2>
             <div class="test-grid">
                 <button class="test-btn btn-health" onclick="testHealth()">
                     <span class="status-indicator" id="status-health"></span>
-                    测试 Worker 健康状态
+                    測試 Worker 健康狀態
                 </button>
             </div>
             <div class="result-box" id="result-health" style="display: none;">
-                <h3>结果：</h3>
+                <h3>結果：</h3>
                 <pre id="result-health-content"></pre>
             </div>
         </div>
 
-        <!-- API 测试 -->
+        <!-- API 測試 -->
         <div class="test-section">
-            <h2>🔍 API 测试</h2>
+            <h2>🔍 API 測試</h2>
             <div class="test-grid">
                 <button class="test-btn btn-crossref" onclick="testCrossRef()">
                     <span class="status-indicator" id="status-crossref"></span>
@@ -353,14 +353,14 @@
                     Semantic Scholar (需要代理)
                 </button>
                 <button class="test-btn btn-all" onclick="testAll()">
-                    🚀 测试全部
+                    🚀 測試全部
                 </button>
                 <button class="test-btn btn-all" onclick="testRateLimit()" style="background: #FF5722;">
-                    ⚡ 测试速率限制
+                    ⚡ 測試速率限制
                 </button>
             </div>
             <div class="result-box" id="result-api" style="display: none;">
-                <h3>结果：</h3>
+                <h3>結果：</h3>
                 <pre id="result-api-content"></pre>
             </div>
         </div>
@@ -369,7 +369,7 @@
     <script>
         const testQuery = 'machine learning';
 
-        // 切换模式配置
+        // 切換模式配置
         function toggleModeConfig() {
             const mode = document.getElementById('usageMode').value;
             document.getElementById('passthroughConfig').style.display =
@@ -402,20 +402,20 @@
             return document.getElementById('pubmedApiKey').value.trim();
         }
 
-        // 构建请求头
+        // 構建請求頭
         function buildHeaders() {
             const headers = {};
             const mode = getUsageMode();
 
             if (mode === 'shared') {
-                // 方案二：共享密钥模式
+                // 方案二：共享金鑰模式
                 const authKey = getAuthKey();
                 if (authKey) {
                     headers['X-Auth-Key'] = authKey;
                 }
             } else {
-                // 方案一：透传模式
-                // API Key 会在具体服务中添加
+                // 方案一：透傳模式
+                // API Key 會在具體服務中新增
             }
 
             return headers;
@@ -441,7 +441,7 @@
         async function testHealth() {
             const proxyUrl = getProxyUrl();
             if (!proxyUrl) {
-                alert('请输入 Worker 地址');
+                alert('請輸入 Worker 地址');
                 return;
             }
 
@@ -462,8 +462,8 @@
                 showResult('result-health', {
                     error: error.message,
                     tip: getUsageMode() === 'shared' && !getAuthKey()
-                        ? '共享密钥模式需要 Auth Key'
-                        : '请确认 Worker 是否启动：npx wrangler dev'
+                        ? '共享金鑰模式需要 Auth Key'
+                        : '請確認 Worker 是否啟動：npx wrangler dev'
                 });
             }
         }
@@ -472,7 +472,7 @@
             setStatus('crossref', 'loading');
 
             try {
-                // CrossRef 支持 CORS，直接访问
+                // CrossRef 支援 CORS，直接訪問
                 const url = `https://api.crossref.org/works?query.title=${encodeURIComponent(testQuery)}&rows=1`;
                 const response = await fetch(url);
                 const data = await response.json();
@@ -498,7 +498,7 @@
             setStatus('openalex', 'loading');
 
             try {
-                // OpenAlex 支持 CORS，直接访问
+                // OpenAlex 支援 CORS，直接訪問
                 const url = `https://api.openalex.org/works?search=${encodeURIComponent(testQuery)}`;
                 const response = await fetch(url);
                 const data = await response.json();
@@ -528,14 +528,14 @@
                 const mode = getUsageMode();
 
                 if (useProxy) {
-                    // 通过代理访问 arXiv
+                    // 透過代理訪問 arXiv
                     const proxyUrl = `${getProxyUrl()}/api/arxiv/query?search_query=ti:${encodeURIComponent(testQuery)}&max_results=1`;
                     const headers = buildHeaders();
 
                     const response = await fetch(proxyUrl, { headers });
                     const xmlText = await response.text();
 
-                    // 解析 XML 提取结果数量
+                    // 解析 XML 提取結果數量
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
                     const totalResults = xmlDoc.querySelector('totalResults')?.textContent || '0';
@@ -561,7 +561,7 @@
                         sample: sampleData
                     });
                 } else {
-                    // 直接访问（会因 CORS 失败）
+                    // 直接訪問（會因 CORS 失敗）
                     const url = `http://export.arxiv.org/api/query?search_query=ti:${encodeURIComponent(testQuery)}&max_results=1`;
                     const response = await fetch(url);
                     const xmlText = await response.text();
@@ -604,7 +604,7 @@
             const proxyUrl = getProxyUrl();
 
             try {
-                // Step 1: esearch - 搜索获取 PMID
+                // Step 1: esearch - 搜尋獲取 PMID
                 let searchUrl;
                 const headers = {};
 
@@ -640,7 +640,7 @@
                     return;
                 }
 
-                // Step 2: efetch - 获取详细信息
+                // Step 2: efetch - 獲取詳細資訊
                 let fetchUrl;
                 if (useProxy) {
                     fetchUrl = `${proxyUrl}/api/pubmed/efetch.fcgi?db=pubmed&id=${pmids[0]}&retmode=xml`;
@@ -659,7 +659,7 @@
                 let paperData = { pmid: pmids[0] };
 
                 if (article) {
-                    // 提取标题
+                    // 提取標題
                     const titleEl = article.querySelector('ArticleTitle');
                     paperData.title = titleEl?.textContent?.trim();
 
@@ -712,7 +712,7 @@
                     service: 'PubMed',
                     method: useProxy ? 'Via Proxy' : 'Direct',
                     error: error.message,
-                    tip: useProxy ? '请确认 Worker 已启动' : '请启用代理'
+                    tip: useProxy ? '請確認 Worker 已啟動' : '請啟用代理'
                 });
             }
         }
@@ -728,11 +728,11 @@
                 const headers = {};
 
                 if (useProxy) {
-                    // 通过代理
+                    // 透過代理
                     url = `${proxyUrl}/api/semanticscholar/graph/v1/paper/search?query=${encodeURIComponent(testQuery)}&limit=1`;
                     Object.assign(headers, buildHeaders());
 
-                    // 方案一：透传 API Key
+                    // 方案一：透傳 API Key
                     if (getUsageMode() === 'passthrough') {
                         const apiKey = getS2ApiKey();
                         if (apiKey) {
@@ -740,7 +740,7 @@
                         }
                     }
                 } else {
-                    // 直接访问（会失败）
+                    // 直接訪問（會失敗）
                     url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(testQuery)}&limit=1`;
                 }
 
@@ -762,7 +762,7 @@
                     service: 'Semantic Scholar',
                     method: useProxy ? 'Via Proxy' : 'Direct',
                     error: error.message,
-                    tip: useProxy ? '请确认 Worker 已启动' : '请启用代理'
+                    tip: useProxy ? '請確認 Worker 已啟動' : '請啟用代理'
                 });
             }
         }
@@ -770,17 +770,17 @@
         async function testRateLimit() {
             const proxyUrl = getProxyUrl();
             if (!proxyUrl) {
-                alert('请输入 Worker 地址');
+                alert('請輸入 Worker 地址');
                 return;
             }
 
-            if (!confirm('将快速发送 20 个请求测试速率限制，是否继续？')) {
+            if (!confirm('將快速傳送 20 個請求測試速率限制，是否繼續？')) {
                 return;
             }
 
             showResult('result-api', {
-                message: '速率限制测试中...',
-                note: '发送 20 个请求，观察是否触发 429 错误'
+                message: '速率限制測試中...',
+                note: '傳送 20 個請求，觀察是否觸發 429 錯誤'
             });
 
             const headers = buildHeaders();
@@ -804,7 +804,7 @@
                     if (response.status === 429) {
                         const retryAfter = data.retryAfter || response.headers.get('Retry-After');
                         results.push({
-                            message: `触发速率限制！需要等待 ${retryAfter} 秒`
+                            message: `觸發速率限制！需要等待 ${retryAfter} 秒`
                         });
                         break;
                     }
@@ -815,7 +815,7 @@
                     });
                 }
 
-                // 快速发送，不延迟
+                // 快速傳送，不延遲
             }
 
             showResult('result-api', {
@@ -824,7 +824,7 @@
                 results: results,
                 summary: results.some(r => r.status === 429)
                     ? '✅ 速率限制正常工作'
-                    : '⚠️ 未触发速率限制（可能限制配置较宽松）'
+                    : '⚠️ 未觸發速率限制（可能限制配置較寬鬆）'
             });
         }
 

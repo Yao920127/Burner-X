@@ -1,23 +1,23 @@
-# Paper-Burner 前端性能优化实施计划
+# Paper-Burner 前端效能最佳化實施計劃
 
-> **创建日期**: 2025-11-12
-> **目标**: 系统性提升前端性能，改善用户体验
-> **原则**: 渐进式优化，充分测试，可回滚
+> **建立日期**: 2025-11-12
+> **目標**: 系統性提升前端效能，改善使用者體驗
+> **原則**: 漸進式最佳化，充分測試，可回滾
 
 ---
 
-## 📋 总体策略
+## 📋 總體策略
 
-### 优化原则
-1. **安全第一**: 每个修改都要有完整的测试覆盖
-2. **渐进式**: 从低风险优化开始，逐步推进
-3. **可回滚**: 使用 Git 分支，保持每个优化独立
-4. **可验证**: 每个优化都要有性能指标对比
+### 最佳化原則
+1. **安全第一**: 每個修改都要有完整的測試覆蓋
+2. **漸進式**: 從低風險最佳化開始，逐步推進
+3. **可回滾**: 使用 Git 分支，保持每個最佳化獨立
+4. **可驗證**: 每個最佳化都要有效能指標對比
 
 ### 分支策略
 ```
 main
-  └─ optimize/frontend-performance (当前分支)
+  └─ optimize/frontend-performance (當前分支)
       ├─ optimize/phase1-low-risk
       ├─ optimize/phase2-cache-strategy
       ├─ optimize/phase3-event-delegation
@@ -26,45 +26,45 @@ main
 
 ---
 
-## 🎯 Phase 1: 低风险快速优化（1-2天）
+## 🎯 Phase 1: 低風險快速最佳化（1-2天）
 
-### 1.1 创建性能工具模块
-**文件**: `js/utils/performance-helpers.js`
-**风险**: 🟢 极低（新增文件，不影响现有代码）
-**预期收益**: 为后续优化提供基础工具
+### 1.1 建立效能工具模組
+**檔案**: `js/utils/performance-helpers.js`
+**風險**: 🟢 極低（新增檔案，不影響現有程式碼）
+**預期收益**: 為後續最佳化提供基礎工具
 
-#### 实施步骤
-1. 创建工具模块（防抖、节流、LRU缓存、安全定时器）
-2. 添加单元测试
-3. 在一个非关键模块试用（如设置面板）
-4. 验证无问题后推广
+#### 實施步驟
+1. 建立工具模組（防抖、節流、LRU快取、安全定時器）
+2. 新增單元測試
+3. 在一個非關鍵模組試用（如設定面板）
+4. 驗證無問題後推廣
 
-#### 测试检查点
-- [ ] 防抖函数在300ms内只执行一次
-- [ ] 节流函数在滚动时按预期频率触发
-- [ ] LRU缓存正确淘汰最久未使用项
-- [ ] 定时器在页面卸载时全部清理
+#### 測試檢查點
+- [ ] 防抖函式在300ms內只執行一次
+- [ ] 節流函式在滾動時按預期頻率觸發
+- [ ] LRU快取正確淘汰最久未使用項
+- [ ] 定時器在頁面解除安裝時全部清理
 
-#### 回滚方案
-删除新文件，无需其他操作
+#### 回滾方案
+刪除新檔案，無需其他操作
 
 ---
 
-### 1.2 搜索输入防抖优化
-**文件**: `js/history/history.js`
-**行数**: 352-355
-**风险**: 🟢 低（逻辑简单，易测试）
-**预期收益**: 减少50-80%的渲染次数
+### 1.2 搜尋輸入防抖最佳化
+**檔案**: `js/history/history.js`
+**行數**: 352-355
+**風險**: 🟢 低（邏輯簡單，易測試）
+**預期收益**: 減少50-80%的渲染次數
 
-#### 修改前代码
+#### 修改前程式碼
 ```javascript
 historySearchInput.addEventListener('input', function(event) {
     historyUIState.searchQuery = event.target.value || '';
-    renderHistoryList();  // 每次按键都触发
+    renderHistoryList();  // 每次按鍵都觸發
 });
 ```
 
-#### 修改后代码
+#### 修改後程式碼
 ```javascript
 import { PerformanceHelpers } from '../utils/performance-helpers.js';
 
@@ -76,29 +76,29 @@ historySearchInput.addEventListener('input', function(event) {
 });
 ```
 
-#### 测试检查点
-- [ ] 快速输入"test"（4个字符），只触发1次渲染
-- [ ] 输入后停顿300ms，触发渲染
-- [ ] 搜索结果正确显示
-- [ ] 清空搜索框，恢复完整列表
+#### 測試檢查點
+- [ ] 快速輸入"test"（4個字元），只觸發1次渲染
+- [ ] 輸入後停頓300ms，觸發渲染
+- [ ] 搜尋結果正確顯示
+- [ ] 清空搜尋框，恢復完整列表
 
-#### 性能对比
-| 操作 | 优化前 | 优化后 |
+#### 效能對比
+| 操作 | 最佳化前 | 最佳化後 |
 |------|--------|--------|
-| 输入5个字符 | 5次渲染 | 1次渲染 |
-| 渲染耗时 | 450ms × 5 = 2.25s | 450ms × 1 = 450ms |
+| 輸入5個字元 | 5次渲染 | 1次渲染 |
+| 渲染耗時 | 450ms × 5 = 2.25s | 450ms × 1 = 450ms |
 
 ---
 
-### 1.3 正则表达式提升优化
-**文件**: `js/processing/markdown_processor_ast.js`
-**行数**: 140-155
-**风险**: 🟢 低（只是提升作用域，不改变逻辑）
-**预期收益**: 大文档处理速度提升10-15%
+### 1.3 正規表示式提升最佳化
+**檔案**: `js/processing/markdown_processor_ast.js`
+**行數**: 140-155
+**風險**: 🟢 低（只是提升作用域，不改變邏輯）
+**預期收益**: 大文件處理速度提升10-15%
 
 #### 修改策略
 ```javascript
-// 在模块顶部定义正则常量
+// 在模組頂部定義正則常量
 const MATH_DELIMITER_PATTERNS = Object.freeze({
     dollarWithComma: /\$\\\$\s*([^\$\n]{1,200}?)\s*\\\$\s*，\s*\$/g,
     doubleDollar: /\$\\\$\s*([^\$\n]{1,200}?)\s*\\\$\$/g,
@@ -120,14 +120,14 @@ function normalizeMathDelimiters(text) {
 }
 ```
 
-#### 测试检查点
-- [ ] 公式修复功能正常（测试文档: test-formula-issues.html）
-- [ ] 行内公式识别正确
-- [ ] 块公式识别正确
-- [ ] 边界情况：嵌套公式、特殊字符
+#### 測試檢查點
+- [ ] 公式修復功能正常（測試文件: test-formula-issues.html）
+- [ ] 行內公式識別正確
+- [ ] 塊公式識別正確
+- [ ] 邊界情況：巢狀公式、特殊字元
 
-#### 性能对比
-使用 `performance.mark()` 测量：
+#### 效能對比
+使用 `performance.mark()` 測量：
 ```javascript
 performance.mark('normalize-start');
 normalizeMathDelimiters(largeText);
@@ -138,11 +138,11 @@ console.log(performance.getEntriesByName('normalize')[0].duration);
 
 ---
 
-### 1.4 轮询定时器优化
-**文件**: `js/annotations/annotations_summary_modal.js`
-**行数**: 996
-**风险**: 🟡 中低（需要测试页面隐藏逻辑）
-**预期收益**: 减少50%的后台CPU占用
+### 1.4 輪詢定時器最佳化
+**檔案**: `js/annotations/annotations_summary_modal.js`
+**行數**: 996
+**風險**: 🟡 中低（需要測試頁面隱藏邏輯）
+**預期收益**: 減少50%的後臺CPU佔用
 
 #### 修改策略
 ```javascript
@@ -208,37 +208,37 @@ const colorPoller = new ColorPollingManager(checkForNewColors, 1000);
 colorPoller.start();
 ```
 
-#### 测试检查点
-- [ ] 页面可见时，轮询正常执行
-- [ ] 切换到其他标签，轮询暂停
-- [ ] 切回标签，轮询恢复
-- [ ] 关闭页面，定时器被清理
-- [ ] 批注颜色更新功能正常
+#### 測試檢查點
+- [ ] 頁面可見時，輪詢正常執行
+- [ ] 切換到其他標籤，輪詢暫停
+- [ ] 切回標籤，輪詢恢復
+- [ ] 關閉頁面，定時器被清理
+- [ ] 批註顏色更新功能正常
 
-#### 性能对比
-使用 Chrome DevTools Performance 监控：
-- 页面隐藏时 CPU 占用应降至 0%
+#### 效能對比
+使用 Chrome DevTools Performance 監控：
+- 頁面隱藏時 CPU 佔用應降至 0%
 
 ---
 
-## 🔧 Phase 2: 中等风险优化（3-5天）
+## 🔧 Phase 2: 中等風險最佳化（3-5天）
 
-### 2.1 LRU 缓存实现
-**文件**: `js/processing/markdown_processor_ast.js`
-**行数**: 17-18
-**风险**: 🟡 中（需要验证缓存命中率）
-**预期收益**: 内存占用减少30-40%
+### 2.1 LRU 快取實現
+**檔案**: `js/processing/markdown_processor_ast.js`
+**行數**: 17-18
+**風險**: 🟡 中（需要驗證快取命中率）
+**預期收益**: 記憶體佔用減少30-40%
 
-#### 实施步骤
+#### 實施步驟
 
-**Step 1: 创建 LRU 缓存类**
+**Step 1: 建立 LRU 快取類**
 ```javascript
 class LRUCache {
     constructor(maxSize = 1000) {
         this.maxSize = maxSize;
         this.cache = new Map();
 
-        // 性能指标
+        // 效能指標
         this.stats = {
             hits: 0,
             misses: 0,
@@ -256,7 +256,7 @@ class LRUCache {
         this.stats.hits++;
         const value = this.cache.get(key);
 
-        // 移到最后（最新使用）
+        // 移到最後（最新使用）
         this.cache.delete(key);
         this.cache.set(key, value);
 
@@ -267,7 +267,7 @@ class LRUCache {
         if (this.cache.has(key)) {
             this.cache.delete(key);
         } else if (this.cache.size >= this.maxSize) {
-            // 删除最久未使用的（第一个）
+            // 刪除最久未使用的（第一個）
             const firstKey = this.cache.keys().next().value;
             this.cache.delete(firstKey);
             this.stats.evictions++;
@@ -291,27 +291,27 @@ class LRUCache {
 }
 ```
 
-**Step 2: 替换现有缓存**
+**Step 2: 替換現有快取**
 ```javascript
-// 替换
+// 替換
 const renderCache = new Map();
 
-// 为
+// 為
 const renderCache = new LRUCache(CONFIG.cacheSize);
 
-// 使用方式保持不变
+// 使用方式保持不變
 renderCache.get(key);
 renderCache.set(key, value);
 ```
 
-**Step 3: 添加监控**
+**Step 3: 新增監控**
 ```javascript
-// 在控制台暴露缓存统计
+// 在主控台暴露快取統計
 if (CONFIG.debug) {
     window.__markdownCacheStats = () => renderCache.getStats();
 }
 
-// 定期打印（仅 debug 模式）
+// 定期列印（僅 debug 模式）
 if (CONFIG.debug) {
     setInterval(() => {
         const stats = renderCache.getStats();
@@ -324,48 +324,48 @@ if (CONFIG.debug) {
 }
 ```
 
-#### 测试检查点
-- [ ] 缓存命中率 > 70%（使用 `window.__markdownCacheStats()`）
-- [ ] 缓存大小稳定在配置值附近
-- [ ] 渲染结果与之前完全一致
-- [ ] 内存占用未异常增长
+#### 測試檢查點
+- [ ] 快取命中率 > 70%（使用 `window.__markdownCacheStats()`）
+- [ ] 快取大小穩定在配置值附近
+- [ ] 渲染結果與之前完全一致
+- [ ] 記憶體佔用未異常增長
 
-#### 性能监控
+#### 效能監控
 ```javascript
-// 添加到测试页面
+// 新增到測試頁面
 async function testCachePerformance() {
-    const testText = '重复的长文本...';
+    const testText = '重複的長文字...';
 
     console.time('首次渲染');
     await processMarkdown(testText);
     console.timeEnd('首次渲染');
 
-    console.time('缓存命中渲染');
+    console.time('快取命中渲染');
     await processMarkdown(testText);
-    console.timeEnd('缓存命中渲染');
+    console.timeEnd('快取命中渲染');
 
-    console.log('缓存统计:', window.__markdownCacheStats());
+    console.log('快取統計:', window.__markdownCacheStats());
 }
 ```
 
 ---
 
-### 2.2 批注系统 DOM 缓存优化
-**文件**: `js/annotations/annotation_logic.js`
-**行数**: 440-500
-**风险**: 🟡 中（需要处理 DOM 更新同步）
-**预期收益**: 右键响应速度提升70-85%
+### 2.2 批註系統 DOM 快取最佳化
+**檔案**: `js/annotations/annotation_logic.js`
+**行數**: 440-500
+**風險**: 🟡 中（需要處理 DOM 更新同步）
+**預期收益**: 右鍵響應速度提升70-85%
 
-#### 架构设计
+#### 架構設計
 
 ```javascript
 /**
- * 批注 DOM 缓存管理器
+ * 批註 DOM 快取管理器
  *
- * 职责：
- * 1. 缓存常用的 DOM 查询结果
- * 2. 监听 DOM 变化，自动刷新缓存
- * 3. 提供快速查找方法
+ * 職責：
+ * 1. 快取常用的 DOM 查詢結果
+ * 2. 監聽 DOM 變化，自動重新整理快取
+ * 3. 提供快速查詢方法
  */
 class AnnotationDOMCache {
     constructor(containerSelector) {
@@ -376,7 +376,7 @@ class AnnotationDOMCache {
             throw new Error(`Container not found: ${containerSelector}`);
         }
 
-        // 缓存数据
+        // 快取資料
         this.cache = {
             subBlocks: [],
             blocks: [],
@@ -390,22 +390,22 @@ class AnnotationDOMCache {
     }
 
     /**
-     * 刷新所有缓存
+     * 重新整理所有快取
      */
     refresh() {
-        // 子块
+        // 子塊
         this.cache.subBlocks = Array.from(
             this.container.querySelectorAll('.sub-block[data-sub-block-id]')
         );
 
-        // 构建 Map 索引
+        // 構建 Map 索引
         this.cache.subBlockMap.clear();
         this.cache.subBlocks.forEach(block => {
             const id = block.getAttribute('data-sub-block-id');
             if (id) this.cache.subBlockMap.set(id, block);
         });
 
-        // 块
+        // 塊
         this.cache.blocks = Array.from(
             this.container.querySelectorAll('[data-block-index]')
         );
@@ -423,11 +423,11 @@ class AnnotationDOMCache {
     }
 
     /**
-     * 监听 DOM 变化，自动刷新缓存
+     * 監聽 DOM 變化，自動重新整理快取
      */
     _setupObserver() {
         const observer = new MutationObserver((mutations) => {
-            // 检查是否有结构性变化
+            // 檢查是否有結構性變化
             const hasStructuralChange = mutations.some(mutation =>
                 mutation.type === 'childList' && mutation.addedNodes.length > 0
             );
@@ -447,10 +447,10 @@ class AnnotationDOMCache {
     }
 
     /**
-     * 根据坐标查找子块
+     * 根據座標查詢子塊
      */
     findSubBlockAtPoint(x, y) {
-        // 使用缓存的数组，而不是重新查询
+        // 使用快取的陣列，而不是重新查詢
         return this.cache.subBlocks.find(block => {
             const rect = block.getBoundingClientRect();
             return x >= rect.left && x <= rect.right &&
@@ -459,28 +459,28 @@ class AnnotationDOMCache {
     }
 
     /**
-     * 根据 ID 获取子块
+     * 根據 ID 獲取子塊
      */
     getSubBlockById(id) {
         return this.cache.subBlockMap.get(id);
     }
 
     /**
-     * 根据索引获取块
+     * 根據索引獲取塊
      */
     getBlockByIndex(index) {
         return this.cache.blockMap.get(String(index));
     }
 
     /**
-     * 获取所有子块
+     * 獲取所有子塊
      */
     getAllSubBlocks() {
         return this.cache.subBlocks;
     }
 
     /**
-     * 获取所有块
+     * 獲取所有塊
      */
     getAllBlocks() {
         return this.cache.blocks;
@@ -500,7 +500,7 @@ class AnnotationDOMCache {
 }
 ```
 
-#### 集成到现有代码
+#### 整合到現有程式碼
 
 **修改前**:
 ```javascript
@@ -508,17 +508,17 @@ mainContainer.addEventListener('contextmenu', function(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    // ❌ 每次都查询全文档
+    // ❌ 每次都查詢全文件
     let allSubBlocks = document.querySelectorAll('.sub-block[data-sub-block-id]');
     const blocks = document.querySelectorAll('[data-block-index]');
 
-    // ... 查找逻辑
+    // ... 查詢邏輯
 });
 ```
 
-**修改后**:
+**修改後**:
 ```javascript
-// 初始化缓存（在 DOMContentLoaded 时）
+// 初始化快取（在 DOMContentLoaded 時）
 let domCache;
 
 function initAnnotationDOMCache() {
@@ -528,51 +528,51 @@ function initAnnotationDOMCache() {
     }
 }
 
-// 使用缓存
+// 使用快取
 mainContainer.addEventListener('contextmenu', function(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    // ✅ 使用缓存
+    // ✅ 使用快取
     const clickedSubBlock = domCache.findSubBlockAtPoint(event.clientX, event.clientY);
 
     if (clickedSubBlock) {
         const subBlockId = clickedSubBlock.getAttribute('data-sub-block-id');
-        // ... 后续逻辑
+        // ... 後續邏輯
     }
 });
 ```
 
-#### 测试检查点
-- [ ] 右键菜单响应速度 < 50ms
-- [ ] 批注创建功能正常
-- [ ] 批注高亮显示正确
-- [ ] 文档切换时缓存正确刷新
-- [ ] 翻译完成后缓存正确更新
+#### 測試檢查點
+- [ ] 右鍵選單響應速度 < 50ms
+- [ ] 批註建立功能正常
+- [ ] 批註醒目提示顯示正確
+- [ ] 文件切換時快取正確重新整理
+- [ ] 翻譯完成後快取正確更新
 
-#### 性能对比
+#### 效能對比
 ```javascript
-// 测试脚本
-console.time('DOM查询-优化前');
+// 測試腳本
+console.time('DOM查詢-最佳化前');
 for (let i = 0; i < 100; i++) {
     document.querySelectorAll('.sub-block[data-sub-block-id]');
 }
-console.timeEnd('DOM查询-优化前');
+console.timeEnd('DOM查詢-最佳化前');
 
-console.time('DOM查询-优化后');
+console.time('DOM查詢-最佳化後');
 for (let i = 0; i < 100; i++) {
     domCache.getAllSubBlocks();
 }
-console.timeEnd('DOM查询-优化后');
+console.timeEnd('DOM查詢-最佳化後');
 ```
 
 ---
 
-### 2.3 字符串拼接优化
-**文件**: `js/chatbot/ui/chatbot-message-renderer.js`
-**行数**: 95-105
-**风险**: 🟢 低（局部修改）
-**预期收益**: 大消息渲染速度提升15-20%
+### 2.3 字串拼接最佳化
+**檔案**: `js/chatbot/ui/chatbot-message-renderer.js`
+**行數**: 95-105
+**風險**: 🟢 低（區域性修改）
+**預期收益**: 大訊息渲染速度提升15-20%
 
 #### 修改策略
 ```javascript
@@ -586,7 +586,7 @@ contentToDisplay.forEach(part => {
     }
 });
 
-// 修改后
+// 修改後
 const htmlParts = contentToDisplay.map(part => {
     if (part.type === 'text') {
         return `<div class="whitespace-pre-wrap">${escapeHtml(part.text)}</div>`;
@@ -598,28 +598,28 @@ const htmlParts = contentToDisplay.map(part => {
 const userMessageHtml = htmlParts.join('');
 ```
 
-#### 测试检查点
-- [ ] 消息渲染结果一致
-- [ ] 图片正常显示
-- [ ] 文本换行正确
-- [ ] 混合内容（文本+图片）正确
+#### 測試檢查點
+- [ ] 訊息渲染結果一致
+- [ ] 圖片正常顯示
+- [ ] 文字換行正確
+- [ ] 混合內容（文字+圖片）正確
 
 ---
 
-## ⚡ Phase 3: 高风险重构（5-7天）
+## ⚡ Phase 3: 高風險重構（5-7天）
 
-### 3.1 聊天消息事件委托重构
-**文件**: `js/chatbot/ui/chatbot-message-renderer.js`
-**风险**: 🔴 高（涉及核心交互逻辑）
-**预期收益**: 内存占用减少40-60%，交互流畅度提升
+### 3.1 聊天訊息事件委託重構
+**檔案**: `js/chatbot/ui/chatbot-message-renderer.js`
+**風險**: 🔴 高（涉及核心互動邏輯）
+**預期收益**: 記憶體佔用減少40-60%，互動流暢度提升
 
-#### 重构计划
+#### 重構計劃
 
-**Step 1: 创建事件管理器**
+**Step 1: 建立事件管理器**
 ```javascript
 /**
- * 聊天消息事件管理器
- * 使用事件委托处理所有消息操作
+ * 聊天訊息事件管理器
+ * 使用事件委託處理所有訊息操作
  */
 class ChatMessageEventManager {
     constructor(containerSelector) {
@@ -632,7 +632,7 @@ class ChatMessageEventManager {
     }
 
     _setupEventDelegation() {
-        // 单一点击事件监听器
+        // 單一點選事件監聽器
         this.container.addEventListener('click', (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
@@ -656,7 +656,7 @@ class ChatMessageEventManager {
             }
         });
 
-        // 键盘快捷键
+        // 鍵盤快捷鍵
         this.container.addEventListener('keydown', (e) => {
             if (e.key === 'Delete' && e.target.closest('.message-item')) {
                 const item = e.target.closest('.message-item');
@@ -682,25 +682,25 @@ class ChatMessageEventManager {
 
     _handleCopy(index, event) {
         event.stopPropagation();
-        // 复制逻辑
+        // 複製邏輯
     }
 
     _handleToggleRaw(index, event) {
         event.stopPropagation();
-        // 切换原始内容显示
+        // 切換原始內容顯示
     }
 }
 ```
 
-**Step 2: 修改消息渲染器**
+**Step 2: 修改訊息渲染器**
 
-修改前（内联事件）:
+修改前（內聯事件）:
 ```html
 <button onclick="window.ChatbotActions.deleteMessage(${index})"
         onmouseover="this.style.background='rgba(239,68,68,0.1)';">
 ```
 
-修改后（数据属性 + CSS）:
+修改後（資料屬性 + CSS）:
 ```html
 <button class="message-action-btn delete-btn"
         data-action="delete"
@@ -708,7 +708,7 @@ class ChatMessageEventManager {
 ```
 
 ```css
-/* 使用 CSS 处理 hover 效果 */
+/* 使用 CSS 處理 hover 效果 */
 .message-action-btn {
     transition: background-color 0.2s;
 }
@@ -722,11 +722,11 @@ class ChatMessageEventManager {
 }
 ```
 
-**Step 3: 分阶段迁移**
+**Step 3: 分階段遷移**
 
 ```javascript
-// 阶段 1: 双模式运行（兼容期）
-const USE_EVENT_DELEGATION = true;  // 特性开关
+// 階段 1: 雙模式執行（相容期）
+const USE_EVENT_DELEGATION = true;  // 特性開關
 
 function renderMessageActions(index) {
     if (USE_EVENT_DELEGATION) {
@@ -734,75 +734,75 @@ function renderMessageActions(index) {
             <button class="message-action-btn delete-btn"
                     data-action="delete"
                     data-index="${index}">
-                删除
+                刪除
             </button>
         `;
     } else {
-        // 旧版本（回退）
+        // 舊版本（回退）
         return `
             <button onclick="window.ChatbotActions.deleteMessage(${index})">
-                删除
+                刪除
             </button>
         `;
     }
 }
 
-// 阶段 2: 充分测试后移除旧代码
+// 階段 2: 充分測試後移除舊程式碼
 ```
 
-#### 测试检查点
-- [ ] 删除消息功能正常
-- [ ] 重新发送功能正常
-- [ ] 复制功能正常
+#### 測試檢查點
+- [ ] 刪除訊息功能正常
+- [ ] 重新傳送功能正常
+- [ ] 複製功能正常
 - [ ] Hover 效果正常
-- [ ] 键盘快捷键正常
-- [ ] 多个聊天窗口（浮动模式）不冲突
-- [ ] 快速连续点击不出错
+- [ ] 鍵盤快捷鍵正常
+- [ ] 多個聊天視窗（浮動模式）不衝突
+- [ ] 快速連續點選不出錯
 
-#### 性能对比
+#### 效能對比
 ```javascript
-// 测试内存占用
+// 測試記憶體佔用
 function measureMemoryUsage() {
     if (performance.memory) {
         console.log('Heap Size:', (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2), 'MB');
     }
 }
 
-// 优化前：渲染 50 条消息
+// 最佳化前：渲染 50 條訊息
 measureMemoryUsage();  // 例如: 45.2 MB
 
-// 优化后：渲染 50 条消息
-measureMemoryUsage();  // 预期: 28.5 MB (减少 37%)
+// 最佳化後：渲染 50 條訊息
+measureMemoryUsage();  // 預期: 28.5 MB (減少 37%)
 ```
 
 ---
 
-## 🚀 Phase 4: 架构级优化（1-2周）
+## 🚀 Phase 4: 架構級最佳化（1-2周）
 
-### 4.1 历史记录虚拟滚动实现
-**文件**: `js/history/history.js`
-**风险**: 🔴 高（核心功能重写）
-**预期收益**: 大列表（100+）渲染速度提升80-90%
+### 4.1 歷史記錄虛擬滾動實現
+**檔案**: `js/history/history.js`
+**風險**: 🔴 高（核心功能重寫）
+**預期收益**: 大列表（100+）渲染速度提升80-90%
 
-#### 架构设计
+#### 架構設計
 
 ```javascript
 /**
- * 虚拟滚动列表管理器
+ * 虛擬滾動列表管理器
  *
  * 原理：
- * 1. 只渲染可视区域的项目
- * 2. 根据滚动位置动态更新显示项
- * 3. 使用 CSS transform 模拟滚动
+ * 1. 只渲染可視區域的專案
+ * 2. 根據滾動位置動態更新顯示項
+ * 3. 使用 CSS transform 模擬滾動
  */
 class VirtualScrollList {
     constructor(options) {
         this.container = options.container;          // 容器元素
-        this.itemHeight = options.itemHeight;        // 每项高度（固定）
-        this.renderItem = options.renderItem;        // 渲染函数
-        this.items = [];                             // 所有数据
+        this.itemHeight = options.itemHeight;        // 每項高度（固定）
+        this.renderItem = options.renderItem;        // 渲染函式
+        this.items = [];                             // 所有資料
 
-        // 可视区域计算
+        // 可視區域計算
         this.visibleStart = 0;
         this.visibleEnd = 0;
         this.visibleCount = Math.ceil(this.container.clientHeight / this.itemHeight) + 2;
@@ -815,11 +815,11 @@ class VirtualScrollList {
     }
 
     _init() {
-        // 创建虚拟滚动结构
+        // 建立虛擬滾動結構
         this.container.innerHTML = `
             <div class="virtual-scroll-viewport" style="overflow-y: auto; height: 100%;">
                 <div class="virtual-scroll-content" style="position: relative;">
-                    <!-- 动态内容 -->
+                    <!-- 動態內容 -->
                 </div>
             </div>
         `;
@@ -827,17 +827,17 @@ class VirtualScrollList {
         this.viewport = this.container.querySelector('.virtual-scroll-viewport');
         this.content = this.container.querySelector('.virtual-scroll-content');
 
-        // 监听滚动
+        // 監聽滾動
         this.viewport.addEventListener('scroll', () => this._handleScroll());
     }
 
     /**
-     * 设置数据
+     * 設定資料
      */
     setItems(items) {
         this.items = items;
 
-        // 设置内容区域总高度
+        // 設定內容區域總高度
         this.content.style.height = `${items.length * this.itemHeight}px`;
 
         // 重新渲染
@@ -845,13 +845,13 @@ class VirtualScrollList {
     }
 
     /**
-     * 处理滚动
+     * 處理滾動
      */
     _handleScroll() {
         const scrollTop = this.viewport.scrollTop;
         const newVisibleStart = Math.floor(scrollTop / this.itemHeight);
 
-        // 只在变化时重新渲染
+        // 只在變化時重新渲染
         if (newVisibleStart !== this.visibleStart) {
             this.visibleStart = newVisibleStart;
             this.visibleEnd = Math.min(
@@ -863,7 +863,7 @@ class VirtualScrollList {
     }
 
     /**
-     * 渲染可见项
+     * 渲染可見項
      */
     _render() {
         const visibleItems = this.items.slice(this.visibleStart, this.visibleEnd);
@@ -888,7 +888,7 @@ class VirtualScrollList {
     }
 
     /**
-     * 滚动到指定项
+     * 滾動到指定項
      */
     scrollToIndex(index) {
         const targetScrollTop = index * this.itemHeight;
@@ -896,7 +896,7 @@ class VirtualScrollList {
     }
 
     /**
-     * 刷新
+     * 重新整理
      */
     refresh() {
         this._render();
@@ -904,16 +904,16 @@ class VirtualScrollList {
 }
 ```
 
-#### 集成到历史记录页面
+#### 整合到歷史記錄頁面
 
-**Step 1: 创建适配器**
+**Step 1: 建立介面卡**
 ```javascript
 // js/history/history-virtual-scroll.js
 
 class HistoryVirtualList {
     constructor() {
         this.virtualList = null;
-        this.ITEM_HEIGHT = 120;  // 历史项高度（需要测量）
+        this.ITEM_HEIGHT = 120;  // 歷史項高度（需要測量）
     }
 
     init(containerSelector) {
@@ -927,7 +927,7 @@ class HistoryVirtualList {
     }
 
     _renderHistoryItem(record, index) {
-        // 复用现有的 renderHistoryItem 逻辑
+        // 複用現有的 renderHistoryItem 邏輯
         const isBatch = record.batchId && record.batchChildren && record.batchChildren.length > 0;
 
         if (isBatch) {
@@ -938,21 +938,21 @@ class HistoryVirtualList {
     }
 
     _renderSingleItem(record) {
-        // 从原有代码提取渲染逻辑
+        // 從原有程式碼提取渲染邏輯
         return `
             <div class="history-item" data-id="${record.id}">
                 <div class="history-item-name">${escapeHtml(record.name)}</div>
                 <div class="history-item-time">${formatTime(record.time)}</div>
                 <div class="history-item-actions">
-                    <button data-action="view" data-id="${record.id}">查看</button>
-                    <button data-action="delete" data-id="${record.id}">删除</button>
+                    <button data-action="view" data-id="${record.id}">檢視</button>
+                    <button data-action="delete" data-id="${record.id}">刪除</button>
                 </div>
             </div>
         `;
     }
 
     _renderBatchItem(record) {
-        // 批次渲染逻辑
+        // 批次渲染邏輯
         // ...
     }
 
@@ -965,52 +965,52 @@ class HistoryVirtualList {
     }
 }
 
-// 全局实例
+// 全域例項
 window.historyVirtualList = new HistoryVirtualList();
 ```
 
 **Step 2: 修改 history.js**
 ```javascript
-// 特性开关
+// 特性開關
 const USE_VIRTUAL_SCROLL = true;
 
 function renderHistoryList() {
-    // ... 获取和过滤数据
+    // ... 獲取和過濾資料
 
     if (USE_VIRTUAL_SCROLL) {
-        // 新方法：虚拟滚动
+        // 新方法：虛擬滾動
         if (!window.historyVirtualList) {
             window.historyVirtualList = new HistoryVirtualList();
             window.historyVirtualList.init('#history-list-container');
         }
         window.historyVirtualList.setData(filteredRecords);
     } else {
-        // 旧方法：直接渲染
+        // 舊方法：直接渲染
         const fragments = filteredRecords.map(r => renderHistoryItem(r));
         listDiv.innerHTML = fragments.join('');
     }
 }
 ```
 
-#### 挑战和解决方案
+#### 挑戰和解決方案
 
-**挑战 1: 历史项高度不固定**
-- 批次项和单项高度不同
-- 文件名过长时会换行
+**挑戰 1: 歷史項高度不固定**
+- 批次項和單項高度不同
+- 檔名過長時會換行
 
-**解决方案**:
+**解決方案**:
 ```javascript
 // 方案 A: 估算平均高度
 const ITEM_HEIGHT = 120;  // 平均高度
 
-// 方案 B: 动态高度（更复杂）
+// 方案 B: 動態高度（更復雜）
 class DynamicHeightVirtualScroll {
     constructor() {
-        this.itemHeights = new Map();  // 缓存每项的真实高度
+        this.itemHeights = new Map();  // 快取每項的真實高度
         this.estimatedHeight = 120;
     }
 
-    // 渲染后测量实际高度
+    // 渲染後測量實際高度
     _measureHeights() {
         const items = this.content.querySelectorAll('.virtual-item');
         items.forEach((item, index) => {
@@ -1021,74 +1021,74 @@ class DynamicHeightVirtualScroll {
 }
 ```
 
-**挑战 2: 搜索和过滤**
-- 过滤后项目数量变化
+**挑戰 2: 搜尋和過濾**
+- 過濾後專案數量變化
 
-**解决方案**:
+**解決方案**:
 ```javascript
 function filterAndRender(searchQuery) {
     const filteredRecords = allRecords.filter(r =>
         r.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // 虚拟列表自动处理数据变化
+    // 虛擬列表自動處理資料變化
     window.historyVirtualList.setData(filteredRecords);
 }
 ```
 
-**挑战 3: 批次展开/收起**
-- 展开批次会改变列表长度
+**挑戰 3: 批次展開/收起**
+- 展開批次會改變列表長度
 
-**解决方案**:
+**解決方案**:
 ```javascript
 function toggleBatch(batchId) {
-    // 更新数据模型
+    // 更新資料模型
     const batch = allRecords.find(r => r.batchId === batchId);
     batch.expanded = !batch.expanded;
 
-    // 重新计算扁平化列表
+    // 重新計算扁平化列表
     const flatRecords = flattenRecords(allRecords);
 
-    // 更新虚拟列表
+    // 更新虛擬列表
     window.historyVirtualList.setData(flatRecords);
 }
 ```
 
-#### 测试检查点
-- [ ] 100 条记录渲染时间 < 100ms
-- [ ] 滚动流畅（60 FPS）
-- [ ] 搜索过滤正常
-- [ ] 批次展开/收起正常
-- [ ] 删除记录后列表正确更新
-- [ ] 跳转到最新记录功能正常
-- [ ] 不同屏幕尺寸下正常工作
+#### 測試檢查點
+- [ ] 100 條記錄渲染時間 < 100ms
+- [ ] 滾動流暢（60 FPS）
+- [ ] 搜尋過濾正常
+- [ ] 批次展開/收起正常
+- [ ] 刪除記錄後列表正確更新
+- [ ] 跳轉到最新記錄功能正常
+- [ ] 不同螢幕尺寸下正常工作
 
-#### 性能对比
+#### 效能對比
 ```javascript
-// 测试脚本
+// 測試腳本
 async function testVirtualScrollPerformance() {
-    // 生成测试数据
+    // 生成測試資料
     const testRecords = Array.from({ length: 500 }, (_, i) => ({
         id: `test-${i}`,
-        name: `测试文档 ${i}.pdf`,
+        name: `測試文件 ${i}.pdf`,
         time: new Date(Date.now() - i * 60000),
         // ...
     }));
 
-    // 优化前
-    console.time('传统渲染-500项');
+    // 最佳化前
+    console.time('傳統渲染-500項');
     listDiv.innerHTML = testRecords.map(r => renderHistoryItem(r)).join('');
-    console.timeEnd('传统渲染-500项');
+    console.timeEnd('傳統渲染-500項');
 
-    // 优化后
-    console.time('虚拟滚动-500项');
+    // 最佳化後
+    console.time('虛擬滾動-500項');
     window.historyVirtualList.setData(testRecords);
-    console.timeEnd('虚拟滚动-500项');
+    console.timeEnd('虛擬滾動-500項');
 }
 ```
 
-预期结果:
-| 项目数 | 传统渲染 | 虚拟滚动 | 提升 |
+預期結果:
+| 專案數 | 傳統渲染 | 虛擬滾動 | 提升 |
 |--------|----------|----------|------|
 | 50     | 180ms    | 40ms     | 78%  |
 | 100    | 450ms    | 45ms     | 90%  |
@@ -1096,15 +1096,15 @@ async function testVirtualScrollPerformance() {
 
 ---
 
-## 📊 性能监控和测试
+## 📊 效能監控和測試
 
-### 自动化性能测试套件
+### 自動化效能測試套件
 
-创建 `tests/performance/performance-suite.js`:
+建立 `tests/performance/performance-suite.js`:
 
 ```javascript
 /**
- * 性能测试套件
+ * 效能測試套件
  */
 class PerformanceTestSuite {
     constructor() {
@@ -1112,7 +1112,7 @@ class PerformanceTestSuite {
     }
 
     /**
-     * 测试渲染性能
+     * 測試渲染效能
      */
     async testRenderPerformance(testName, renderFn, iterations = 10) {
         const times = [];
@@ -1140,12 +1140,12 @@ class PerformanceTestSuite {
     }
 
     /**
-     * 测试内存占用
+     * 測試記憶體佔用
      */
     measureMemory(testName) {
         if (performance.memory) {
             const mb = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
-            console.log(`[${testName}] 内存占用: ${mb} MB`);
+            console.log(`[${testName}] 記憶體佔用: ${mb} MB`);
             this.results.push({
                 test: testName,
                 memory: `${mb} MB`
@@ -1154,7 +1154,7 @@ class PerformanceTestSuite {
     }
 
     /**
-     * 测试 FPS
+     * 測試 FPS
      */
     async measureFPS(testName, actionFn, duration = 2000) {
         let frames = 0;
@@ -1177,14 +1177,14 @@ class PerformanceTestSuite {
             requestAnimationFrame(measure);
         };
 
-        actionFn();  // 触发操作（如滚动）
+        actionFn();  // 觸發操作（如滾動）
         requestAnimationFrame(measure);
 
         await new Promise(resolve => setTimeout(resolve, duration + 100));
     }
 
     /**
-     * 生成报告
+     * 生成報告
      */
     generateReport() {
         console.table(this.results);
@@ -1195,23 +1195,23 @@ class PerformanceTestSuite {
 // 使用示例
 const perfTest = new PerformanceTestSuite();
 
-// 测试历史列表渲染
-await perfTest.testRenderPerformance('历史列表-50项', async () => {
+// 測試歷史列表渲染
+await perfTest.testRenderPerformance('歷史列表-50項', async () => {
     await renderHistoryList(generate50Records());
 });
 
-await perfTest.testRenderPerformance('历史列表-100项', async () => {
+await perfTest.testRenderPerformance('歷史列表-100項', async () => {
     await renderHistoryList(generate100Records());
 });
 
-// 测试内存
-perfTest.measureMemory('初始加载');
+// 測試記憶體
+perfTest.measureMemory('初始載入');
 await loadChatMessages(100);
-perfTest.measureMemory('加载100条消息后');
+perfTest.measureMemory('載入100條訊息後');
 
-// 测试滚动 FPS
-await perfTest.measureFPS('历史列表滚动', () => {
-    // 模拟滚动
+// 測試滾動 FPS
+await perfTest.measureFPS('歷史列表滾動', () => {
+    // 模擬滾動
     const container = document.querySelector('#history-list');
     let scrollTop = 0;
     const scroll = () => {
@@ -1222,98 +1222,98 @@ await perfTest.measureFPS('历史列表滚动', () => {
     scroll();
 }, 2000);
 
-// 生成报告
+// 生成報告
 perfTest.generateReport();
 ```
 
 ---
 
-## 🔄 回滚计划
+## 🔄 回滾計劃
 
-每个 Phase 都在独立分支上开发，便于回滚：
+每個 Phase 都在獨立分支上開發，便於回滾：
 
 ```bash
-# 如果 Phase 1 出现问题
+# 如果 Phase 1 出現問題
 git checkout optimize/frontend-performance
 git revert <phase1-merge-commit>
 
-# 如果某个具体优化有问题
+# 如果某個具體最佳化有問題
 git checkout optimize/frontend-performance
 git revert <specific-commit>
 git push origin optimize/frontend-performance
 ```
 
-### 回滚检查清单
-- [ ] 确认问题严重性（是否需要立即回滚）
-- [ ] 记录问题详情和复现步骤
-- [ ] 执行回滚操作
-- [ ] 验证回滚后功能正常
-- [ ] 通知团队成员
-- [ ] 分析问题原因，修复后重新部署
+### 回滾檢查清單
+- [ ] 確認問題嚴重性（是否需要立即回滾）
+- [ ] 記錄問題詳情和復現步驟
+- [ ] 執行回滾操作
+- [ ] 驗證回滾後功能正常
+- [ ] 通知團隊成員
+- [ ] 分析問題原因，修復後重新部署
 
 ---
 
-## ✅ 验收标准
+## ✅ 驗收標準
 
-### Phase 1 验收
-- [ ] 所有单元测试通过
-- [ ] 搜索输入防抖生效
-- [ ] 定时器在页面隐藏时暂停
-- [ ] 正则表达式提升后功能正常
-- [ ] 无新增 bug
+### Phase 1 驗收
+- [ ] 所有單元測試透過
+- [ ] 搜尋輸入防抖生效
+- [ ] 定時器在頁面隱藏時暫停
+- [ ] 正規表示式提升後功能正常
+- [ ] 無新增 bug
 
-### Phase 2 验收
-- [ ] LRU 缓存命中率 > 70%
-- [ ] DOM 缓存使右键响应 < 50ms
-- [ ] 内存占用稳定
-- [ ] 所有批注功能正常
+### Phase 2 驗收
+- [ ] LRU 快取命中率 > 70%
+- [ ] DOM 快取使右鍵響應 < 50ms
+- [ ] 記憶體佔用穩定
+- [ ] 所有批註功能正常
 
-### Phase 3 验收
-- [ ] 事件委托重构后所有交互正常
-- [ ] 内存占用减少 > 30%
-- [ ] 无事件监听器泄漏
-- [ ] 性能测试套件全部通过
+### Phase 3 驗收
+- [ ] 事件委託重構後所有互動正常
+- [ ] 記憶體佔用減少 > 30%
+- [ ] 無事件監聽器洩漏
+- [ ] 效能測試套件全部透過
 
-### Phase 4 验收
-- [ ] 虚拟滚动流畅度 60 FPS
+### Phase 4 驗收
+- [ ] 虛擬滾動流暢度 60 FPS
 - [ ] 大列表（500+）渲染 < 100ms
-- [ ] 搜索、过滤、批次操作正常
-- [ ] 所有浏览器兼容
+- [ ] 搜尋、過濾、批次操作正常
+- [ ] 所有瀏覽器相容
 
 ---
 
-## 📝 开发日志
+## 📝 開發日誌
 
-### 日志模板
+### 日誌模板
 ```markdown
-## [日期] Phase X - [功能名称]
+## [日期] Phase X - [功能名稱]
 
-### 实施内容
-- 修改了 xxx.js 的 xxx 函数
-- 添加了 xxx 工具类
+### 實施內容
+- 修改了 xxx.js 的 xxx 函式
+- 新增了 xxx 工具類
 
-### 测试结果
-- ✅ 功能测试通过
-- ✅ 性能测试：xxx 提升 xx%
-- ⚠️ 发现问题：xxx
+### 測試結果
+- ✅ 功能測試透過
+- ✅ 效能測試：xxx 提升 xx%
+- ⚠️ 發現問題：xxx
 
-### 遗留问题
-- [ ] 问题 1
-- [ ] 问题 2
+### 遺留問題
+- [ ] 問題 1
+- [ ] 問題 2
 
 ### 下一步
-- 继续 xxx
+- 繼續 xxx
 ```
 
 ---
 
-## 🎯 总结
+## 🎯 總結
 
-本优化计划采用**渐进式、可回滚、充分测试**的策略，预期在 2-3 周内完成所有优化，实现：
+本最佳化計劃採用**漸進式、可回滾、充分測試**的策略，預期在 2-3 周內完成所有最佳化，實現：
 
-- **渲染性能**: 提升 70-90%
-- **内存占用**: 减少 40-60%
-- **交互流畅度**: 达到 60 FPS
-- **用户体验**: 显著改善
+- **渲染效能**: 提升 70-90%
+- **記憶體佔用**: 減少 40-60%
+- **互動流暢度**: 達到 60 FPS
+- **使用者體驗**: 顯著改善
 
-所有优化都会保持代码可维护性和可读性，不会引入复杂的依赖。
+所有最佳化都會保持程式碼可維護性和可讀性，不會引入複雜的依賴。

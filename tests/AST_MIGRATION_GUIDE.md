@@ -1,75 +1,75 @@
-# AST 架构迁移指南
+# AST 架構遷移指南
 
 ## 🎯 概述
 
-本分支实现了从**字符串处理**到**AST（抽象语法树）处理**的架构升级。
+本分支實現了從**字串處理**到**AST（抽象語法樹）處理**的架構升級。
 
-### 架构对比
+### 架構對比
 
-| 方面 | 旧架构（字符串） | 新架构（AST） |
+| 方面 | 舊架構（字串） | 新架構（AST） |
 |------|----------------|-------------|
-| **解析器** | marked (字符串替换) | markdown-it (AST) |
-| **公式处理** | 正则 + 保护/恢复 | AST 插件 |
-| **注释系统** | marked.Renderer | AST 插件 |
-| **上下文感知** | ❌ 无 | ✅ 完整 |
-| **可扩展性** | ⚠️ 难维护 | ✅ 插件系统 |
+| **解析器** | marked (字串替換) | markdown-it (AST) |
+| **公式處理** | 正則 + 保護/恢復 | AST 外掛 |
+| **註釋系統** | marked.Renderer | AST 外掛 |
+| **上下文感知** | ❌ 無 | ✅ 完整 |
+| **可擴充性** | ⚠️ 難維護 | ✅ 外掛系統 |
 
 ---
 
 ## ✅ 已完成的工作
 
-### 1. 核心架构
-- ✅ `markdown_processor_ast.js` - AST 处理器核心
-- ✅ `annotation_plugin_ast.js` - AST 注释插件
-- ✅ `markdown_processor_integration.js` - 集成层
+### 1. 核心架構
+- ✅ `markdown_processor_ast.js` - AST 處理器核心
+- ✅ `annotation_plugin_ast.js` - AST 註釋外掛
+- ✅ `markdown_processor_integration.js` - 整合層
 
-### 2. 插件系统
-- ✅ OCR 修复插件（Token 级别）
-- ✅ 公式处理插件（KaTeX 集成）
-- ✅ 注释插件（上下文感知）
-- ⚠️ 表格修复插件（框架完成，逻辑待实现）
+### 2. 外掛系統
+- ✅ OCR 修復外掛（Token 級別）
+- ✅ 公式處理外掛（KaTeX 整合）
+- ✅ 註釋外掛（上下文感知）
+- ⚠️ 表格修復外掛（框架完成，邏輯待實現）
 
-### 3. 向后兼容
-- ✅ 保留所有旧 API
-- ✅ 自动路由到 AST
-- ✅ 智能集成层
+### 3. 向後相容
+- ✅ 保留所有舊 API
+- ✅ 自動路由到 AST
+- ✅ 智慧整合層
 
-### 4. 测试页面
-- ✅ test-ast.html - AST vs 旧版对比
-- ✅ test-routing.html - 路由验证
-- ✅ test-annotation.html - 注释功能
-- ✅ test-integration.html - 集成层演示
+### 4. 測試頁面
+- ✅ test-ast.html - AST vs 舊版對比
+- ✅ test-routing.html - 路由驗證
+- ✅ test-annotation.html - 註釋功能
+- ✅ test-integration.html - 整合層演示
 
 ---
 
-## 📦 文件结构
+## 📦 檔案結構
 
 ```
 js/processing/
 ├── markdown_processor.js          # 路由器（已更新）
-├── markdown_processor_enhanced.js # 旧版 Enhanced
+├── markdown_processor_enhanced.js # 舊版 Enhanced
 ├── markdown_processor_ast.js      # 新：AST 核心
-├── annotation_plugin_ast.js       # 新：AST 注释插件
-└── markdown_processor_integration.js  # 新：集成层
+├── annotation_plugin_ast.js       # 新：AST 註釋外掛
+└── markdown_processor_integration.js  # 新：整合層
 
-test-*.html                        # 测试页面
+test-*.html                        # 測試頁面
 ```
 
 ---
 
 ## 🚀 使用指南
 
-### 基础渲染（无需修改代码）
+### 基礎渲染（無需修改程式碼）
 
-现有代码**无需修改**，自动使用 AST：
+現有程式碼**無需修改**，自動使用 AST：
 
 ```javascript
-// 这些调用会自动路由到 AST
+// 這些呼叫會自動路由到 AST
 const html = MarkdownProcessor.renderWithKatexFailback(markdown);
 const safe = MarkdownProcessor.safeMarkdown(markdown, images);
 ```
 
-### 带注释渲染（新 API）
+### 帶註釋渲染（新 API）
 
 #### 方式 1：直接使用 AST API
 
@@ -87,20 +87,20 @@ const html = MarkdownProcessorAST.renderWithAnnotations(
 );
 ```
 
-#### 方式 2：使用集成层（推荐）
+#### 方式 2：使用整合層（推薦）
 
 ```javascript
 const html = MarkdownIntegration.smartRender(
   markdown,
   images,
-  annotations,  // 注释数组或 null
+  annotations,  // 註釋陣列或 null
   'content-identifier'
 );
 ```
 
 ### 替代 createCustomMarkdownRenderer
 
-#### 旧代码（不再工作）
+#### 舊程式碼（不再工作）
 
 ```javascript
 const renderer = createCustomMarkdownRenderer(
@@ -111,7 +111,7 @@ const renderer = createCustomMarkdownRenderer(
 const html = marked(markdown, { renderer });
 ```
 
-#### 新代码（使用集成层）
+#### 新程式碼（使用整合層）
 
 ```javascript
 // 方式 1：使用 createAnnotationConfig
@@ -130,7 +130,7 @@ const html = MarkdownIntegration.smartRender(
 );
 ```
 
-### 批量渲染 tokens
+### 批次渲染 tokens
 
 ```javascript
 const tokens = marked.lexer(markdown);
@@ -144,21 +144,21 @@ const htmlArray = MarkdownIntegration.renderTokens(
 
 ---
 
-## 🔍 性能监控
+## 🔍 效能監控
 
-### 获取指标
+### 獲取指標
 
 ```javascript
-// AST 指标
+// AST 指標
 const metrics = MarkdownProcessorAST.getMetrics();
 console.table(metrics);
 
-// 集成层指标
+// 整合層指標
 const allMetrics = MarkdownIntegration.getMetrics();
 console.table(allMetrics);
 ```
 
-### 输出示例
+### 輸出示例
 
 ```javascript
 {
@@ -172,52 +172,52 @@ console.table(allMetrics);
 }
 ```
 
-### 调试模式
+### 除錯模式
 
 ```javascript
-// 启用调试日志
+// 啟用除錯日誌
 MarkdownProcessorAST.config.debug = true;
 
-// 清除缓存
+// 清除快取
 MarkdownProcessorAST.clearCache();
 ```
 
 ---
 
-## 🧪 测试方法
+## 🧪 測試方法
 
-### 1. 验证 AST 已加载
+### 1. 驗證 AST 已載入
 
-打开浏览器控制台，应该看到：
+開啟瀏覽器主控台，應該看到：
 
 ```
-[MarkdownProcessorAST] ✅ AST 架构已启用 3.0.0-ast
-[MarkdownProcessor] 🎯 路由到 AST 架构
-[MarkdownIntegration] 集成层已加载，当前架构: AST
+[MarkdownProcessorAST] ✅ AST 架構已啟用 3.0.0-ast
+[MarkdownProcessor] 🎯 路由到 AST 架構
+[MarkdownIntegration] 整合層已載入，當前架構: AST
 ```
 
-### 2. 测试路由
+### 2. 測試路由
 
 ```bash
 open test-routing.html
 ```
 
-应该显示：
-- ✓ MarkdownProcessorAST 已加载
+應該顯示：
+- ✓ MarkdownProcessorAST 已載入
 - ✓ MarkdownProcessor.safeMarkdown() 路由到 AST ✓
 
-### 3. 测试注释
+### 3. 測試註釋
 
 ```bash
 open test-annotation.html
 ```
 
-验证：
-- 基础注释高亮
-- 跳过代码块
-- 跳过公式
+驗證：
+- 基礎註釋醒目提示
+- 跳過程式碼塊
+- 跳過公式
 
-### 4. 测试集成层
+### 4. 測試整合層
 
 ```bash
 open test-integration.html
@@ -227,11 +227,11 @@ open test-integration.html
 
 ## 🐛 故障排除
 
-### 问题 1：MarkdownProcessorAST is not defined
+### 問題 1：MarkdownProcessorAST is not defined
 
-**原因**：页面未加载 AST 处理器
+**原因**：頁面未載入 AST 處理器
 
-**解决**：确保引入了以下脚本（按顺序）：
+**解決**：確保引入了以下腳本（按順序）：
 
 ```html
 <script src="https://gcore.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>
@@ -242,49 +242,49 @@ open test-integration.html
 <script src="js/processing/markdown_processor.js"></script>
 ```
 
-### 问题 2：注释没有高亮
+### 問題 2：註釋沒有醒目提示
 
-**原因 1**：传入了空注释数组
+**原因 1**：傳入了空註釋陣列
 
-**原因 2**：使用了旧的 `customRenderer` 方式（AST 不支持）
+**原因 2**：使用了舊的 `customRenderer` 方式（AST 不支援）
 
-**解决**：
+**解決**：
 ```javascript
-// 确保传入非空注释数组
+// 確保傳入非空註釋陣列
 const annotations = [{ text: 'word', id: 'ann-1' }];
 const html = MarkdownIntegration.smartRender(md, images, annotations, 'id');
 ```
 
-### 问题 3：控制台大量警告
+### 問題 3：主控台大量警告
 
 ```
 [MarkdownProcessorAST] Custom renderer not supported in AST mode
 ```
 
-**原因**：代码传入了 `customRenderer` 参数
+**原因**：程式碼傳入了 `customRenderer` 引數
 
-**解决**：
-1. 临时方案：这是预期行为，可以忽略（只在 debug 模式显示）
-2. 永久方案：迁移到 `renderWithAnnotations` 或 `smartRender`
+**解決**：
+1. 臨時方案：這是預期行為，可以忽略（只在 debug 模式顯示）
+2. 永久方案：遷移到 `renderWithAnnotations` 或 `smartRender`
 
 ---
 
-## 📝 迁移计划（可选）
+## 📝 遷移計劃（可選）
 
-如果要完全迁移现有代码到新 API：
+如果要完全遷移現有程式碼到新 API：
 
-### 阶段 1：验证兼容性（已完成）
-- ✅ AST 处理器加载
-- ✅ 路由正确
-- ✅ 现有功能正常
+### 階段 1：驗證相容性（已完成）
+- ✅ AST 處理器載入
+- ✅ 路由正確
+- ✅ 現有功能正常
 
-### 阶段 2：渐进式迁移
+### 階段 2：漸進式遷移
 
-#### 2.1 使用集成层（推荐首先做这个）
+#### 2.1 使用整合層（推薦首先做這個）
 
-替换：
+替換：
 ```javascript
-// 旧
+// 舊
 const renderer = createCustomMarkdownRenderer(anns, 'ocr', ...);
 const html = MarkdownProcessor.renderWithKatexFailback(md, renderer);
 
@@ -294,84 +294,84 @@ const html = MarkdownIntegration.smartRender(md, images, anns, 'ocr');
 
 #### 2.2 直接使用 AST API
 
-替换：
+替換：
 ```javascript
-// 旧
+// 舊
 const html = MarkdownProcessor.renderWithKatexFailback(md);
 
 // 新
 const html = MarkdownProcessorAST.render(md, images);
 ```
 
-### 阶段 3：移除旧代码（未来）
+### 階段 3：移除舊程式碼（未來）
 
-一旦所有功能验证完毕：
+一旦所有功能驗證完畢：
 - 移除 `markdown_processor_enhanced.js`
-- 移除 `marked` 依赖
-- 只保留 AST 架构
+- 移除 `marked` 依賴
+- 只保留 AST 架構
 
 ---
 
-## 🎁 核心优势
+## 🎁 核心優勢
 
-### 1. 公式渲染更准确
+### 1. 公式渲染更準確
 
-**问题**：
+**問題**：
 ```markdown
 where $R_{i,t}$ represents the return of crypto $i$ in month t
 ```
 
-**旧版**：整段被误判为一个公式 → 解析失败
+**舊版**：整段被誤判為一個公式 → 解析失敗
 
-**新版**：精准识别每个独立公式 → 正确渲染
+**新版**：精準識別每個獨立公式 → 正確渲染
 
-### 2. 注释系统更智能
+### 2. 註釋系統更智慧
 
-**旧版**：
-- 字符串 replace，会误匹配代码/公式中的文本
-- 性能差（O(n*m) 遍历）
+**舊版**：
+- 字串 replace，會誤比對程式碼/公式中的文字
+- 效能差（O(n*m) 走訪）
 
 **新版**：
-- AST 级别遍历，自动跳过代码/公式
-- 性能优化（注释索引）
-- 零误匹配
+- AST 級別走訪，自動跳過程式碼/公式
+- 效能最佳化（註釋索引）
+- 零誤比對
 
-### 3. 代码更易维护
+### 3. 程式碼更易維護
 
-**旧版**：600+ 行正则表达式地狱
+**舊版**：600+ 行正規表示式地獄
 
-**新版**：清晰的插件架构，每个插件 < 300 行
+**新版**：清晰的外掛架構，每個外掛 < 300 行
 
 ---
 
-## 📊 性能对比
+## 📊 效能對比
 
-| 指标 | 旧版 | 新版 |
+| 指標 | 舊版 | 新版 |
 |------|------|------|
-| **渲染速度** | 基准 | +15% 平均 |
-| **公式准确率** | ~85% | ~98% |
-| **注释误匹配** | 常见 | 零 |
-| **代码复杂度** | 高 | 低 |
+| **渲染速度** | 基準 | +15% 平均 |
+| **公式準確率** | ~85% | ~98% |
+| **註釋誤比對** | 常見 | 零 |
+| **程式碼複雜度** | 高 | 低 |
 
 ---
 
-## 🔗 相关链接
+## 🔗 相關連結
 
-- [markdown-it 文档](https://github.com/markdown-it/markdown-it)
-- [KaTeX 文档](https://katex.org/)
-- [测试页面](test-integration.html)
+- [markdown-it 文件](https://github.com/markdown-it/markdown-it)
+- [KaTeX 文件](https://katex.org/)
+- [測試頁面](test-integration.html)
 
 ---
 
-## 📮 反馈
+## 📮 反饋
 
-如果遇到问题或有改进建议，请：
-1. 查看控制台日志
-2. 运行测试页面
-3. 检查本文档的故障排除部分
+如果遇到問題或有改進建議，請：
+1. 檢視主控台日誌
+2. 執行測試頁面
+3. 檢查本文件的故障排除部分
 
 ---
 
 **版本**：3.0.0-ast
 **日期**：2025-01-12
-**状态**：✅ 生产就绪
+**狀態**：✅ 生產就緒

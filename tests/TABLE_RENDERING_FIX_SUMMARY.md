@@ -1,34 +1,34 @@
-# 表格渲染修复总结
+# 表格渲染修復總結
 
-## 📋 问题描述
+## 📋 問題描述
 
-用户的 Paper Burner 应用中，Markdown 表格无法正确渲染：
+使用者的 Paper Burner 應用中，Markdown 表格無法正確渲染：
 
-1. **压缩表格**：所有内容在一行（无换行符）
+1. **壓縮表格**：所有內容在一行（無換行字元）
    ```
    | A | B ||---|---|| 1 | 2 ||3 | 4 |
    ```
 
-2. **Sub-block 分割破坏**：表格被 `<span class="sub-block">` 分割
-3. **渲染器版本问题**：使用旧版 `MarkdownProcessor` 而不是新版 `MarkdownProcessorAST`
-4. **最终结果**：表格显示为纯文本 `<p>`，而不是 `<table>`
+2. **Sub-block 分割破壞**：表格被 `<span class="sub-block">` 分割
+3. **渲染器版本問題**：使用舊版 `MarkdownProcessor` 而不是新版 `MarkdownProcessorAST`
+4. **最終結果**：表格顯示為純文字 `<p>`，而不是 `<table>`
 
 ---
 
-## ✅ 解决方案
+## ✅ 解決方案
 
-### 1. 压缩表格自动修复
-**文件**：`js/processing/markdown_processor_ast.js`
+### 1. 壓縮表格自動修復
+**檔案**：`js/processing/markdown_processor_ast.js`
 
-**功能**：检测并修复单行压缩表格
+**功能**：檢測並修復單行壓縮表格
 
 ```javascript
 // 第568-746行
 function fixCompressedTables(text) {
-    // 检测分隔符：|---|---|
+    // 檢測分隔符：|---|---|
     const separatorPattern = /\|(:?-+:?\|)+/;
 
-    // 统计管道符，判断是否为压缩表格
+    // 統計管道符，判斷是否為壓縮表格
     const pipeCount = (line.match(/\|/g) || []).length;
     if (pipeCount < 10) return line;
 
@@ -37,72 +37,72 @@ function fixCompressedTables(text) {
 }
 ```
 
-**关键修复**：
-- ✅ 补回被分隔符匹配"吃掉"的表头结尾 `|`
-- ✅ 按固定管道符数量精确提取每一行
-- ✅ 处理表头缺失结尾 `|` 的情况
+**關鍵修復**：
+- ✅ 補回被分隔符比對"吃掉"的表頭結尾 `|`
+- ✅ 按固定管道符數量精確提取每一行
+- ✅ 處理表頭缺失結尾 `|` 的情況
 
-### 2. Sub-block 分割器保护表格
-**文件**：`js/processing/sub_block_segmenter.js`
+### 2. Sub-block 分割器保護表格
+**檔案**：`js/processing/sub_block_segmenter.js`
 
-**功能**：在分割前检测 Markdown 表格语法，跳过分割
+**功能**：在分割前檢測 Markdown 表格語法，跳過分割
 
 ```javascript
-// 第64-70行（主分割函数）
+// 第64-70行（主分割函式）
 const hasMarkdownTableSeparator = /\|(:?-+:?\|)+/.test(rawText);
 if (hasMarkdownTableSeparator) {
-    console.log(`[SubBlockSegmenter] 块 #${parentBlockIndex} 包含 Markdown 表格语法，跳过分块以保持表格完整性`);
+    console.log(`[SubBlockSegmenter] 塊 #${parentBlockIndex} 包含 Markdown 表格語法，跳過分塊以保持表格完整性`);
     return; // 直接返回，不分割
 }
 
-// 第288-296行（公式感知分割函数）
+// 第288-296行（公式感知分割函式）
 const hasMarkdownTableSeparator = /\|(:?-+:?\|)+/.test(rawText);
 if (hasMarkdownTableSeparator) {
     wrapAsSingleSubBlock(blockElement, parentBlockIndex);
-    return; // 包装为单一子块
+    return; // 包裝為單一子塊
 }
 ```
 
-### 3. 使用新版 AST 渲染器 + 三层修复机制
-**文件**：`js/history/history_detail_show_tab.js`
+### 3. 使用新版 AST 渲染器 + 三層修復機制
+**檔案**：`js/history/history_detail_show_tab.js`
 
-**功能**：在 `renderBatch` 函数中实现三层防护，确保表格正确渲染
+**功能**：在 `renderBatch` 函式中實現三層防護，確保表格正確渲染
 
-#### **第一层：Token 类型检测与强制转换（第1525-1530行）**
+#### **第一層：Token 型別檢測與強制轉換（第1525-1530行）**
 ```javascript
-// 检测：如果 token 类型是 paragraph 但包含表格语法，强制作为表格处理
+// 檢測：如果 token 型別是 paragraph 但包含表格語法，強制作為表格處理
 const hasTableSyntax = /\|(:?-+:?\|)+/.test(tokenRaw);
 if (tokens[i].type === 'paragraph' && hasTableSyntax) {
-  console.log('[renderBatch] 检测到 paragraph token 包含表格语法，强制作为表格处理');
-  tokens[i].type = 'table'; // 强制改为 table 类型
+  console.log('[renderBatch] 檢測到 paragraph token 包含表格語法，強制作為表格處理');
+  tokens[i].type = 'table'; // 強制改為 table 型別
 }
 ```
 
-**问题**：`marked.lexer()` 会错误地将表格标记为 paragraph token
-**解决**：在渲染前检测并强制修正 token 类型
+**問題**：`marked.lexer()` 會錯誤地將表格標記為 paragraph token
+**解決**：在渲染前檢測並強制修正 token 型別
 
-#### **第二层：优先使用 AST 渲染器（第1533-1541行）**
+#### **第二層：優先使用 AST 渲染器（第1533-1541行）**
 ```javascript
-// 优先使用 AST 处理器（支持压缩表格修复）
+// 優先使用 AST 處理器（支援壓縮表格修復）
 let htmlStr;
 if (typeof MarkdownIntegration !== 'undefined' && MarkdownIntegration.smartRender) {
   htmlStr = MarkdownIntegration.smartRender(tokenRaw, data.images, customRenderer, contentIdentifier);
 } else if (typeof MarkdownProcessorAST !== 'undefined' && MarkdownProcessorAST.render) {
   htmlStr = MarkdownProcessorAST.render(tokenRaw, data.images);
 } else {
-  // 降级到旧版
+  // 降級到舊版
   htmlStr = MarkdownProcessor.renderWithKatexFailback(MarkdownProcessor.safeMarkdown(tokenRaw, data.images), customRenderer);
 }
 ```
 
-**优势**：AST 渲染器支持压缩表格自动修复
+**優勢**：AST 渲染器支援壓縮表格自動修復
 
-#### **第三层：后验检查与重新渲染（第1543-1558行）**
+#### **第三層：後驗檢查與重新渲染（第1543-1558行）**
 ```javascript
-// 后验检查：如果渲染后仍然是 <p> 但包含表格 Markdown，尝试直接渲染表格
+// 後驗檢查：如果渲染後仍然是 <p> 但包含表格 Markdown，嘗試直接渲染表格
 if (hasTableSyntax && htmlStr.trim().startsWith('<p')) {
-  console.warn('[renderBatch] 渲染后仍然是 <p>，尝试直接提取并渲染表格部分');
-  // 提取 <p> 中的文本内容
+  console.warn('[renderBatch] 渲染後仍然是 <p>，嘗試直接提取並渲染表格部分');
+  // 提取 <p> 中的文字內容
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = htmlStr;
   const pElement = tempDiv.querySelector('p');
@@ -117,83 +117,83 @@ if (hasTableSyntax && htmlStr.trim().startsWith('<p')) {
 }
 ```
 
-**兜底保护**：即使前两层失败，仍能从 `<p>` 标签中提取表格文本并重新渲染
+**兜底保護**：即使前兩層失敗，仍能從 `<p>` 標籤中提取表格文字並重新渲染
 
 ---
 
 ## 🔄 完整渲染流程
 
-### 修复前（失败流程）
+### 修復前（失敗流程）
 ```
-1. MinerU content_list.json 包含压缩表格 Markdown
+1. MinerU content_list.json 包含壓縮表格 Markdown
    ↓
 2. 生成 chunks（保持 Markdown 格式）
    ↓
-3. ❌ Sub-block 分割器切割表格 → 破坏结构
+3. ❌ Sub-block 分割器切割表格 → 破壞結構
    ↓
-4. ❌ 旧版 MarkdownProcessor 渲染 → 不支持压缩表格
+4. ❌ 舊版 MarkdownProcessor 渲染 → 不支援壓縮表格
    ↓
-5. ❌ 结果：<p>| A | B ||---|---|| 1 | 2 |</p>
+5. ❌ 結果：<p>| A | B ||---|---|| 1 | 2 |</p>
 ```
 
-### 修复后（成功流程）
+### 修復後（成功流程）
 ```
-1. MinerU content_list.json 包含压缩表格 Markdown
+1. MinerU content_list.json 包含壓縮表格 Markdown
    ↓
 2. 生成 chunks（保持 Markdown 格式）
    ↓
-3. ✅ MarkdownProcessorAST 修复压缩表格
+3. ✅ MarkdownProcessorAST 修復壓縮表格
    | A | B |          | A | B |
    |---|---|    →     |---|---|
    | 1 | 2 |          | 1 | 2 |
    ↓
-4. ✅ Sub-block 分割器检测到表格语法，跳过分割
+4. ✅ Sub-block 分割器檢測到表格語法，跳過分割
    ↓
-5. ✅ markdown-it 正确渲染成 <table>
+5. ✅ markdown-it 正確渲染成 <table>
    ↓
-6. ✅ 结果：<table><thead>...</thead><tbody>...</tbody></table>
+6. ✅ 結果：<table><thead>...</thead><tbody>...</tbody></table>
 ```
 
 ---
 
-## 🧪 测试页面
+## 🧪 測試頁面
 
 ### 1. `test-all-formula-fixes.html`
-测试所有公式渲染修复（包括表格中的公式）
+測試所有公式渲染修復（包括表格中的公式）
 
 ### 2. `test-table-rendering.html`
-测试压缩表格修复：
-- ✅ 测试 1-3：正常表格
-- ✅ 测试 4：压缩的单行表格（原始问题）
-- ✅ 测试 5：简化的压缩表格
+測試壓縮表格修復：
+- ✅ 測試 1-3：正常表格
+- ✅ 測試 4：壓縮的單行表格（原始問題）
+- ✅ 測試 5：簡化的壓縮表格
 
 ### 3. `test-compressed-table-fix.html`
-压缩表格修复演示（带详细说明）
+壓縮表格修復演示（帶詳細說明）
 
 ### 4. `test-fix-diagnostic.html`
-诊断页面（显示完整修复日志）
+診斷頁面（顯示完整修復日誌）
 
 ---
 
-## 📊 修复效果
+## 📊 修復效果
 
-### 修复前
+### 修復前
 ```html
 <p data-block-index="31">
-  <span class="sub-block" data-sub-block-id="31.0">| | | | 五分位数 (Quintiles) | | |</span>
+  <span class="sub-block" data-sub-block-id="31.0">| | | | 五分位數 (Quintiles) | | |</span>
   <span class="sub-block" data-sub-block-id="31.1">|---|---|---|---|---|---|---|</span>
   <span class="sub-block" data-sub-block-id="31.2">| | 1 | 2 | 3 | 4 | 5 | 5-1 |</span>
   ...
 </p>
 ```
 
-### 修复后
+### 修復後
 ```html
 <table data-block-index="31">
   <thead>
     <tr>
       <th></th><th></th><th></th>
-      <th>五分位数 (Quintiles)</th>
+      <th>五分位數 (Quintiles)</th>
       <th></th><th></th><th></th>
     </tr>
   </thead>
@@ -203,7 +203,7 @@ if (hasTableSyntax && htmlStr.trim().startsWith('<p')) {
       <td>4</td><td>5</td><td>5-1</td>
     </tr>
     <tr>
-      <td>市场 (Market)</td>
+      <td>市場 (Market)</td>
       <td>0.145***</td><td>0.200**</td><td>0.061*</td>
       <td>0.136*</td><td>0.106***</td><td>-0.039</td>
     </tr>
@@ -214,76 +214,76 @@ if (hasTableSyntax && htmlStr.trim().startsWith('<p')) {
 
 ---
 
-## 🔍 调试日志
+## 🔍 除錯日誌
 
-启用后会显示详细的修复过程：
+啟用後會顯示詳細的修復過程：
 
 ```
-[MarkdownProcessorAST] 检测到可能的压缩表格，管道符: 55
-[MarkdownProcessorAST] 表头管道符: 8 / 8
-[MarkdownProcessorAST] ✓ 表头提取成功
-[MarkdownProcessorAST] 提取到 5 行数据
-[MarkdownProcessorAST] ✓ 压缩表格修复成功
+[MarkdownProcessorAST] 檢測到可能的壓縮表格，管道符: 55
+[MarkdownProcessorAST] 表頭管道符: 8 / 8
+[MarkdownProcessorAST] ✓ 表頭提取成功
+[MarkdownProcessorAST] 提取到 5 行資料
+[MarkdownProcessorAST] ✓ 壓縮表格修復成功
 
-[SubBlockSegmenter] 块 #31 包含 Markdown 表格语法，跳过分块以保持表格完整性
+[SubBlockSegmenter] 塊 #31 包含 Markdown 表格語法，跳過分塊以保持表格完整性
 ```
 
 ---
 
-## 📝 文件清单
+## 📝 檔案清單
 
-### 修改的文件
-1. `js/processing/markdown_processor_ast.js` - 压缩表格修复
-2. `js/processing/sub_block_segmenter.js` - 表格保护
+### 修改的檔案
+1. `js/processing/markdown_processor_ast.js` - 壓縮表格修復
+2. `js/processing/sub_block_segmenter.js` - 表格保護
 3. `js/history/history_detail_show_tab.js` - 使用 AST 渲染器
 
-### 新增的文件
-4. `js/processing/formula_post_processor.js` - 公式后处理器
-5. `views/history/history_detail.html` - 添加脚本引用（第389行）
+### 新增的檔案
+4. `js/processing/formula_post_processor.js` - 公式後處理器
+5. `views/history/history_detail.html` - 新增腳本參考（第389行）
 
-### 测试文件
-6. `test-all-formula-fixes.html` - 综合测试
-7. `test-table-rendering.html` - 表格渲染测试
-8. `test-compressed-table-fix.html` - 压缩表格修复演示
-9. `test-fix-diagnostic.html` - 诊断页面
-10. `test-compressed-debug.html` - 调试页面
-11. `test-table-debug.html` - 表格调试页面
-12. **`test-renderbatch-table-fix.html`** - **renderBatch 三层修复机制测试（推荐）**
+### 測試檔案
+6. `test-all-formula-fixes.html` - 綜合測試
+7. `test-table-rendering.html` - 表格渲染測試
+8. `test-compressed-table-fix.html` - 壓縮表格修復演示
+9. `test-fix-diagnostic.html` - 診斷頁面
+10. `test-compressed-debug.html` - 除錯頁面
+11. `test-table-debug.html` - 表格除錯頁面
+12. **`test-renderbatch-table-fix.html`** - **renderBatch 三層修復機制測試（推薦）**
 
 ---
 
-## ✨ 额外修复
+## ✨ 額外修復
 
-在修复表格的过程中，还顺带修复了：
+在修復表格的過程中，還順帶修復了：
 
-1. **公式渲染问题**
-   - 花括号开头公式：`${1.1}\mathrm{\;m}$`
-   - 多逗号公式
+1. **公式渲染問題**
+   - 花括號開頭公式：`${1.1}\mathrm{\;m}$`
+   - 多逗號公式
    - 表格中的公式
-   - LaTeX 命令错误自动修正（60+种）
-   - 字体嵌套错误修正
+   - LaTeX 命令錯誤自動修正（60+種）
+   - 字型巢狀錯誤修正
 
-2. **性能优化**
-   - 缓存机制
-   - 批量渲染
-   - 性能指标追踪
+2. **效能最佳化**
+   - 快取機制
+   - 批次渲染
+   - 效能指標追蹤
 
 ---
 
 ## 🎯 使用方法
 
-1. **刷新页面**：按 `Ctrl + Shift + R` 清除缓存
-2. **查看日志**：打开浏览器控制台
-3. **验证效果**：
-   - 所有表格应显示为 `<table>` 而不是 `<p>`
-   - 压缩表格自动修复成多行格式
-   - 表格中的公式正确渲染
+1. **重新整理頁面**：按 `Ctrl + Shift + R` 清除快取
+2. **檢視日誌**：開啟瀏覽器主控台
+3. **驗證效果**：
+   - 所有表格應顯示為 `<table>` 而不是 `<p>`
+   - 壓縮表格自動修復成多行格式
+   - 表格中的公式正確渲染
 
 ---
 
-## 📌 注意事项
+## 📌 注意事項
 
-1. **加载顺序**：确保脚本按以下顺序加载
+1. **載入順序**：確保腳本按以下順序載入
    ```html
    <script src="js/processing/markdown_processor_ast.js"></script>
    <script src="js/processing/formula_post_processor.js"></script>
@@ -291,44 +291,44 @@ if (hasTableSyntax && htmlStr.trim().startsWith('<p')) {
    <script src="js/processing/sub_block_segmenter.js"></script>
    ```
 
-2. **兼容性**：保留了旧版渲染器的降级支持
+2. **相容性**：保留了舊版渲染器的降級支援
 
-3. **调试模式**：在控制台执行 `localStorage.setItem('ENABLE_SUBBLOCK_DEBUG', 'true')` 启用详细日志
+3. **除錯模式**：在主控台執行 `localStorage.setItem('ENABLE_SUBBLOCK_DEBUG', 'true')` 啟用詳細日誌
 
 ---
 
-## 🏆 完成状态
+## 🏆 完成狀態
 
-- ✅ 压缩表格自动修复（`markdown_processor_ast.js`）
-- ✅ Sub-block 分割器保护表格（`sub_block_segmenter.js`）
+- ✅ 壓縮表格自動修復（`markdown_processor_ast.js`）
+- ✅ Sub-block 分割器保護表格（`sub_block_segmenter.js`）
 - ✅ 使用新版 AST 渲染器（`history_detail_show_tab.js`）
-- ✅ **三层修复机制**（`renderBatch` 函数）
-  - ✅ 第一层：Token 类型检测与强制转换
-  - ✅ 第二层：优先使用 AST 渲染器
-  - ✅ 第三层：后验检查与重新渲染
-- ✅ 公式渲染修复（60+ LaTeX 错误自动修正）
-- ✅ 测试页面创建（12 个测试页面）
-- ✅ 文档编写
+- ✅ **三層修復機制**（`renderBatch` 函式）
+  - ✅ 第一層：Token 型別檢測與強制轉換
+  - ✅ 第二層：優先使用 AST 渲染器
+  - ✅ 第三層：後驗檢查與重新渲染
+- ✅ 公式渲染修復（60+ LaTeX 錯誤自動修正）
+- ✅ 測試頁面建立（12 個測試頁面）
+- ✅ 文件編寫
 
-**所有功能已完成并测试通过！** 🎉
+**所有功能已完成並測試透過！** 🎉
 
 ---
 
-## 🚀 快速测试
+## 🚀 快速測試
 
-1. **打开推荐测试页面**：`tests/test-renderbatch-table-fix.html`
-   - 完整模拟实际应用的 renderBatch 流程
-   - 展示三层修复机制的工作过程
-   - 包含详细的处理日志
-   - 从项目根目录运行: `start tests/test-renderbatch-table-fix.html`
+1. **開啟推薦測試頁面**：`tests/test-renderbatch-table-fix.html`
+   - 完整模擬實際應用的 renderBatch 流程
+   - 展示三層修復機制的工作過程
+   - 包含詳細的處理日誌
+   - 從專案根目錄執行: `start tests/test-renderbatch-table-fix.html`
 
-2. **刷新实际应用**：按 `Ctrl + Shift + R` 清除缓存
+2. **重新整理實際應用**：按 `Ctrl + Shift + R` 清除快取
 
-3. **查看控制台日志**：
+3. **檢視主控台日誌**：
    ```
-   [renderBatch] 检测到 paragraph token 包含表格语法，强制作为表格处理
-   [renderBatch] 渲染后仍然是 <p>，尝试直接提取并渲染表格部分
+   [renderBatch] 檢測到 paragraph token 包含表格語法，強制作為表格處理
+   [renderBatch] 渲染後仍然是 <p>，嘗試直接提取並渲染表格部分
    [renderBatch] 重新渲染表格成功
    ```
 
-4. **验证效果**：所有表格应显示为 `<table>` 元素，带有边框和网格样式
+4. **驗證效果**：所有表格應顯示為 `<table>` 元素，帶有邊框和網格樣式

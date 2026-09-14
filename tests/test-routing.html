@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>路由验证测试</title>
+    <title>路由驗證測試</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -77,87 +77,87 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔍 MarkdownProcessor 路由验证</h1>
+        <h1>🔍 MarkdownProcessor 路由驗證</h1>
 
         <div class="test-section">
-            <div class="test-title">1. 检测加载的处理器</div>
-            <div id="loadCheck" class="result">检查中...</div>
+            <div class="test-title">1. 檢測載入的處理器</div>
+            <div id="loadCheck" class="result">檢查中...</div>
         </div>
 
         <div class="test-section">
-            <div class="test-title">2. 检查 MarkdownProcessor 的实际路由</div>
-            <div id="routingCheck" class="result">检查中...</div>
+            <div class="test-title">2. 檢查 MarkdownProcessor 的實際路由</div>
+            <div id="routingCheck" class="result">檢查中...</div>
         </div>
 
         <div class="test-section">
-            <div class="test-title">3. 测试实际渲染调用</div>
-            <button onclick="testRender()">执行渲染测试</button>
+            <div class="test-title">3. 測試實際渲染呼叫</div>
+            <button onclick="testRender()">執行渲染測試</button>
             <div id="renderResult" class="result" style="margin-top: 10px; display: none;"></div>
         </div>
 
         <div class="test-section">
-            <div class="test-title">4. 控制台日志</div>
-            <pre id="consoleLog">打开浏览器开发者控制台查看详细日志</pre>
+            <div class="test-title">4. 主控台日誌</div>
+            <pre id="consoleLog">開啟瀏覽器開發者主控台檢視詳細日誌</pre>
         </div>
     </div>
 
-    <!-- 依赖库 -->
+    <!-- 依賴庫 -->
     <script src="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>
 
-    <!-- 处理器（按照 index.html 的顺序） -->
+    <!-- 處理器（按照 index.html 的順序） -->
     <script src="js/processing/markdown_processor_enhanced.js"></script>
     <script src="js/processing/markdown_processor_ast.js"></script>
     <script src="js/processing/markdown_processor.js"></script>
 
     <script>
         console.clear();
-        console.log('%c=== 路由验证测试开始 ===', 'font-size: 16px; font-weight: bold; color: #2563eb;');
+        console.log('%c=== 路由驗證測試開始 ===', 'font-size: 16px; font-weight: bold; color: #2563eb;');
 
-        // 1. 检测加载的处理器
+        // 1. 檢測載入的處理器
         function checkLoaded() {
             const results = [];
             const loadCheck = document.getElementById('loadCheck');
 
             if (window.MarkdownProcessorEnhanced) {
-                results.push('<span class="success">✓ MarkdownProcessorEnhanced 已加载</span>');
+                results.push('<span class="success">✓ MarkdownProcessorEnhanced 已載入</span>');
             } else {
-                results.push('<span class="error">✗ MarkdownProcessorEnhanced 未加载</span>');
+                results.push('<span class="error">✗ MarkdownProcessorEnhanced 未載入</span>');
             }
 
             if (window.MarkdownProcessorAST) {
-                results.push('<span class="success">✓ MarkdownProcessorAST 已加载</span>');
+                results.push('<span class="success">✓ MarkdownProcessorAST 已載入</span>');
                 results.push('<span class="info">  版本: ' + window.MarkdownProcessorAST.version + '</span>');
             } else {
-                results.push('<span class="error">✗ MarkdownProcessorAST 未加载</span>');
+                results.push('<span class="error">✗ MarkdownProcessorAST 未載入</span>');
             }
 
             if (window.MarkdownProcessor) {
-                results.push('<span class="success">✓ MarkdownProcessor 已加载</span>');
+                results.push('<span class="success">✓ MarkdownProcessor 已載入</span>');
             } else {
-                results.push('<span class="error">✗ MarkdownProcessor 未加载</span>');
+                results.push('<span class="error">✗ MarkdownProcessor 未載入</span>');
             }
 
             loadCheck.innerHTML = results.join('<br>');
         }
 
-        // 2. 检查路由
+        // 2. 檢查路由
         function checkRouting() {
             const routingCheck = document.getElementById('routingCheck');
             const results = [];
 
-            // 检查全局对象的关系
+            // 檢查全域物件的關係
             if (window.MarkdownProcessor && window.MarkdownProcessorAST) {
-                // 检查 1: 直接比较（这会失败，因为 markdown_processor.js 创建了包装器）
+                // 檢查 1: 直接比較（這會失敗，因為 markdown_processor.js 建立了包裝器）
                 const directMatch = (window.MarkdownProcessor === window.MarkdownProcessorAST);
                 if (directMatch) {
-                    results.push('<span class="success">✓ MarkdownProcessor === MarkdownProcessorAST (直接引用)</span>');
+                    results.push('<span class="success">✓ MarkdownProcessor === MarkdownProcessorAST (直接參考)</span>');
                 } else {
-                    results.push('<span class="info">ℹ MarkdownProcessor 是包装器（预期行为）</span>');
+                    results.push('<span class="info">ℹ MarkdownProcessor 是包裝器（預期行為）</span>');
                 }
 
-                // 检查 2: 测试实际调用（通过劫持 safeMarkdown）
+                // 檢查 2: 測試實際呼叫（透過劫持 safeMarkdown）
                 const testInput = 'test $x + y$';
                 let astCalled = false;
                 let enhancedCalled = false;
@@ -170,7 +170,7 @@
                         return originalASTSafe.apply(this, args);
                     };
 
-                    // 调用 MarkdownProcessor（如果 Enhanced 还在，也劫持它）
+                    // 呼叫 MarkdownProcessor（如果 Enhanced 還在，也劫持它）
                     if (window.MarkdownProcessorEnhanced && window.MarkdownProcessorEnhanced !== window.MarkdownProcessorAST) {
                         const originalEnhancedSafe = window.MarkdownProcessorEnhanced.safeMarkdown;
                         window.MarkdownProcessorEnhanced.safeMarkdown = function(...args) {
@@ -179,38 +179,38 @@
                         };
                     }
 
-                    // 执行测试调用
+                    // 執行測試呼叫
                     window.MarkdownProcessor.safeMarkdown(testInput, []);
 
-                    // 恢复
+                    // 恢復
                     window.MarkdownProcessorAST.safeMarkdown = originalASTSafe;
 
-                    // 分析结果
+                    // 分析結果
                     if (astCalled) {
                         results.push('<span class="success">✓ MarkdownProcessor.safeMarkdown() 路由到 AST ✓</span>');
                     } else if (enhancedCalled) {
-                        results.push('<span class="error">✗ 路由到 Enhanced（旧版）</span>');
+                        results.push('<span class="error">✗ 路由到 Enhanced（舊版）</span>');
                     } else {
-                        results.push('<span class="error">✗ 路由到 Legacy（最旧版）</span>');
+                        results.push('<span class="error">✗ 路由到 Legacy（最舊版）</span>');
                     }
                 } catch (error) {
-                    results.push('<span class="error">✗ 路由检测失败: ' + error.message + '</span>');
+                    results.push('<span class="error">✗ 路由檢測失敗: ' + error.message + '</span>');
                 }
 
-                // 检查 3: 验证 MarkdownProcessorEnhanced 是否也指向 AST
+                // 檢查 3: 驗證 MarkdownProcessorEnhanced 是否也指向 AST
                 if (window.MarkdownProcessorEnhanced === window.MarkdownProcessorAST) {
                     results.push('<span class="success">✓ MarkdownProcessorEnhanced === MarkdownProcessorAST</span>');
                 } else {
-                    results.push('<span class="info">ℹ MarkdownProcessorEnhanced 独立存在</span>');
+                    results.push('<span class="info">ℹ MarkdownProcessorEnhanced 獨立存在</span>');
                 }
             } else {
-                results.push('<span class="error">✗ 无法检测路由（处理器未完全加载）</span>');
+                results.push('<span class="error">✗ 無法檢測路由（處理器未完全載入）</span>');
             }
 
             routingCheck.innerHTML = results.join('<br>');
         }
 
-        // 3. 测试渲染
+        // 3. 測試渲染
         function testRender() {
             const renderResult = document.getElementById('renderResult');
             renderResult.style.display = 'block';
@@ -224,29 +224,29 @@
 
                 renderResult.innerHTML = `
                     <span class="success">✓ 渲染成功</span><br>
-                    <span class="info">耗时: ${(t2 - t1).toFixed(2)} ms</span><br>
+                    <span class="info">耗時: ${(t2 - t1).toFixed(2)} ms</span><br>
                     <div style="margin-top: 10px; padding: 10px; background: #f8fafc; border-radius: 4px;">
                         ${result}
                     </div>
                 `;
 
-                // 显示指标
+                // 顯示指標
                 if (window.MarkdownProcessorAST) {
                     const metrics = window.MarkdownProcessorAST.getMetrics();
-                    console.log('%c渲染指标:', 'font-weight: bold; color: #3b82f6;', metrics);
+                    console.log('%c渲染指標:', 'font-weight: bold; color: #3b82f6;', metrics);
                 }
             } catch (error) {
-                renderResult.innerHTML = '<span class="error">✗ 渲染失败: ' + error.message + '</span>';
+                renderResult.innerHTML = '<span class="error">✗ 渲染失敗: ' + error.message + '</span>';
             }
         }
 
-        // 页面加载时执行检测
+        // 頁面載入時執行檢測
         window.addEventListener('load', () => {
-            console.log('%c--- 开始检测 ---', 'color: #64748b;');
+            console.log('%c--- 開始檢測 ---', 'color: #64748b;');
             setTimeout(() => {
                 checkLoaded();
                 checkRouting();
-                console.log('%c=== 检测完成，请查看上方结果 ===', 'font-size: 16px; font-weight: bold; color: #10b981;');
+                console.log('%c=== 檢測完成，請檢視上方結果 ===', 'font-size: 16px; font-weight: bold; color: #10b981;');
             }, 100);
         });
     </script>

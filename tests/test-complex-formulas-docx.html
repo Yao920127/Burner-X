@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>复杂公式 DOCX 导出测试</title>
+    <title>複雜公式 DOCX 匯出測試</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <style>
         body {
@@ -83,29 +83,29 @@
     </style>
 </head>
 <body>
-    <h1>🧮 复杂公式 DOCX 导出测试</h1>
+    <h1>🧮 複雜公式 DOCX 匯出測試</h1>
 
     <div class="test-section">
-        <h2>📋 测试说明</h2>
-        <p>本页面测试增强的 MathML → OMML 转换器，包含以下复杂公式类型：</p>
+        <h2>📋 測試說明</h2>
+        <p>本頁面測試增強的 MathML → OMML 轉換器，包含以下複雜公式型別：</p>
         <ul>
-            <li>✅ <strong>矩阵</strong> - mtable/mtr/mtd</li>
-            <li>✅ <strong>大型运算符</strong> - 求和、积分、乘积</li>
-            <li>✅ <strong>上下标</strong> - 极限、求和范围</li>
-            <li>✅ <strong>复杂分数</strong> - 嵌套分数</li>
+            <li>✅ <strong>矩陣</strong> - mtable/mtr/mtd</li>
+            <li>✅ <strong>大型運算子</strong> - 求和、積分、乘積</li>
+            <li>✅ <strong>上下標</strong> - 極限、求和範圍</li>
+            <li>✅ <strong>複雜分數</strong> - 巢狀分數</li>
             <li>✅ <strong>根式</strong> - 多重根式</li>
         </ul>
         <div id="status"></div>
-        <button onclick="exportToDOCX()">📥 导出为 DOCX</button>
-        <button onclick="testConverter()">🔬 测试转换器</button>
+        <button onclick="exportToDOCX()">📥 匯出為 DOCX</button>
+        <button onclick="testConverter()">🔬 測試轉換器</button>
     </div>
 
-    <!-- 测试公式 -->
+    <!-- 測試公式 -->
     <div class="test-section" id="formulas-content">
-        <h2>🔢 测试公式</h2>
+        <h2>🔢 測試公式</h2>
 
         <div class="formula-example">
-            <h3>1. 矩阵示例</h3>
+            <h3>1. 矩陣示例</h3>
             $$
             A = \begin{bmatrix}
             a_{11} & a_{12} & a_{13} \\
@@ -116,21 +116,21 @@
         </div>
 
         <div class="formula-example">
-            <h3>2. 求和与极限</h3>
+            <h3>2. 求和與極限</h3>
             $$
             \lim_{n \to \infty} \sum_{i=1}^{n} \frac{1}{i^2} = \frac{\pi^2}{6}
             $$
         </div>
 
         <div class="formula-example">
-            <h3>3. 积分</h3>
+            <h3>3. 積分</h3>
             $$
             \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
             $$
         </div>
 
         <div class="formula-example">
-            <h3>4. 复杂分数</h3>
+            <h3>4. 複雜分數</h3>
             $$
             \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + x}}}
             $$
@@ -149,28 +149,28 @@
         </div>
 
         <div class="formula-example">
-            <h3>6. 多重积分</h3>
+            <h3>6. 多重積分</h3>
             $$
             \iiint_V f(x,y,z) \, dV = \int_0^1 \int_0^1 \int_0^1 xyz \, dx\,dy\,dz
             $$
         </div>
 
         <div class="formula-example">
-            <h3>7. 复杂上下标</h3>
+            <h3>7. 複雜上下標</h3>
             $$
             \sum_{k=1}^{\infty} \frac{(-1)^{k+1}}{k} = \ln(2)
             $$
         </div>
 
         <div class="formula-example">
-            <h3>8. 根式组合</h3>
+            <h3>8. 根式組合</h3>
             $$
             x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
             $$
         </div>
 
         <div class="formula-example">
-            <h3>9. 大型矩阵</h3>
+            <h3>9. 大型矩陣</h3>
             $$
             \begin{pmatrix}
             1 & 0 & 0 & 0 \\
@@ -182,19 +182,19 @@
         </div>
 
         <div class="formula-example">
-            <h3>10. 带边界的积分</h3>
+            <h3>10. 帶邊界的積分</h3>
             $$
             \int\limits_0^{\frac{\pi}{2}} \sin(x) \, dx = 1
             $$
         </div>
     </div>
 
-    <!-- 依赖库 -->
+    <!-- 依賴庫 -->
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
-    <!-- Paper Burner 模块 -->
+    <!-- Paper Burner 模組 -->
     <script src="../js/history/exporter/mathml2omml.browser.js"></script>
     <script src="../js/history/exporter/docx_mathml_converter_enhanced.js"></script>
     <script src="../js/history/exporter/history_exporter_docx.js"></script>
@@ -209,10 +209,10 @@
                 ]
             });
 
-            showStatus('公式渲染完成！可以开始测试。', 'info');
+            showStatus('公式渲染完成！可以開始測試。', 'info');
         });
 
-        // 渲染公式的辅助函数
+        // 渲染公式的輔助函式
         function renderMathInElement(element, options) {
             const delimiters = options.delimiters || [];
             const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
@@ -260,81 +260,81 @@
             });
         }
 
-        // 测试转换器
+        // 測試轉換器
         function testConverter() {
-            showStatus('正在测试转换器...', 'info');
+            showStatus('正在測試轉換器...', 'info');
 
             try {
-                // 测试增强转换器是否加载
+                // 測試增強轉換器是否載入
                 if (!window.PBXMathMlToOmmlConverterEnhanced) {
-                    throw new Error('增强转换器未加载！');
+                    throw new Error('增強轉換器未載入！');
                 }
 
                 const converter = new window.PBXMathMlToOmmlConverterEnhanced();
 
-                // 找一个矩阵公式测试
+                // 找一個矩陣公式測試
                 const mathElements = document.querySelectorAll('math');
                 if (mathElements.length === 0) {
-                    throw new Error('未找到 MathML 元素！请等待公式渲染完成。');
+                    throw new Error('未找到 MathML 元素！請等待公式渲染完成。');
                 }
 
-                // 测试第一个公式
+                // 測試第一個公式
                 const testMath = mathElements[0];
                 const omml = converter.convert(testMath);
 
                 if (!omml || omml.length === 0) {
-                    throw new Error('转换失败：OMML 为空');
+                    throw new Error('轉換失敗：OMML 為空');
                 }
 
-                console.log('✅ 转换成功！', omml);
+                console.log('✅ 轉換成功！', omml);
                 showStatus(
-                    `✅ 转换器测试成功！\n找到 ${mathElements.length} 个公式，第一个公式转换后长度：${omml.length} 字符`,
+                    `✅ 轉換器測試成功！\n找到 ${mathElements.length} 個公式，第一個公式轉換後長度：${omml.length} 字元`,
                     'success'
                 );
             } catch (error) {
-                console.error('❌ 转换器测试失败:', error);
-                showStatus(`❌ 测试失败: ${error.message}`, 'error');
+                console.error('❌ 轉換器測試失敗:', error);
+                showStatus(`❌ 測試失敗: ${error.message}`, 'error');
             }
         }
 
-        // 导出为 DOCX
+        // 匯出為 DOCX
         async function exportToDOCX() {
             showStatus('正在生成 DOCX...', 'info');
 
             try {
                 if (!window.PBXHistoryExporterDocx || !window.PBXHistoryExporterDocx.exportAsDocx) {
-                    throw new Error('DOCX 导出模块未加载！');
+                    throw new Error('DOCX 匯出模組未載入！');
                 }
 
-                // 获取渲染后的 HTML
+                // 獲取渲染後的 HTML
                 const content = document.getElementById('formulas-content');
                 const bodyHtml = content.innerHTML;
 
-                // 构建 payload
+                // 構建 payload
                 const payload = {
                     bodyHtml: bodyHtml,
                     data: {
-                        name: '复杂公式测试'
+                        name: '複雜公式測試'
                     },
                     images: [],
                     exportTime: new Date(),
-                    fileNameBase: '复杂公式测试'
+                    fileNameBase: '複雜公式測試'
                 };
 
-                // 导出
+                // 匯出
                 await window.PBXHistoryExporterDocx.exportAsDocx(payload, {
                     debug: true,
                     validateXml: true
                 });
 
-                showStatus('✅ DOCX 导出成功！请检查下载的文件。', 'success');
+                showStatus('✅ DOCX 匯出成功！請檢查下載的檔案。', 'success');
             } catch (error) {
-                console.error('❌ 导出失败:', error);
-                showStatus(`❌ 导出失败: ${error.message}`, 'error');
+                console.error('❌ 匯出失敗:', error);
+                showStatus(`❌ 匯出失敗: ${error.message}`, 'error');
             }
         }
 
-        // 显示状态
+        // 顯示狀態
         function showStatus(message, type) {
             const statusDiv = document.getElementById('status');
             statusDiv.className = 'status ' + type;

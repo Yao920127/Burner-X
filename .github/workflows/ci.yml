@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          # 指定锁文件路径以启用 npm 缓存（仓库根部无 lockfile）
+          # 指定鎖檔案路徑以啟用 npm 快取（倉庫根部無 lockfile）
           cache-dependency-path: 'server/package-lock.json'
 
       - name: Install dependencies (server)
@@ -27,6 +27,10 @@ jobs:
       - name: Lint (server)
         working-directory: server
         run: npm run lint -- --max-warnings=0
+
+      - name: TypeScript 型別檢查 (server)
+        working-directory: server
+        run: npm run typecheck
 
       - name: Validate OpenAPI
         working-directory: server

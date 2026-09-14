@@ -1,6 +1,6 @@
-/* history_detail_inline_styles.css - 从history_detail.html中提取的内联CSS样式 */
+/* history_detail_inline_styles.css - 從history_detail.html中提取的內聯CSS樣式 */
 
-/* 现代化 DOCK 样式 - 紧凑版 */
+/* 現代化 DOCK 樣式 - 緊湊版 */
 #bottom-left-dock {
   position: fixed;
   bottom: 20px;
@@ -31,7 +31,7 @@
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-/* TOC 模式选择器样式 */
+/* TOC 模式選擇器樣式 */
 .toc-mode-selector {
   display: flex;
   gap: 5px;
@@ -62,7 +62,7 @@
   background-color: #f0f4f8;
 }
 
-/* 设置对话框中的单选按钮样式 */
+/* 設定對話方塊中的單選按鈕樣式 */
 .radio-container {
   margin: 10px 0 15px;
 }
@@ -81,7 +81,7 @@
   cursor: pointer;
 }
 
-/* TOC 高亮效果 */
+/* TOC 醒目提示效果 */
 .toc-highlight, .toc-target-highlight {
   animation: toc-highlight-pulse 3s ease-out;
   position: relative;
@@ -103,7 +103,7 @@
   }
 }
 
-/* 确保图片和表格等特殊元素在高亮时的效果 */
+/* 確保圖片和表格等特殊元素在醒目提示時的效果 */
 .markdown-body img.toc-highlight,
 .markdown-body table.toc-highlight,
 .markdown-body img.toc-target-highlight,
@@ -112,7 +112,7 @@
   border-radius: 4px;
 }
 
-/* 转换后的标题样式 */
+/* 轉換後的標題樣式 */
 .converted-from-heading {
   font-weight: 600;
   margin-top: 1.5em;
@@ -122,7 +122,7 @@
   padding-bottom: 5px;
 }
 
-/* TOC 信息提示样式 */
+/* TOC 資訊提示樣式 */
 .toc-info {
   padding: 10px;
   margin: 10px 0;
@@ -145,7 +145,7 @@
     0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
-/* Dock信息栈 - 两列布局 */
+/* Dock資訊堆疊 - 兩列布局 */
 #dock-info-stack {
   display: grid;
   grid-template-columns: auto auto;
@@ -177,7 +177,7 @@
   line-height: 1.5;
 }
 
-/* 可点击项的样式 */
+/* 可點選項的樣式 */
 .stat-item-clickable {
   cursor: pointer;
   transition: all 0.2s ease;
@@ -191,7 +191,7 @@
   color: #2563eb;
 }
 
-/* 底部控制栏 - 文献 + 设置 + 折叠 */
+/* 底部控制欄 - 文獻 + 設定 + 摺疊 */
 .dock-control-bar {
   display: flex;
   align-items: center;
@@ -238,13 +238,13 @@
   color: #1d4ed8;
 }
 
-/* 这些规则已在上面重新定义，保留用于兼容性 */
+/* 這些規則已在上面重新定義，保留用於相容性 */
 #dock-stats {
   display: flex;
   gap: 8px;
 }
 
-/* 控制栏按钮样式 */
+/* 控制欄按鈕樣式 */
 .dock-control-bar a {
   display: inline-flex;
   align-items: center;
@@ -285,7 +285,7 @@
     font-weight: 500;
 }
 
-/* 折叠状态 - 紧凑模式 */
+/* 摺疊狀態 - 緊湊模式 */
 #bottom-left-dock.dock-collapsed {
   padding: 8px 12px;
   gap: 10px;
@@ -308,12 +308,12 @@
   padding: 0;
 }
 
-/* 折叠时隐藏文献徽章 */
+/* 摺疊時隱藏文獻徽章 */
 #bottom-left-dock.dock-collapsed .dock-control-bar .stat-item-clickable[data-stat-type="reference"] {
   display: none;
 }
 
-/* 折叠状态下的进度显示 */
+/* 摺疊狀態下的進度顯示 */
 #bottom-left-dock.dock-collapsed #dock-collapsed-progress-display {
   display: inline-flex;
   align-items: center;
@@ -376,7 +376,7 @@
     display: inline;
 }
 
-/* 阅读进度数值高亮 */
+/* 閱讀進度數值醒目提示 */
 #reading-progress-percentage-verbose,
 #reading-progress-percentage {
   color: #2563eb;
@@ -384,7 +384,7 @@
   font-size: 13px;
 }
 
-/* 深色模式支持 */
+/* 深色模式支援 */
 @media (prefers-color-scheme: dark) {
   #bottom-left-dock {
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
@@ -692,7 +692,7 @@
   outline: 2px solid rgba(255, 200, 0, 0.7); /* Added outline */
 }
 
-/* 批注详情模态框增强样式 */
+/* 批註詳情模態框增強樣式 */
 #annotations-summary-table td {
   max-width: 250px;
   overflow: hidden;
@@ -722,7 +722,7 @@
   opacity: 0.7;
 }
 
-/* 文本片段预览对话框样式 */
+/* 文字片段預覽對話方塊樣式 */
 .full-text-dialog {
   animation: fadeIn 0.2s ease-out;
 }
@@ -743,7 +743,7 @@
   background-color: #e0e0e0;
 }
 
-/* 颜色筛选区域样式增强 */
+/* 顏色篩選區域樣式增強 */
 .annotations-summary-color-filter {
   display: flex;
   align-items: center;
@@ -776,7 +776,7 @@
   accent-color: #007bff;
 }
 
-/* TOC 层级样式 */
+/* TOC 層級樣式 */
 #toc-list li.toc-h1 a {
   padding-left: 12px;
   font-size: 1em;
@@ -815,12 +815,12 @@
   color: #666;
 }
 
-/* 转换后的标题在TOC中的样式 */
+/* 轉換後的標題在TOC中的樣式 */
 #toc-list li.toc-p.converted-from-heading a {
-  /* 根据原始标签应用相应的样式 */
+  /* 根據原始標籤應用相應的樣式 */
 }
 
-/* 可折叠TOC样式 */
+/* 可摺疊TOC樣式 */
 #toc-list .toc-toggle {
   cursor: pointer;
   width: 16px;
@@ -850,14 +850,14 @@
   height: 0;
 }
 
-/* 为有子项的TOC项添加特殊样式 */
+/* 為有子項的TOC項新增特殊樣式 */
 #toc-list .has-children > a {
   font-weight: 600;
   display: flex;
   align-items: flex-start;
 }
 
-/* TOC项中的英文翻译样式 */
+/* TOC項中的英文翻譯樣式 */
 #toc-list span.toc-en-translation {
   font-size: 0.85em;
   color: #64748b;

@@ -1,20 +1,20 @@
 /**
- * Dock 组件样式
+ * Dock 元件樣式
  *
- * 职责：左下角统计信息 Dock 的完整样式
+ * 職責：左下角統計資訊 Dock 的完整樣式
  * 作用域：#bottom-left-dock 及其子元素
- * 依赖：variables.css
+ * 依賴：variables.css
  *
  * 提取自：history_detail_inline_styles.css
  *
- * 重构说明：
- * 1. 使用 CSS 变量替换硬编码值
- * 2. 使用 BEM 命名（保留 ID 选择器以兼容现有 JS）
- * 3. 清晰的状态管理（展开/折叠）
- * 4. 响应式设计优化
+ * 重構說明：
+ * 1. 使用 CSS 變數替換硬編碼值
+ * 2. 使用 BEM 命名（保留 ID 選擇器以相容現有 JS）
+ * 3. 清晰的狀態管理（展開/摺疊）
+ * 4. 響應式設計最佳化
  */
 
-/* ==================== 1. Dock 容器基础样式 ==================== */
+/* ==================== 1. Dock 容器基礎樣式 ==================== */
 
 #bottom-left-dock {
   /* 定位 */
@@ -27,7 +27,7 @@
   width: auto;
   max-width: 180px;
 
-  /* 外观 */
+  /* 外觀 */
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -35,38 +35,38 @@
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-float);
 
-  /* 布局 */
+  /* 版面 */
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
 
-  /* 文本 */
+  /* 文字 */
   color: var(--color-text-primary);
   font-size: var(--dock-stat-font-size);
   font-weight: var(--font-weight-medium);
   font-family: var(--font-family-base);
 
-  /* 动画 */
+  /* 動畫 */
   opacity: 0;
   transform: translateY(10px) scale(0.95);
   transition: all var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dock 显示状态 */
+/* Dock 顯示狀態 */
 #bottom-left-dock.visible {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* Dock 悬停效果 */
+/* Dock 懸停效果 */
 #bottom-left-dock:hover {
   box-shadow: var(--shadow-xl);
   border-color: var(--color-border-medium);
 }
 
-/* ==================== 2. Dock 信息栈（展开状态）==================== */
+/* ==================== 2. Dock 資訊堆疊（展開狀態）==================== */
 
 #dock-info-stack {
   display: grid;
@@ -92,12 +92,12 @@
   gap: var(--spacing-sm);
 }
 
-/* 标签列 */
+/* 標籤列 */
 .dock-labels-column {
-  /* 左侧列 - 标签 */
+  /* 左側列 - 標籤 */
 }
 
-/* 数值列 */
+/* 數值列 */
 .dock-values-column {
   text-align: left;
   font-weight: var(--font-weight-semibold);
@@ -108,7 +108,7 @@
   justify-content: flex-end;
 }
 
-/* ==================== 3. 统计项样式 ==================== */
+/* ==================== 3. 統計項樣式 ==================== */
 
 .dock-stat-item-wrapper-progress,
 .dock-stat-item-wrapper-highlight,
@@ -124,7 +124,7 @@
   line-height: var(--line-height-base);
 }
 
-/* 可点击统计项 */
+/* 可點選統計項 */
 .stat-item-clickable {
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -140,7 +140,7 @@
   text-decoration: none;
 }
 
-/* ==================== 4. Dock 控制栏 ==================== */
+/* ==================== 4. Dock 控制欄 ==================== */
 
 .dock-control-bar {
   display: flex;
@@ -158,7 +158,7 @@
   border-color: var(--color-border-light);
 }
 
-/* 文献引用按钮 */
+/* 文獻參考按鈕 */
 .dock-control-bar .stat-item-clickable[data-stat-type="reference"] {
   color: var(--color-primary);
   font-weight: var(--font-weight-semibold);
@@ -178,7 +178,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* 控制栏按钮（设置、折叠）*/
+/* 控制欄按鈕（設定、摺疊）*/
 .dock-control-bar a {
   display: inline-flex;
   align-items: center;
@@ -198,18 +198,18 @@
   transform: translateY(-1px);
 }
 
-/* 设置按钮图标 */
+/* 設定按鈕圖示 */
 #settings-link i.fa-cog {
   font-size: var(--font-size-md);
 }
 
-/* 折叠按钮 */
+/* 摺疊按鈕 */
 #dock-toggle-btn {
   cursor: pointer;
   font-size: var(--font-size-sm);
 }
 
-/* 折叠状态下的折叠按钮样式 */
+/* 摺疊狀態下的摺疊按鈕樣式 */
 #bottom-left-dock.dock-collapsed #dock-toggle-btn {
   margin-left: auto;
   background: rgba(248, 250, 252, 0.8);
@@ -227,9 +227,9 @@
   transform: scale(1.05);
 }
 
-/* ==================== 5. 折叠进度显示 ==================== */
+/* ==================== 5. 摺疊進度顯示 ==================== */
 
-/* 默认隐藏折叠进度显示 */
+/* 預設隱藏摺疊進度顯示 */
 #bottom-left-dock:not(.dock-collapsed) #dock-collapsed-progress-display {
   display: none;
 }
@@ -239,42 +239,42 @@
   font-weight: var(--font-weight-medium);
 }
 
-/* ==================== 6. 折叠状态样式 ==================== */
+/* ==================== 6. 摺疊狀態樣式 ==================== */
 
 #bottom-left-dock.dock-collapsed {
-  /* 布局改为水平 */
+  /* 版面改為水平 */
   flex-direction: row;
   align-items: center;
   gap: var(--spacing-sm);
 
-  /* 尺寸调整 */
+  /* 尺寸調整 */
   padding: var(--spacing-sm) var(--spacing-md);
   width: auto;
   max-width: none;
 
-  /* 外观调整 */
+  /* 外觀調整 */
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 
-/* 折叠时隐藏信息栈 */
+/* 摺疊時隱藏資訊堆疊 */
 #bottom-left-dock.dock-collapsed #dock-info-stack {
   display: none;
 }
 
-/* 折叠时简化控制栏 */
+/* 摺疊時簡化控制欄 */
 #bottom-left-dock.dock-collapsed .dock-control-bar {
   background: transparent;
   padding: 0;
 }
 
-/* 折叠时隐藏文献徽章 */
+/* 摺疊時隱藏文獻徽章 */
 #bottom-left-dock.dock-collapsed .dock-control-bar .stat-item-clickable[data-stat-type="reference"] {
   display: none;
 }
 
-/* 折叠状态下的进度显示 */
+/* 摺疊狀態下的進度顯示 */
 #bottom-left-dock.dock-collapsed #dock-collapsed-progress-display {
   display: inline-flex;
   align-items: center;
@@ -292,7 +292,7 @@
   border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
-/* 折叠进度显示的书本图标 */
+/* 摺疊進度顯示的書本圖示 */
 #bottom-left-dock.dock-collapsed #dock-collapsed-progress-display::before {
   content: "\f02d";
   font-family: "Font Awesome 6 Free";
@@ -301,7 +301,7 @@
   margin-right: var(--spacing-xs);
 }
 
-/* ==================== 7. 阅读进度数值高亮 ==================== */
+/* ==================== 7. 閱讀進度數值醒目提示 ==================== */
 
 #reading-progress-percentage-verbose,
 #reading-progress-percentage {
@@ -310,9 +310,9 @@
   font-size: var(--font-size-sm);
 }
 
-/* ==================== 8. 兼容旧代码的样式 ==================== */
+/* ==================== 8. 相容舊程式碼的樣式 ==================== */
 
-/* 保留用于兼容性 */
+/* 保留用於相容性 */
 #dock-stats {
   display: flex;
   gap: var(--spacing-sm);
@@ -322,7 +322,7 @@
   display: inline;
 }
 
-/* ==================== 9. 响应式设计 ==================== */
+/* ==================== 9. 響應式設計 ==================== */
 
 @media (max-width: 768px) {
   #bottom-left-dock {
@@ -368,12 +368,12 @@
   }
 }
 
-/* ==================== 10. 沉浸模式下的特殊样式 ==================== */
+/* ==================== 10. 沉浸模式下的特殊樣式 ==================== */
 
-/* 沉浸模式下 Dock 的样式由 immersive.css 控制 */
-/* 此处仅保留默认状态 */
+/* 沉浸模式下 Dock 的樣式由 immersive.css 控制 */
+/* 此處僅保留預設狀態 */
 
-/* ==================== 11. 打印样式 ==================== */
+/* ==================== 11. 列印樣式 ==================== */
 
 @media print {
   #bottom-left-dock {
@@ -381,7 +381,7 @@
   }
 }
 
-/* ==================== 12. 暗色模式支持 ==================== */
+/* ==================== 12. 暗色模式支援 ==================== */
 
 @media (prefers-color-scheme: dark) {
   #bottom-left-dock {

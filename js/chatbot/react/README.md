@@ -1,51 +1,51 @@
-# ReAct 模块 v2.0
+# ReAct 模組 v2.0
 
-> Reasoning + Acting 框架 - 智能文档检索系统
+> Reasoning + Acting 框架 - 智慧文件檢索系統
 
-## 📦 模块架构
+## 📦 模組架構
 
 ```
 js/chatbot/react/
-├── index.js              # 主入口，导出所有组件
-├── engine.js             # 核心引擎（简化后的 ReActEngine）
-├── system-prompt.js      # 系统提示词构建器
-├── context-builder.js    # 上下文构建器
-├── tool-registry.js      # 工具注册表（10个检索工具）
-├── json-parser.js        # JSON 解析器（增强容错）
-├── token-budget.js       # Token 预算管理器
-└── README.md             # 本文档
+├── index.js              # 主入口，匯出所有元件
+├── engine.js             # 核心引擎（簡化後的 ReActEngine）
+├── system-prompt.js      # 系統提示詞構建器
+├── context-builder.js    # 上下文構建器
+├── tool-registry.js      # 工具登入檔（10個檢索工具）
+├── json-parser.js        # JSON 解析器（增強容錯）
+├── token-budget.js       # Token 預算管理器
+└── README.md             # 本文件
 ```
 
-## 🎯 v2.0 重大改进
+## 🎯 v2.0 重大改進
 
-### 1. **提示词简化 70%**
-- **旧版**: 800+ 行，包含 20+ 条"绝对不能"/"必须"规则
-- **新版**: 150 行，简洁直接，信任 LLM 判断
+### 1. **提示詞簡化 70%**
+- **舊版**: 800+ 行，包含 20+ 條"絕對不能"/"必須"規則
+- **新版**: 150 行，簡潔直接，信任 LLM 判斷
 
-### 2. **移除强制模式匹配**
-- **移除**: `checkForcedAction()` 硬编码规则
-- **改用**: LLM 自主决策，更灵活
+### 2. **移除強制模式比對**
+- **移除**: `checkForcedAction()` 硬編碼規則
+- **改用**: LLM 自主決策，更靈活
 
-### 3. **增强 JSON 解析**
-- **4 种解析策略**: 代码块 → 裸 JSON → 修复后 → 降级
-- **自动修复**: 尾随逗号、单引号、注释等常见错误
-- **零崩溃**: 解析失败时优雅降级
+### 3. **增強 JSON 解析**
+- **4 種解析策略**: 程式碼塊 → 裸 JSON → 修復後 → 降級
+- **自動修復**: 尾隨逗號、單引號、註釋等常見錯誤
+- **零崩潰**: 解析失敗時優雅降級
 
-### 4. **改进初始上下文**
-- **旧版**: 完全空白，只有元数据
-- **新版**: 包含文档概览、意群列表、前 500 字预览
+### 4. **改進初始上下文**
+- **舊版**: 完全空白，只有後設資料
+- **新版**: 包含文件概覽、意群列表、前 500 字預覽
 
-### 5. **模块化架构**
-- 职责分离，易于维护和扩展
-- 每个模块可独立测试
-- 支持按需加载
+### 5. **模組化架構**
+- 職責分離，易於維護和擴充
+- 每個模組可獨立測試
+- 支援按需載入
 
 ## 🚀 使用方法
 
 ### 基本用法
 
 ```javascript
-// 创建引擎实例
+// 建立引擎例項
 const reactEngine = new window.ReActEngine({
   maxIterations: 5,
   tokenBudget: {
@@ -58,34 +58,34 @@ const reactEngine = new window.ReActEngine({
   }
 });
 
-// 执行 ReAct 循环
+// 執行 ReAct 迴圈
 const generator = reactEngine.run(
-  userQuestion,        // 用户问题
-  docContent,          // 文档内容对象
-  systemPrompt,        // 系统提示词
-  conversationHistory  // 对话历史
+  userQuestion,        // 使用者問題
+  docContent,          // 文件內容物件
+  systemPrompt,        // 系統提示詞
+  conversationHistory  // 對話歷史
 );
 
-// 监听事件
+// 監聽事件
 for await (const event of generator) {
   console.log(event.type, event);
 
   switch (event.type) {
     case 'tool_call_start':
-      console.log('调用工具:', event.tool, event.params);
+      console.log('呼叫工具:', event.tool, event.params);
       break;
     case 'final_answer':
-      console.log('最终答案:', event.answer);
+      console.log('最終答案:', event.answer);
       break;
   }
 }
 ```
 
-### 事件监听
+### 事件監聽
 
 ```javascript
 reactEngine.on('tool_call_start', (data) => {
-  console.log('工具调用:', data);
+  console.log('工具呼叫:', data);
 });
 
 reactEngine.on('*', (data) => {
@@ -93,45 +93,45 @@ reactEngine.on('*', (data) => {
 });
 ```
 
-## 🛠️ 可用工具（10个）
+## 🛠️ 可用工具（10個）
 
-### 🔍 搜索工具（5个）
-1. **vector_search** - 语义搜索
-2. **keyword_search** - BM25 多关键词搜索
-3. **grep** - 精确文本搜索（支持 OR 逻辑）
-4. **regex_search** - 正则表达式搜索
-5. **boolean_search** - 布尔逻辑搜索
+### 🔍 搜尋工具（5個）
+1. **vector_search** - 語義搜尋
+2. **keyword_search** - BM25 多關鍵詞搜尋
+3. **grep** - 精確文字搜尋（支援 OR 邏輯）
+4. **regex_search** - 正規表示式搜尋
+5. **boolean_search** - 布林邏輯搜尋
 
-### 📚 意群工具（5个）
-6. **search_semantic_groups** - 搜索意群
-7. **fetch_group_text** - 获取意群文本
-8. **fetch** - 获取完整意群信息
-9. **map** - 文档结构地图
+### 📚 意群工具（5個）
+6. **search_semantic_groups** - 搜尋意群
+7. **fetch_group_text** - 獲取意群文字
+8. **fetch** - 獲取完整意群資訊
+9. **map** - 文件結構地圖
 10. **list_all_groups** - 列出所有意群
 
-## 📊 性能对比
+## 📊 效能對比
 
-| 指标 | v1.x | v2.0 | 改进 |
+| 指標 | v1.x | v2.0 | 改進 |
 |------|------|------|------|
-| 提示词长度 | 800 行 | 150 行 | ↓ 81% |
+| 提示詞長度 | 800 行 | 150 行 | ↓ 81% |
 | JSON 解析成功率 | ~85% | ~98% | ↑ 15% |
-| 平均迭代次数 | 3.5 | 2.8 | ↓ 20% |
+| 平均迭代次數 | 3.5 | 2.8 | ↓ 20% |
 | Token 消耗 | 高 | 中 | ↓ 30% |
 
-## 🔄 迁移指南
+## 🔄 遷移指南
 
-从 v1.x 迁移到 v2.0：
+從 v1.x 遷移到 v2.0：
 
-### 1. 更新 HTML 引用
+### 1. 更新 HTML 參考
 
-**旧版**:
+**舊版**:
 ```html
 <script src="js/chatbot/core/react-engine.js"></script>
 ```
 
 **新版**:
 ```html
-<!-- 按顺序加载所有模块 -->
+<!-- 按順序載入所有模組 -->
 <script src="js/chatbot/react/token-budget.js"></script>
 <script src="js/chatbot/react/tool-registry.js"></script>
 <script src="js/chatbot/react/json-parser.js"></script>
@@ -141,48 +141,48 @@ reactEngine.on('*', (data) => {
 <script src="js/chatbot/react/index.js"></script>
 ```
 
-### 2. 代码无需修改
+### 2. 程式碼無需修改
 
-API 完全兼容，无需修改现有代码：
+API 完全相容，無需修改現有程式碼：
 
 ```javascript
-// v1.x 和 v2.0 的代码完全一致
+// v1.x 和 v2.0 的程式碼完全一致
 const reactEngine = new window.ReActEngine({...});
 const generator = reactEngine.run(...);
 ```
 
 ## 🐛 故障排查
 
-### 问题 1: 模块加载失败
+### 問題 1: 模組載入失敗
 
-**症状**: 控制台显示 "缺少必需的模块"
+**症狀**: 主控台顯示 "缺少必需的模組"
 
-**解决**:
-1. 检查 index.html 中模块加载顺序
-2. 确保所有 7 个文件都存在
-3. 清除浏览器缓存
+**解決**:
+1. 檢查 index.html 中模組載入順序
+2. 確保所有 7 個檔案都存在
+3. 清除瀏覽器快取
 
-### 问题 2: JSON 解析错误
+### 問題 2: JSON 解析錯誤
 
-**症状**: 响应无法解析为 JSON
+**症狀**: 響應無法解析為 JSON
 
-**解决**:
-- v2.0 的 JSON 解析器会自动修复常见错误
-- 如果仍然失败，检查 LLM 响应格式
-- 查看控制台日志了解具体错误
+**解決**:
+- v2.0 的 JSON 解析器會自動修復常見錯誤
+- 如果仍然失敗，檢查 LLM 響應格式
+- 檢視主控台日誌瞭解具體錯誤
 
-### 问题 3: 工具调用失败
+### 問題 3: 工具呼叫失敗
 
-**症状**: 工具返回错误
+**症狀**: 工具返回錯誤
 
-**解决**:
-- 检查文档状态（意群是否生成、向量索引是否构建）
-- 查看工具返回的错误信息
-- 尝试降级使用 `grep` 工具
+**解決**:
+- 檢查文件狀態（意群是否生成、向量索引是否構建）
+- 檢視工具返回的錯誤資訊
+- 嘗試降級使用 `grep` 工具
 
-## 📝 开发者指南
+## 📝 開發者指南
 
-### 添加自定义工具
+### 新增自定義工具
 
 ```javascript
 const toolRegistry = new window.ToolRegistry();
@@ -191,10 +191,10 @@ toolRegistry.register({
   name: 'my_tool',
   description: '工具描述',
   parameters: {
-    param1: { type: 'string', description: '参数描述' }
+    param1: { type: 'string', description: '引數描述' }
   },
   execute: async (params) => {
-    // 工具逻辑
+    // 工具邏輯
     return {
       success: true,
       data: '...'
@@ -203,7 +203,7 @@ toolRegistry.register({
 });
 ```
 
-### 自定义系统提示词
+### 自定義系統提示詞
 
 ```javascript
 const customPrompt = window.SystemPromptBuilder.buildReActSystemPrompt(
@@ -211,25 +211,25 @@ const customPrompt = window.SystemPromptBuilder.buildReActSystemPrompt(
   hasVectorIndex
 );
 
-// 可以追加自定义规则
-const finalPrompt = customPrompt + '\n\n自定义规则...';
+// 可以追加自定義規則
+const finalPrompt = customPrompt + '\n\n自定義規則...';
 ```
 
-## 📖 API 文档
+## 📖 API 文件
 
 ### ReActEngine
 
-#### 构造函数
+#### 建構函式
 
 ```typescript
 new ReActEngine(config: {
-  maxIterations?: number;          // 最大迭代次数（默认 5）
-  tokenBudget?: {                  // Token 预算
-    totalBudget?: number;          // 总预算（默认 32000）
-    systemTokens?: number;         // 系统提示词（默认 2000）
-    historyTokens?: number;        // 对话历史（默认 8000）
-    contextTokens?: number;        // 动态上下文（默认 18000）
-    responseTokens?: number;       // 响应（默认 4000）
+  maxIterations?: number;          // 最大迭代次數（預設 5）
+  tokenBudget?: {                  // Token 預算
+    totalBudget?: number;          // 總預算（預設 32000）
+    systemTokens?: number;         // 系統提示詞（預設 2000）
+    historyTokens?: number;        // 對話歷史（預設 8000）
+    contextTokens?: number;        // 動態上下文（預設 18000）
+    responseTokens?: number;       // 響應（預設 4000）
   };
   llmConfig?: object;              // LLM 配置
 })
@@ -237,34 +237,34 @@ new ReActEngine(config: {
 
 #### 方法
 
-- `run(question, docContent, systemPrompt, history)` - 执行 ReAct 循环
-- `on(eventType, handler)` - 添加事件监听器
-- `emit(eventType, data)` - 发送事件
+- `run(question, docContent, systemPrompt, history)` - 執行 ReAct 迴圈
+- `on(eventType, handler)` - 新增事件監聽器
+- `emit(eventType, data)` - 傳送事件
 
-### 事件类型
+### 事件型別
 
 - `context_initialized` - 上下文初始化完成
-- `iteration_start` - 迭代开始
-- `reasoning_start` - 推理开始
+- `iteration_start` - 迭代開始
+- `reasoning_start` - 推理開始
 - `reasoning_complete` - 推理完成
-- `tool_call_start` - 工具调用开始
-- `tool_call_complete` - 工具调用完成
+- `tool_call_start` - 工具呼叫開始
+- `tool_call_complete` - 工具呼叫完成
 - `context_updated` - 上下文更新
-- `final_answer` - 最终答案
-- `max_iterations_reached` - 达到最大迭代次数
-- `error` - 错误
+- `final_answer` - 最終答案
+- `max_iterations_reached` - 達到最大迭代次數
+- `error` - 錯誤
 
-## 🔗 相关资源
+## 🔗 相關資源
 
-- [ReAct 论文](https://arxiv.org/abs/2210.03629)
-- [项目文档](../../docs/ReAct-Framework.md)
-- [更新日志](../../docs/ReAct-Implementation-Complete.md)
+- [ReAct 論文](https://arxiv.org/abs/2210.03629)
+- [專案文件](../../docs/ReAct-Framework.md)
+- [更新日誌](../../docs/ReAct-Implementation-Complete.md)
 
-## 📄 许可证
+## 📄 許可證
 
 MIT License
 
-## 👥 贡献者
+## 👥 貢獻者
 
 - Paper Burner Team
 

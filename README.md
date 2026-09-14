@@ -1,305 +1,305 @@
-# Paper Burner X - AI文献识别、翻译、阅读与智能分析工具
+# Paper Burner X - AI文獻識別、翻譯、閱讀與智慧分析工具
 
-这是一款开源的、在浏览器中即开即用的 AI 工作站，专为扫除海量的 PDF 文献、复杂的公式和跨语言的障碍。
+這是一款開源的、在瀏覽器中即開即用的 AI 工作站，專為掃除海量的 PDF 文獻、複雜的公式和跨語言的障礙。
 
-它为需要进行精细、长文本阅读的研究人员和深度学习者设计，致力于将复杂的文档处理、翻译和分析流程整合到单一、流畅的体验中。
+它為需要進行精細、長文字閱讀的研究人員和深度學習者設計，致力於將複雜的文件處理、翻譯和分析流程整合到單一、流暢的體驗中。
 
 <div align="center">
   <img src="https://img.shields.io/badge/版本-2.0.0-blue.svg" alt="版本">
-  <img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg" alt="许可证">
+  <img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg" alt="許可證">
   <img src="https://img.shields.io/badge/JavaScript-yellow.svg" alt="JavaScript">
   <img src="https://img.shields.io/badge/Docker-building-2496ED.svg" alt="Docker">
 </div>
 
 <div align="center">
-  <p><strong> 浏览器即开即用 | 极速并发翻译 | 智能文档分析 </strong></p>
+  <p><strong> 瀏覽器即開即用 | 極速並行翻譯 | 智慧文件分析 </strong></p>
   <p>
-    <a href="https://paperburner.viwoplus.site/views/landing/landing-page.html">📱 落地页</a> •
-    <a href="#-快速开始">🚀 快速开始</a> •
-    <a href="#-特性概览">✨ 特性</a> •
-    <a href="deploy/DEPLOYMENT_GUIDE.md">📖 部署文档</a>
+    <a href="https://paperburner.viwoplus.site/views/landing/landing-page.html">📱 落地頁</a> •
+    <a href="#-快速開始">🚀 快速開始</a> •
+    <a href="#-特性概覽">✨ 特性</a> •
+    <a href="deploy/DEPLOYMENT_GUIDE.md">📖 部署文件</a>
   </p>
 </div>
 
 ---
-* 项目分前端版本和后端版本，目前后端版本构建中，请暂时不要拉取docker镜像。
+* 專案分前端版本和後端版本，目前後端版本構建中，請暫時不要拉取docker映象。
 
 <img width="3000" height="1431" alt="paper burner x" src="https://github.com/user-attachments/assets/23c3a4ab-835d-4475-89ff-ae40acfec11e" />
 
-## 🎯 项目简介
+## 🎯 專案簡介
 
-**Paper Burner X** 是为研究生和研究人员设计的 AI 驱动文献处理工具。支持 PDF/DOCX/PPTX/EPUB 等多种格式，能够进行 OCR 识别、高质量翻译、智能分析，完美保留公式、图表和格式。
+**Paper Burner X** 是為研究生和研究人員設計的 AI 驅動文獻處理工具。支援 PDF/DOCX/PPTX/EPUB 等多種格式，能夠進行 OCR 識別、高質量翻譯、智慧分析，完美保留公式、圖表和格式。
 
-目前实现了：
+目前實現了：
 
-*   **前端 Agent 驱动的智能检索：** 我们在前端实现了一个 Agentic RAG 系统。通过赋予 AI 全局的文章结构 和一系列工具（如 `grep`, `vector search`, `fetch`等等），AI 能够自主决策、多步推理，并在长文本中实现复杂的分析和信息提取任务。
-*   **高性能批量处理：** 支持多种文档格式（PDF/DOCX/EPUB 等）和代码库的直接导入。利用并发 OCR 和翻译，并结合术语库（支持数万词条快速匹配），显著提升了文献处理效率。
-*   **高可扩展性与本地化：** 目前所有数据均在浏览器本地，支持用户接入自定义 AI 模型端点，并提供了配套的 [OCR Server](https://github.com/Feather-2/PBX-DS-OCR-server) 和 Docker 部署选项(开发中)，让用户未来可以实现完全离线的本地化使用。
+*   **前端 Agent 驅動的智慧檢索：** 我們在前端實現了一個 Agentic RAG 系統。透過賦予 AI 全域的文章結構 和一系列工具（如 `grep`, `vector search`, `fetch`等等），AI 能夠自主決策、多步推理，並在長文字中實現複雜的分析和資訊提取任務。
+*   **高效能批次處理：** 支援多種文件格式（PDF/DOCX/EPUB 等）和程式碼庫的直接匯入。利用並行 OCR 和翻譯，並結合術語庫（支援數萬詞條快速比對），顯著提升了文獻處理效率。
+*   **高可擴充性與本地化：** 目前所有資料均在瀏覽器本地，支援使用者接入自定義 AI 模型端點，並提供了配套的 [OCR Server](https://github.com/Feather-2/PBX-DS-OCR-server) 和 Docker 部署選項(開發中)，讓使用者未來可以實現完全離線的本地化使用。
 
-希望这个工具能成为研究人员和知识工作者的得力助手，欢迎试用和提出宝贵意见！
+希望這個工具能成為研究人員和知識工作者的得力助手，歡迎試用和提出寶貴意見！
 
-> 该项目扩充了诸多阅读/AI工具上的便利，但如果您需要一个轻量化的文档处理工具，也欢迎使用 [Paper Burner](https://github.com/baoyudu/paper-burner) ， [baoyu](https://github.com/baoyudu) 的原分支。
-
-
-## 具体介绍
-
-### 一体化的文档处理引擎
-
-我们为工具打造了一个强大的“入口”，使其能够轻松消化各种来源的知识。
-
-*   **广泛的格式支持：** 能够处理 PDF、DOCX、PPTX、EPUB、Markdown 甚至代码注释等多种格式，并支持导出为 DOCX、MD 等常用格式。
-*   **智能导入与处理：** 不仅支持本地文件上传，更可一键从 GitHub 仓库或任意 URL 导入内容，自动完成解析。PDF可以使用OCR (支持mineru/doc2x等) 与翻译引擎，并实现**保留原文格式翻译**功能（基于mineru，目前优化中，并会支持更多模型）。
-*   **术语备择库：** 进行了性能优化，支持一次性导入数万条术语并进行快速匹配。
-*   支持自定义模型端点，可以支持检测、多key、快捷导出等机制，使用灵活。
+> 該專案擴充了諸多閱讀/AI工具上的便利，但如果您需要一個輕量化的文件處理工具，也歡迎使用 [Paper Burner](https://github.com/baoyudu/paper-burner) ， [baoyu](https://github.com/baoyudu) 的原分支。
 
 
-### 为深度阅读优化的交互体验
+## 具體介紹
 
-*   **沉浸式对照阅读：** 提供智能对齐的段落级原译文对照、文档结构目录（TOC）、高亮与标注功能，先进行无障碍的阅读，再进行AI总结。
-*   **增强学术内容展示：** 针对学术场景，特别优化了复杂公式的渲染。
-*   **结构化信息提取：** 内置了“文献矩阵”等实用工具，能够将非结构化的论文内容，智能提取为清晰的结构化数据，方便进行横向对比和分析。
+### 一體化的文件處理引擎
 
-### 不止于问答：前端 Agent 驱动的智能分析
+我們為工具打造了一個強大的“入口”，使其能夠輕鬆消化各種來源的知識。
 
-- 我们在纯前端环境中，实现了一个长文本Agent。少量文本下，将使用全量的策略；而当提供长文本时候，使用长文本Agent。
--  **赋予 AI 全局视野：** 我们为 AI 构建了“分层意群/地图”，让它在处理长文本时拥有对全文结构的整体认知。
-*   **为 AI 配备工具箱：** 我们给予 AI 一系列工具，如精确匹配的 `grep`、向量搜索 `vector search`、内容抓取 `fetch` 等。AI 会根据你的问题，自主分析并决定调用哪种工具组合来寻找最佳答案。
-
-- 上述皆在纯前端实现，浏览器打开即用
+*   **廣泛的格式支援：** 能夠處理 PDF、DOCX、PPTX、EPUB、Markdown 甚至程式碼註釋等多種格式，並支援匯出為 DOCX、MD 等常用格式。
+*   **智慧匯入與處理：** 不僅支援本地檔案上傳，更可一鍵從 GitHub 倉庫或任意 URL 匯入內容，自動完成解析。PDF可以使用OCR (支援mineru/doc2x等) 與翻譯引擎，並實現**保留原文格式翻譯**功能（基於mineru，目前最佳化中，並會支援更多模型）。
+*   **術語備擇庫：** 進行了效能最佳化，支援一次性匯入數萬條術語並進行快速比對。
+*   支援自定義模型端點，可以支援檢測、多key、快捷匯出等機制，使用靈活。
 
 
-### 项目正在活跃地迭代
+### 為深度閱讀最佳化的互動體驗
 
-*   **完全本地化部署：** 正在开发Docker 部署方案，还提供了可自托管的 [OCR Server](https://github.com/Feather-2/PBX-DS-OCR-server)，最终目标是让用户可以完全在离线环境中使用全部功能。
-*   **从单文档到多文档：** 下一个里程碑是将能力从分析单篇文献，扩展到处理多篇文献，并基于此开发能自动生成文献综述的 **综述 Agent**，成为真正的 AI 研究助理。
+*   **沉浸式對照閱讀：** 提供智慧對齊的段落級原譯文對照、文件結構目錄（TOC）、醒目提示與標註功能，先進行無障礙的閱讀，再進行AI總結。
+*   **增強學術內容展示：** 針對學術場景，特別最佳化了複雜公式的渲染。
+*   **結構化資訊提取：** 內建了“文獻矩陣”等實用工具，能夠將非結構化的論文內容，智慧提取為清晰的結構化資料，方便進行橫向對比和分析。
 
----
+### 不止於問答：前端 Agent 驅動的智慧分析
 
-**核心优势：**
+- 我們在純前端環境中，實現了一個長文字Agent。少量文字下，將使用全量的策略；而當提供長文字時候，使用長文字Agent。
+-  **賦予 AI 全域視野：** 我們為 AI 構建了“分層意群/地圖”，讓它在處理長文字時擁有對全文結構的整體認知。
+*   **為 AI 配備工具箱：** 我們給予 AI 一系列工具，如精確比對的 `grep`、向量搜尋 `vector search`、內容抓取 `fetch` 等。AI 會根據你的問題，自主分析並決定呼叫哪種工具組合來尋找最佳答案。
 
-- ⚡ **极速翻译** - 并发处理，长论文仅需数十秒
-- 🎨 **完美排版** - 保留公式、图表、格式
-- 🤖 **智能分析** - AI 助手、思维导图、流程图生成
-- 🔒 **隐私安全** - 纯前端模式，数据完全本地化
-- 🐳 **灵活部署** - 支持 Vercel 静态部署和 Docker 完整部署
+- 上述皆在純前端實現，瀏覽器開啟即用
 
+
+### 專案正在活躍地迭代
+
+*   **完全本地化部署：** 正在開發Docker 部署方案，還提供了可自託管的 [OCR Server](https://github.com/Feather-2/PBX-DS-OCR-server)，最終目標是讓使用者可以完全在離線環境中使用全部功能。
+*   **從單文件到多文件：** 下一個里程碑是將能力從分析單篇文獻，擴充到處理多篇文獻，並基於此開發能自動生成文獻綜述的 **綜述 Agent**，成為真正的 AI 研究助理。
 
 ---
 
-## 🚀 快速开始
+**核心優勢：**
 
-Paper Burner X 提供**两种部署模式**，根据你的需求选择：
+- ⚡ **極速翻譯** - 並行處理，長論文僅需數十秒
+- 🎨 **完美排版** - 保留公式、圖表、格式
+- 🤖 **智慧分析** - AI 助手、思維導圖、流程圖生成
+- 🔒 **隱私安全** - 純前端模式，資料完全本地化
+- 🐳 **靈活部署** - 支援 Vercel 靜態部署和 Docker 完整部署
 
-### 📱 模式 1：纯前端部署（推荐个人使用）
 
-**特点：**
+---
 
-- ✅ 无需服务器，完全免费
-- ✅ 5 分钟快速部署到 Vercel
-- ✅ 数据存储在浏览器本地，隐私安全
-- ✅ 适合个人使用和快速体验
+## 🚀 快速開始
 
-**部署步骤：**
+Paper Burner X 提供**兩種部署模式**，根據你的需求選擇：
+
+### 📱 模式 1：純前端部署（推薦個人使用）
+
+**特點：**
+
+- ✅ 無需伺服器，完全免費
+- ✅ 5 分鐘快速部署到 Vercel
+- ✅ 資料儲存在瀏覽器本地，隱私安全
+- ✅ 適合個人使用和快速體驗
+
+**部署步驟：**
 
 ```bash
-# 1. Fork 本仓库到你的 GitHub 账号
+# 1. Fork 本倉庫到你的 GitHub 賬號
 
-# 2. 在 Vercel 中导入项目
-# 访问 https://vercel.com/new
-# 选择你 fork 的仓库
-# 点击 Deploy
+# 2. 在 Vercel 中匯入專案
+# 訪問 https://vercel.com/new
+# 選擇你 fork 的倉庫
+# 點選 Deploy
 
-# 3. 部署完成！访问你的域名即可使用
+# 3. 部署完成！訪問你的域名即可使用
 ```
 
-> 💡 **提示：** 纯前端模式下，所有数据存储在浏览器 localStorage/IndexedDB 中，不会上传到任何服务器。
+> 💡 **提示：** 純前端模式下，所有資料儲存在瀏覽器 localStorage/IndexedDB 中，不會上傳到任何伺服器。
 
-**在线体验：** [https://paperburner.viwoplus.site](https://paperburner.viwoplus.site)
+**線上體驗：** [https://paperburner.viwoplus.site](https://paperburner.viwoplus.site)
 
 ---
 
 ### 🐳 模式 2：Docker 完整部署
 
-该模式将尽快上线
+該模式將盡快上線
 
-**使用 Docker Hub 镜像：**
+**使用 Docker Hub 映象：**
 
 ```bash
 docker pull feather2dev/paper-burner-x:latest
 ```
 
-> 📖 **详细文档：** [完整部署指南](deploy/DEPLOYMENT_GUIDE.md)
+> 📖 **詳細文件：** [完整部署指南](deploy/DEPLOYMENT_GUIDE.md)
 
 ---
 
-## ✨ 特性概览
+## ✨ 特性概覽
 
-### 1. ⚡ 极速并发翻译
+### 1. ⚡ 極速並行翻譯
 
-- **多文件并发处理** - 一次上传多个文件，自动排队处理
-- **高速并发翻译** - 理想情况下，长论文翻译仅需几十秒
-- **自定义并发数** - 可配置文件处理和翻译任务的并发数量
-- **提示词池机制** - 智能健康管理提示词，保证翻译质量
-- **文件夹批量导入** - 支持整个库/文件夹翻译，保留文件夹层级
+- **多檔案並行處理** - 一次上傳多個檔案，自動排隊處理
+- **高速並行翻譯** - 理想情況下，長論文翻譯僅需幾十秒
+- **自定義並行數** - 可配置檔案處理和翻譯任務的並行數量
+- **提示詞池機制** - 智慧健康管理提示詞，保證翻譯質量
+- **資料夾批次匯入** - 支援整個庫/資料夾翻譯，保留資料夾層級
 
-### 2. 🔧 灵活的配置管理
+### 2. 🔧 靈活的配置管理
 
-- **术语库系统** - 维护多套术语库，自动注入翻译提示，保持术语一致性
-- **自定义提示词** - 支持自定义翻译 Prompt，满足客制化需求
-- **提示词池生成** - AI 自动生成提示词变体，保证核心需求不变
-- **模型自动检测** - 通过 `/v1/models` API 自动检测可用模型
-- **多 Key 轮询** - 支持多个 API Key 轮询使用，提高稳定性
-- **配置导入导出** - 方便迁移和备份配置
+- **術語庫系統** - 維護多套術語庫，自動注入翻譯提示，保持術語一致性
+- **自定義提示詞** - 支援自定義翻譯 Prompt，滿足客製化需求
+- **提示詞池生成** - AI 自動生成提示詞變體，保證核心需求不變
+- **模型自動檢測** - 透過 `/v1/models` API 自動檢測可用模型
+- **多 Key 輪詢** - 支援多個 API Key 輪詢使用，提高穩定性
+- **配置匯入匯出** - 方便遷移和備份配置
 
-### 3. 📖 增强的阅读体验
+### 3. 📖 增強的閱讀體驗
 
-- **历史记录面板** - 基于 IndexedDB 存储，支持原文/译文/对比模式
-- **公式与表格渲染** - 完美支持 LaTeX 公式、图片、表格渲染
-- **分块对比** - 原文与译文智能对齐，段落级精准对比
-- **目录导航 (TOC)** - 快速浏览文档结构，实现内容间快速跳转
-- **沉浸式阅读** - 桌面端沉浸模式，所有要素集中在一个画面
-- **标注与高亮** - 字级高亮和标注，支持多种颜色
+- **歷史記錄面板** - 基於 IndexedDB 儲存，支援原文/譯文/對比模式
+- **公式與表格渲染** - 完美支援 LaTeX 公式、圖片、表格渲染
+- **分塊對比** - 原文與譯文智慧對齊，段落級精準對比
+- **目錄導航 (TOC)** - 快速瀏覽文件結構，實現內容間快速跳轉
+- **沉浸式閱讀** - 桌面端沉浸模式，所有要素集中在一個畫面
+- **標註與醒目提示** - 字級醒目提示和標註，支援多種顏色
 
-### 4. 🤖 智能文档分析
+### 4. 🤖 智慧文件分析
 
-- **AI 聊天助手** - 对长文档进行提问和分析，支持流式输出
-- **快捷指令** - 预置学术相关问题，快速提问
-- **思维导图生成** - 自动生成文档思维导图
-- **流程图生成** - 支持 Mermaid 流程图生成和编辑
-- **对话导出** - 将 AI 对话内容快速导出为图片
-- **图片上传** - 支持上传图片进行多模态对话
+- **AI 聊天助手** - 對長文件進行提問和分析，支援流式輸出
+- **快捷指令** - 預置學術相關問題，快速提問
+- **思維導圖生成** - 自動生成文件思維導圖
+- **流程圖生成** - 支援 Mermaid 流程圖生成和編輯
+- **對話匯出** - 將 AI 對話內容快速匯出為圖片
+- **圖片上傳** - 支援上傳圖片進行多模態對話
 
-### 5. 📁 多格式支持
+### 5. 📁 多格式支援
 
-**支持导入：**
+**支援匯入：**
 
 - PDF / Markdown / TXT / DOCX / PPTX / HTML / EPUB
 
-**支持导出：**
+**支援匯出：**
 
-- HTML / PDF / DOCX / Markdown（支持图片嵌入或链接）...
+- HTML / PDF / DOCX / Markdown（支援圖片嵌入或連結）...
 
 ---
 
-## 🔑 API 密钥配置
+## 🔑 API 金鑰配置
 
-### 纯前端模式
+### 純前端模式
 
-需要在浏览器中配置以下 API 密钥（本地存储）：
+需要在瀏覽器中配置以下 API 金鑰（本地儲存）：
 
-1. **OCR 服务**
+1. **OCR 服務**
 
    - [MinerU](https://github.com/opendatalab/MinerU)
    - [Doc2X](https://doc2x.noedgeai.com/)
    - [Mistral](http://mistral.ai/)
 
-2. **翻译模型**
+2. **翻譯模型**
 
    - [DeepSeek](https://deepseek.com/)
    - [Google Gemini](https://makersuite.google.com/)
    - [Anthropic Claude](https://www.anthropic.com/)
-   - [阿里通义千问](https://www.aliyun.com/)
+   - [阿里通義千問](https://www.aliyun.com/)
    - [火山引擎](https://www.volcengine.com/)
-   - 自定义模型端点...
+   - 自定義模型端點...
 
 
-## 🗺️ 路线图
+## 🗺️ 路線圖
 
-- [X] 纯前端模式
-- [X] Docker 部署支持
-- [X] 多用户系统
-- [X] 管理员面板
-- [X] 更多 OCR 引擎支持
-- [X] 移动端适配优化
-- [ ] UI 界面重构
-- [ ] 云端同步（可选）
+- [X] 純前端模式
+- [X] Docker 部署支援
+- [X] 多使用者系統
+- [X] 管理員面板
+- [X] 更多 OCR 引擎支援
+- [X] 行動裝置適配最佳化
+- [ ] UI 介面重構
+- [ ] 雲端同步（可選）
 
 ---
 
-## 🤝 贡献指南
+## 🤝 貢獻指南
 
-欢迎为 Paper Burner X 做出贡献！
+歡迎為 Paper Burner X 做出貢獻！
 
-**参与方式：**
+**參與方式：**
 
-- 🐛 [报告 Bug](https://github.com/Feather-2/paper-burner-x/issues)
-- 💡 [提出新功能建议](https://github.com/Feather-2/paper-burner-x/issues)
+- 🐛 [報告 Bug](https://github.com/Feather-2/paper-burner-x/issues)
+- 💡 [提出新功能建議](https://github.com/Feather-2/paper-burner-x/issues)
 - 🔧 [提交 Pull Request](https://github.com/Feather-2/paper-burner-x/pulls)
-- 📖 [改进文档](https://github.com/Feather-2/paper-burner-x/wiki)
-- ⭐ [为项目点 Star](https://github.com/Feather-2/paper-burner-x)
+- 📖 [改進文件](https://github.com/Feather-2/paper-burner-x/wiki)
+- ⭐ [為專案點 Star](https://github.com/Feather-2/paper-burner-x)
 
 ---
 
-## 📚 相关文档
+## 📚 相關文件
 
-- [部署指南](deploy/DEPLOYMENT_GUIDE.md) - 详细的部署步骤
-- [本地测试指南](deploy/LOCAL_TESTING.md) - 本地开发和测试
-
----
-
-## ⚠️ 注意事项
-
-- AI 模型翻译结果仅供参考，重要内容请以原文为准
-- 大型文档的处理可能需要较长时间，请耐心等待
-- 对于包含特殊格式的 PDF，OCR 结果可能需要人工校对
-- 使用 API 时请遵守相应服务提供商的使用条款
-- 纯前端模式下，数据存储在浏览器本地，清除浏览器数据会丢失历史记录
+- [部署指南](deploy/DEPLOYMENT_GUIDE.md) - 詳細的部署步驟
+- [本地測試指南](deploy/LOCAL_TESTING.md) - 本地開發和測試
 
 ---
 
-## 📄 许可证
+## ⚠️ 注意事項
 
-本项目采用 **GNU Affero General Public License v3.0 (AGPL-3.0)** 许可证开源。
+- AI 模型翻譯結果僅供參考，重要內容請以原文為準
+- 大型文件的處理可能需要較長時間，請耐心等待
+- 對於包含特殊格式的 PDF，OCR 結果可能需要人工校對
+- 使用 API 時請遵守相應服務提供商的使用條款
+- 純前端模式下，資料儲存在瀏覽器本地，清除瀏覽器資料會丟失歷史記錄
 
-### 📋 关键要求
+---
 
-如果你部署本项目作为网络服务（包括但不限于）：
+## 📄 許可證
 
-- 公开的 Web 服务
+本專案採用 **GNU Affero General Public License v3.0 (AGPL-3.0)** 許可證開源。
+
+### 📋 關鍵要求
+
+如果你部署本專案作為網路服務（包括但不限於）：
+
+- 公開的 Web 服務
 - SaaS 平台
-- 内部企业服务
+- 內部企業服務
 
-**你必须**：
+**你必須**：
 
-1. 在用户界面显著位置提供"源代码"链接
-2. 用户可以通过该链接免费获取完整源代码
+1. 在使用者介面顯著位置提供"原始碼"連結
+2. 使用者可以透過該連結免費獲取完整原始碼
 3. 包括你所做的任何修改
 
-### 📜 许可证说明
+### 📜 許可證說明
 
-本项目基于 [Paper Burner](https://github.com/baoyudu/paper-burner) (GPL-2.0) 的创意开发（该项目是一款pdf极简翻译工具）：
+本專案基於 [Paper Burner](https://github.com/baoyudu/paper-burner) (GPL-2.0) 的創意開發（該專案是一款pdf極簡翻譯工具）：
 
-**当前版本 (Paper Burner X)**:
+**當前版本 (Paper Burner X)**:
 
-- **许可证**: AGPL-3.0
-- **适用范围**: 所有当前代码（大部分为新开发内容），已在原始项目上进行了重构和各方面极多内容的扩充。
+- **許可證**: AGPL-3.0
+- **適用範圍**: 所有當前程式碼（大部分為新開發內容），已在原始專案上進行了重構和各方面極多內容的擴充。
 - **作者**: Feather-2 and contributors
-- **版权**: Copyright (C) 2024-2025 Feather-2 and contributors
+- **版權**: Copyright (C) 2024-2025 Feather-2 and contributors
 
-**历史归属 (Original Paper Burner)**:
+**歷史歸屬 (Original Paper Burner)**:
 
-- **许可证**: GPL-2.0
-- **适用范围**: 重构前，与mistral翻译相关的原始代码和部分ui（见 git 历史记录 before May 16, 2025）
+- **許可證**: GPL-2.0
+- **適用範圍**: 重構前，與mistral翻譯相關的原始程式碼和部分ui（見 git 歷史記錄 before May 16, 2025）
 - **作者**: Baoyu (baoyudu)
-- **仓库**: https://github.com/baoyudu/paper-burner
+- **倉庫**: https://github.com/baoyudu/paper-burner
 
-**为什么使用 AGPL-3.0？**
+**為什麼使用 AGPL-3.0？**
 
-作为我所写这部分代码的版权持有人，我选择 AGPL-3.0 是为了：
+作為我所寫這部分程式碼的版權持有人，我選擇 AGPL-3.0 是為了：
 
-- ✅ 防止"云服务漏洞"（部署为 SaaS 必须开源）
-- ✅ 保护开源社区的利益（修改必须回馈）
+- ✅ 防止"雲服務漏洞"（部署為 SaaS 必須開源）
+- ✅ 保護開源社群的利益（修改必須回饋）
 
-详见 [NOTICE](NOTICE) 文件和 [LICENSE](LICENSE) 文件。
+詳見 [NOTICE](NOTICE) 檔案和 [LICENSE](LICENSE) 檔案。
 
 ---
 
-## 🙏 致谢
+## 🙏 致謝
 
-> 本项目是在 [Paper Burner](https://github.com/baoyudu/paper-burner) 原项目基础上进行扩充和修改的，为示尊重和区分，故命名为 Paper Burner X。
-> 该项目扩充了诸多阅读/AI工具上的便利，但如果您需要一个简洁、轻量化的文档处理工具，也欢迎使用 [Paper Burner](https://github.com/baoyudu/paper-burner) ， [baoyu](https://github.com/baoyudu) 的原分支。
+> 本專案是在 [Paper Burner](https://github.com/baoyudu/paper-burner) 原專案基礎上進行擴充和修改的，為示尊重和區分，故命名為 Paper Burner X。
+> 該專案擴充了諸多閱讀/AI工具上的便利，但如果您需要一個簡潔、輕量化的文件處理工具，也歡迎使用 [Paper Burner](https://github.com/baoyudu/paper-burner) ， [baoyu](https://github.com/baoyudu) 的原分支。
 
-**贡献者：**
+**貢獻者：**
 
 <div align="center">
   <a href="https://github.com/feather-2/paper-burner-x/graphs/contributors">
@@ -310,10 +310,10 @@ docker pull feather2dev/paper-burner-x:latest
 ---
 
 <div align="center">
-  <p><strong>如果这个工具对您有帮助，请考虑给项目一个 ⭐</strong></p>
+  <p><strong>如果這個工具對您有幫助，請考慮給專案一個 ⭐</strong></p>
   <p>
     <a href="https://github.com/Feather-2/paper-burner-x">GitHub</a> •
-    <a href="https://paperburner.viwoplus.site">在线体验</a>
+    <a href="https://paperburner.viwoplus.site">線上體驗</a>
   </p>
 </div>
 

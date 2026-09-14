@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>表格渲染测试</title>
+    <title>表格渲染測試</title>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="js/processing/markdown_processor_ast.js"></script>
     <style>
@@ -88,43 +88,43 @@
     </style>
 </head>
 <body>
-    <h1>📊 表格渲染测试</h1>
+    <h1>📊 表格渲染測試</h1>
 
     <div id="test-container"></div>
 
     <script>
-        // 测试用例：从简单到复杂
+        // 測試用例：從簡單到複雜
         const testCases = [
             {
-                title: '测试 1: 简单表格',
+                title: '測試 1: 簡單表格',
                 markdown: `| 列1 | 列2 |
 |-----|-----|
-| 数据1 | 数据2 |`
+| 資料1 | 資料2 |`
             },
             {
-                title: '测试 2: 带数字的表格',
-                markdown: `| 参数 | 值 |
+                title: '測試 2: 帶數字的表格',
+                markdown: `| 引數 | 值 |
 |------|------|
 | 速度 | 0.145*** |
-| 长度 | 0.200** |`
+| 長度 | 0.200** |`
             },
             {
-                title: '测试 3: 用户提供的表格（正常格式）',
-                markdown: `| | | | 五分位数 (Quintiles) | | | |
+                title: '測試 3: 使用者提供的表格（正常格式）',
+                markdown: `| | | | 五分位數 (Quintiles) | | | |
 |---|---|---|---|---|---|---|
 | | 1 | 2 | 3 | 4 | 5 | 5-1 |
-| 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 |
+| 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 |
 | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) |
-| 规模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 |
+| 規模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 |
 | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`
             },
             {
-                title: '测试 4: 压缩的单行表格（原始问题）⚠️',
-                markdown: `| | | | 五分位数 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 规模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`,
+                title: '測試 4: 壓縮的單行表格（原始問題）⚠️',
+                markdown: `| | | | 五分位數 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 規模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`,
                 isCompressed: true
             },
             {
-                title: '测试 5: 简化的压缩表格',
+                title: '測試 5: 簡化的壓縮表格',
                 markdown: `| A | B | C ||---|---|---|| 1 | 2 | 3 || 4 | 5 | 6 |`,
                 isCompressed: true
             }
@@ -136,17 +136,17 @@
             const testDiv = document.createElement('div');
             testDiv.className = 'test-case';
 
-            // 标题
+            // 標題
             const titleDiv = document.createElement('div');
             titleDiv.className = 'test-title';
             titleDiv.textContent = test.title;
             testDiv.appendChild(titleDiv);
 
-            // 源码
+            // 原始碼
             const sourceLabel = document.createElement('div');
             sourceLabel.style.fontWeight = 'bold';
             sourceLabel.style.marginTop = '10px';
-            sourceLabel.textContent = 'Markdown 源码:';
+            sourceLabel.textContent = 'Markdown 原始碼:';
             testDiv.appendChild(sourceLabel);
 
             const sourceDiv = document.createElement('div');
@@ -177,7 +177,7 @@
                 mdResult.innerHTML = htmlDirect;
                 testDiv.appendChild(mdResult);
 
-                // 显示 HTML 源码
+                // 顯示 HTML 原始碼
                 const htmlSourceLabel = document.createElement('div');
                 htmlSourceLabel.style.fontWeight = 'bold';
                 htmlSourceLabel.style.marginTop = '10px';
@@ -192,13 +192,13 @@
             } catch (error) {
                 const status = document.createElement('span');
                 status.className = 'status fail';
-                status.textContent = '✗ 渲染出错';
+                status.textContent = '✗ 渲染出錯';
                 mdLabel.appendChild(status);
                 testDiv.appendChild(mdLabel);
 
                 const errorDiv = document.createElement('div');
                 errorDiv.style.color = '#e74c3c';
-                errorDiv.textContent = `错误: ${error.message}`;
+                errorDiv.textContent = `錯誤: ${error.message}`;
                 testDiv.appendChild(errorDiv);
             }
 
@@ -225,7 +225,7 @@
                     astResult.innerHTML = htmlAST;
                     testDiv.appendChild(astResult);
 
-                    // 显示 HTML 源码
+                    // 顯示 HTML 原始碼
                     const htmlSourceLabel = document.createElement('div');
                     htmlSourceLabel.style.fontWeight = 'bold';
                     htmlSourceLabel.style.marginTop = '10px';
@@ -240,13 +240,13 @@
                 } catch (error) {
                     const status = document.createElement('span');
                     status.className = 'status fail';
-                    status.textContent = '✗ 渲染出错';
+                    status.textContent = '✗ 渲染出錯';
                     astLabel.appendChild(status);
                     testDiv.appendChild(astLabel);
 
                     const errorDiv = document.createElement('div');
                     errorDiv.style.color = '#e74c3c';
-                    errorDiv.textContent = `错误: ${error.message}`;
+                    errorDiv.textContent = `錯誤: ${error.message}`;
                     testDiv.appendChild(errorDiv);
                 }
             }

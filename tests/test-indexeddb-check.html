@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IndexedDB 术语库检查工具</title>
+    <title>IndexedDB 術語庫檢查工具</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -84,39 +84,39 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔍 IndexedDB 术语库检查工具</h1>
+        <h1>🔍 IndexedDB 術語庫檢查工具</h1>
 
         <div class="section">
-            <h2>数据库状态</h2>
+            <h2>資料庫狀態</h2>
             <div id="dbStatus"></div>
-            <button onclick="checkDatabase()">检查数据库</button>
-            <button onclick="checkCache()">检查缓存</button>
+            <button onclick="checkDatabase()">檢查資料庫</button>
+            <button onclick="checkCache()">檢查快取</button>
         </div>
 
         <div class="section">
-            <h2>术语库集合 (Glossary Sets)</h2>
+            <h2>術語庫集合 (Glossary Sets)</h2>
             <div id="setsInfo"></div>
-            <button onclick="loadSets()">加载集合</button>
-            <button onclick="testCreate()">测试创建</button>
+            <button onclick="loadSets()">載入集合</button>
+            <button onclick="testCreate()">測試建立</button>
         </div>
 
         <div class="section">
-            <h2>术语条目 (Entries)</h2>
-            <input type="text" id="setIdInput" placeholder="输入术语库 ID" style="padding: 8px; width: 300px; margin-right: 10px;">
-            <button onclick="loadEntries()">加载条目</button>
+            <h2>術語條目 (Entries)</h2>
+            <input type="text" id="setIdInput" placeholder="輸入術語庫 ID" style="padding: 8px; width: 300px; margin-right: 10px;">
+            <button onclick="loadEntries()">載入條目</button>
             <div id="entriesInfo"></div>
         </div>
 
         <div class="section">
-            <h2>测试操作</h2>
-            <button onclick="testSave()">测试保存</button>
-            <button onclick="testMigration()">测试迁移</button>
-            <button class="danger" onclick="clearAllData()">清空所有数据</button>
+            <h2>測試操作</h2>
+            <button onclick="testSave()">測試儲存</button>
+            <button onclick="testMigration()">測試遷移</button>
+            <button class="danger" onclick="clearAllData()">清空所有資料</button>
         </div>
 
         <div class="section">
-            <h2>原始数据</h2>
-            <pre id="rawData">点击上面的按钮查看数据...</pre>
+            <h2>原始資料</h2>
+            <pre id="rawData">點選上面的按鈕檢視資料...</pre>
         </div>
     </div>
 
@@ -145,10 +145,10 @@
                 const db = await openDB();
                 const stores = Array.from(db.objectStoreNames);
 
-                let html = log(`✅ 数据库已打开: ${DB_NAME}`, 'success');
+                let html = log(`✅ 資料庫已開啟: ${DB_NAME}`, 'success');
                 html += log(`Object Stores: ${stores.join(', ')}`, 'info');
 
-                // 统计数据
+                // 統計資料
                 for (const storeName of stores) {
                     const tx = db.transaction(storeName, 'readonly');
                     const store = tx.objectStore(storeName);
@@ -156,7 +156,7 @@
 
                     await new Promise((resolve) => {
                         countRequest.onsuccess = () => {
-                            html += log(`${storeName}: ${countRequest.result} 条记录`, 'info');
+                            html += log(`${storeName}: ${countRequest.result} 條記錄`, 'info');
                             resolve();
                         };
                     });
@@ -165,7 +165,7 @@
                 statusDiv.innerHTML = html;
                 db.close();
             } catch (err) {
-                statusDiv.innerHTML = log(`❌ 错误: ${err.message}`, 'error');
+                statusDiv.innerHTML = log(`❌ 錯誤: ${err.message}`, 'error');
             }
         }
 
@@ -174,17 +174,17 @@
             const cache = window._glossarySetsCache;
 
             if (!cache) {
-                statusDiv.innerHTML = log('⚠️ 缓存为空 (window._glossarySetsCache)', 'error');
+                statusDiv.innerHTML = log('⚠️ 快取為空 (window._glossarySetsCache)', 'error');
                 return;
             }
 
             const setIds = Object.keys(cache);
-            let html = log(`✅ 缓存中有 ${setIds.length} 个术语库`, 'success');
+            let html = log(`✅ 快取中有 ${setIds.length} 個術語庫`, 'success');
 
             setIds.forEach(id => {
                 const set = cache[id];
                 const entryCount = set.entries ? set.entries.length : 0;
-                html += log(`${set.name} (${id.slice(0,8)}): ${entryCount} 条`, 'info');
+                html += log(`${set.name} (${id.slice(0,8)}): ${entryCount} 條`, 'info');
             });
 
             statusDiv.innerHTML = html;
@@ -203,7 +203,7 @@
 
                 request.onsuccess = () => {
                     const sets = request.result;
-                    let html = log(`✅ 加载了 ${sets.length} 个术语库集合`, 'success');
+                    let html = log(`✅ 載入了 ${sets.length} 個術語庫集合`, 'success');
 
                     sets.forEach(set => {
                         html += log(`${set.name} (ID: ${set.id.slice(0,8)})`, 'info');
@@ -214,12 +214,12 @@
                 };
 
                 request.onerror = () => {
-                    infoDiv.innerHTML = log(`❌ 加载失败: ${request.error}`, 'error');
+                    infoDiv.innerHTML = log(`❌ 載入失敗: ${request.error}`, 'error');
                 };
 
                 db.close();
             } catch (err) {
-                infoDiv.innerHTML = log(`❌ 错误: ${err.message}`, 'error');
+                infoDiv.innerHTML = log(`❌ 錯誤: ${err.message}`, 'error');
             }
         }
 
@@ -229,7 +229,7 @@
             const rawDiv = document.getElementById('rawData');
 
             if (!setId) {
-                infoDiv.innerHTML = log('⚠️ 请输入术语库 ID', 'error');
+                infoDiv.innerHTML = log('⚠️ 請輸入術語庫 ID', 'error');
                 return;
             }
 
@@ -242,18 +242,18 @@
 
                 request.onsuccess = () => {
                     const entries = request.result;
-                    infoDiv.innerHTML = log(`✅ 加载了 ${entries.length} 条术语`, 'success');
+                    infoDiv.innerHTML = log(`✅ 載入了 ${entries.length} 條術語`, 'success');
                     rawDiv.textContent = JSON.stringify(entries.slice(0, 100), null, 2) +
-                                        (entries.length > 100 ? `\n... (仅显示前100条，共${entries.length}条)` : '');
+                                        (entries.length > 100 ? `\n... (僅顯示前100條，共${entries.length}條)` : '');
                 };
 
                 request.onerror = () => {
-                    infoDiv.innerHTML = log(`❌ 加载失败: ${request.error}`, 'error');
+                    infoDiv.innerHTML = log(`❌ 載入失敗: ${request.error}`, 'error');
                 };
 
                 db.close();
             } catch (err) {
-                infoDiv.innerHTML = log(`❌ 错误: ${err.message}`, 'error');
+                infoDiv.innerHTML = log(`❌ 錯誤: ${err.message}`, 'error');
             }
         }
 
@@ -264,7 +264,7 @@
                 const db = await openDB();
                 const newSet = {
                     id: 'test-' + Date.now(),
-                    name: '测试术语库',
+                    name: '測試術語庫',
                     enabled: true,
                     updatedAt: Date.now()
                 };
@@ -274,61 +274,61 @@
                 const request = store.put(newSet);
 
                 request.onsuccess = () => {
-                    infoDiv.innerHTML = log(`✅ 创建成功: ${newSet.id}`, 'success');
+                    infoDiv.innerHTML = log(`✅ 建立成功: ${newSet.id}`, 'success');
                     loadSets();
                 };
 
                 request.onerror = () => {
-                    infoDiv.innerHTML = log(`❌ 创建失败: ${request.error}`, 'error');
+                    infoDiv.innerHTML = log(`❌ 建立失敗: ${request.error}`, 'error');
                 };
 
                 db.close();
             } catch (err) {
-                infoDiv.innerHTML = log(`❌ 错误: ${err.message}`, 'error');
+                infoDiv.innerHTML = log(`❌ 錯誤: ${err.message}`, 'error');
             }
         }
 
         async function testSave() {
-            alert('这个功能需要加载 glossary-storage.js，请在主页面测试');
+            alert('這個功能需要載入 glossary-storage.js，請在主頁面測試');
         }
 
         async function testMigration() {
             const statusDiv = document.getElementById('dbStatus');
 
-            // 检查 localStorage
+            // 檢查 localStorage
             const oldData = localStorage.getItem('translationGlossarySets');
             if (!oldData) {
-                statusDiv.innerHTML = log('⚠️ localStorage 中没有旧数据', 'error');
+                statusDiv.innerHTML = log('⚠️ localStorage 中沒有舊資料', 'error');
                 return;
             }
 
             try {
                 const sets = JSON.parse(oldData);
                 const setIds = Object.keys(sets);
-                statusDiv.innerHTML = log(`✅ localStorage 中有 ${setIds.length} 个术语库`, 'success');
+                statusDiv.innerHTML = log(`✅ localStorage 中有 ${setIds.length} 個術語庫`, 'success');
 
-                // 显示详情
+                // 顯示詳情
                 let html = '';
                 setIds.forEach(id => {
                     const set = sets[id];
                     const entryCount = set.entries ? set.entries.length : 0;
-                    html += log(`${set.name}: ${entryCount} 条`, 'info');
+                    html += log(`${set.name}: ${entryCount} 條`, 'info');
                 });
                 statusDiv.innerHTML += html;
 
                 document.getElementById('rawData').textContent = JSON.stringify(sets, null, 2);
             } catch (err) {
-                statusDiv.innerHTML = log(`❌ 解析失败: ${err.message}`, 'error');
+                statusDiv.innerHTML = log(`❌ 解析失敗: ${err.message}`, 'error');
             }
         }
 
         async function clearAllData() {
-            if (!confirm('确定要清空所有术语库数据吗？此操作不可撤销！')) return;
+            if (!confirm('確定要清空所有術語庫資料嗎？此操作不可撤銷！')) return;
 
             try {
                 const db = await openDB();
 
-                // 清空两个 store
+                // 清空兩個 store
                 const stores = ['glossary_sets', 'glossary_entries'];
                 for (const storeName of stores) {
                     const tx = db.transaction(storeName, 'readwrite');
@@ -340,22 +340,22 @@
                     });
                 }
 
-                // 清空缓存
+                // 清空快取
                 window._glossarySetsCache = {};
 
-                // 重置迁移标志
+                // 重置遷移標誌
                 localStorage.removeItem('glossaryMigratedToIDB');
 
                 db.close();
 
-                alert('✅ 所有数据已清空');
+                alert('✅ 所有資料已清空');
                 checkDatabase();
             } catch (err) {
-                alert(`❌ 清空失败: ${err.message}`);
+                alert(`❌ 清空失敗: ${err.message}`);
             }
         }
 
-        // 自动检查
+        // 自動檢查
         window.addEventListener('DOMContentLoaded', () => {
             checkDatabase();
             checkCache();

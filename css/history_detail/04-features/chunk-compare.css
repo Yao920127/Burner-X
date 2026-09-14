@@ -1,19 +1,19 @@
 /* ====================
- * 分块对比视图样式
+ * 分塊對比檢視樣式
  * ==================== */
-/* 分块对比区域的标题栏，包含标题和切换按钮 */
+/* 分塊對比區域的標題欄，包含標題和切換按鈕 */
 .chunk-compare-title-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1em; /* 调整标题和内容之间的间距 */
+  margin-bottom: 1em; /* 調整標題和內容之間的間距 */
 }
 
 .chunk-compare-title-bar h3 {
-  margin: 0; /* 移除h3的默认外边距 */
+  margin: 0; /* 移除h3的預設外邊距 */
 }
 
-/* 切换原文/译文位置按钮 */
+/* 切換原文/譯文位置按鈕 */
 #swap-chunks-btn {
   background: var(--color-slate-50);
   border: 1px solid var(--color-slate-200);
@@ -32,14 +32,14 @@
   color: var(--text-primary);
 }
 
-/* 分块对比主容器，垂直排列块对 */
+/* 分塊對比主容器，垂直排列塊對 */
 .chunk-compare-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* 增加间距 */
+  gap: 1.5rem; /* 增加間距 */
 }
 
-/* 单个原文/译文对比块对，水平排列 */
+/* 單個原文/譯文對比塊對，水平排列 */
 .chunk-pair {
   display: flex;
   gap: 1.5rem;
@@ -51,7 +51,7 @@
   border-bottom: none;
 }
 
-/* 块对中的单个块（原文或译文） */
+/* 塊對中的單個塊（原文或譯文） */
 .chunk-pair > div {
   flex: 1;
   min-width: 0;
@@ -59,17 +59,17 @@
   padding: 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-slate-200);
-  transition: all 0.2s ease; /* 添加过渡效果 */
+  transition: all 0.2s ease; /* 新增過渡效果 */
 }
 
-/* 3.5.3 分块联动 (Chunk Sync)：悬停时同时高亮原文和译文 */
+/* 3.5.3 分塊聯動 (Chunk Sync)：懸停時同時醒目提示原文和譯文 */
 .chunk-pair:hover > div {
   background-color: var(--color-primary-50);
   border-color: var(--color-primary-200);
   box-shadow: var(--shadow-sm);
 }
 
-/* 表格对比对：整体轻微蓝色提示 */
+/* 表格對比對：整體輕微藍色提示 */
 .align-flex.table-pair .align-block {
   background: var(--color-primary-50);
   border-color: var(--color-primary-200);
@@ -83,27 +83,27 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-secondary);
-  border-bottom: 1px solid var(--color-slate-200); /* 改为实线 */
+  border-bottom: 1px solid var(--color-slate-200); /* 改為實線 */
   padding-bottom: 8px;
   margin-bottom: 12px;
 }
 
-/* 确保分块内容区域在内容过长时可以横向滚动 */
+/* 確保分塊內容區域在內容過長時可以橫向滾動 */
 .chunk-compare-container .markdown-body {
-  overflow-x: auto; /* 为分块内容区域添加横向滚动条 */
+  overflow-x: auto; /* 為分塊內容區域新增橫向捲軸 */
 }
 
-/* 公式在对比模式下的专用修复：避免“挤成一团” */
+/* 公式在對比模式下的專用修復：避免“擠成一團” */
 .chunk-compare-container .katex-display,
 .chunk-compare-container .katex-display-fixed {
-  /* 允许 KaTeX 自己决定换行/高度，而不是强行 nowrap */
+  /* 允許 KaTeX 自己決定換行/高度，而不是強行 nowrap */
   white-space: normal !important;
   display: block;
   width: 100%;
   text-align: center;
-  padding-right: 0 !important; /* 在对比模式下不预留右侧空间，改用“编号换行”方案 */
-  line-height: 1.5; /* 提高行高，避免窄屏时高度不足 */
-  /* 关键修复：允许纵向溢出显示，否则第二行会被 clip 掉 */
+  padding-right: 0 !important; /* 在對比模式下不預留右側空間，改用“編號換行”方案 */
+  line-height: 1.5; /* 提高行高，避免窄屏時高度不足 */
+  /* 關鍵修復：允許縱向溢位顯示，否則第二行會被 clip 掉 */
   overflow-y: visible !important;
   overflow-x: visible;
 }
@@ -111,10 +111,10 @@
 .chunk-compare-container .katex-display-fixed > .katex {
   max-width: 100% !important;
 }
-/* 防止 KaTeX 内层再发生裁剪 */
+/* 防止 KaTeX 內層再發生裁剪 */
 .chunk-compare-container .katex { overflow: visible !important; }
 
-/* 对比模式下，将右侧编号（\tag、编号）放到下一行右对齐，避免与主体重叠 */
+/* 對比模式下，將右側編號（\tag、編號）放到下一行右對齊，避免與主體重疊 */
 .chunk-compare-container .katex-display .katex-tag,
 .chunk-compare-container .katex-display .tag,
 .chunk-compare-container .katex .katex-tag,
@@ -128,7 +128,7 @@
   white-space: nowrap;
 }
 
-/* 在对比半栏中，适度缩小公式字号，提升适配性 */
+/* 在對比半欄中，適度縮小公式字號，提升適配性 */
 .chunk-compare-container .katex,
 .chunk-compare-container .katex-display,
 .chunk-compare-container .katex-display-fixed {
@@ -150,9 +150,9 @@
   }
 }
 
-/* 降低对比模式下公式失败的可视噪音（黄底提示，避免“红框”误报） */
+/* 降低對比模式下公式失敗的可視噪音（黃底提示，避免“紅框”誤報） */
 .chunk-compare-container .katex-fallback {
-  background-color: #fffbe6; /* 淡黄 */
+  background-color: #fffbe6; /* 淡黃 */
   border: 1px dashed #facc15; /* 金色 */
   color: #7c5e00;
 }

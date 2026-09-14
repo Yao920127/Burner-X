@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Worker 综合性能测试 - Phase 5.1.3</title>
+  <title>Worker 綜合效能測試 - Phase 5.1.3</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -228,46 +228,46 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🔬 Phase 5.1.3 - Worker 综合性能测试</h1>
-      <p>测试超长文本、流式更新等真实场景下的 Worker 性能</p>
+      <h1>🔬 Phase 5.1.3 - Worker 綜合效能測試</h1>
+      <p>測試超長文字、流式更新等真實場景下的 Worker 效能</p>
 
       <div class="warning-box">
-        <h3>⚠️ 重要发现</h3>
-        <p><strong>测试结论：</strong> 对于 marked.js 这种高性能解析器，只有在文本非常长（>50k字符）时，Worker 才能体现优势。</p>
+        <h3>⚠️ 重要發現</h3>
+        <p><strong>測試結論：</strong> 對於 marked.js 這種高效能解析器，只有在文字非常長（>50k字元）時，Worker 才能體現優勢。</p>
         <ul style="margin: 8px 0 0 20px; line-height: 1.8;">
-          <li><strong>短文本（<10k）：</strong> Worker 通信开销 > 计算开销，性能反而更差</li>
-          <li><strong>中文本（10k-50k）：</strong> 性能接近，差异不明显</li>
-          <li><strong>长文本（>50k）：</strong> Worker 开始体现优势，主线程不被阻塞</li>
-          <li><strong>流式更新：</strong> 频繁的小更新不适合 Worker，应该批量处理</li>
+          <li><strong>短文字（<10k）：</strong> Worker 通訊開銷 > 計算開銷，效能反而更差</li>
+          <li><strong>中文字（10k-50k）：</strong> 效能接近，差異不明顯</li>
+          <li><strong>長文字（>50k）：</strong> Worker 開始體現優勢，主執行緒不被阻塞</li>
+          <li><strong>流式更新：</strong> 頻繁的小更新不適合 Worker，應該批次處理</li>
         </ul>
-        <p style="margin-top: 12px;"><strong>建议配置：</strong> minTextLength 设为 <code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">10000-20000</code> 字符</p>
+        <p style="margin-top: 12px;"><strong>建議配置：</strong> minTextLength 設為 <code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">10000-20000</code> 字元</p>
       </div>
 
       <div class="controls">
-        <button class="btn-primary" onclick="runAllTests()">🚀 运行所有测试</button>
-        <button class="btn-secondary" onclick="testSuperLongText()">测试超长文本 (100k字符)</button>
-        <button class="btn-secondary" onclick="testStreamingUpdates()">测试流式更新场景</button>
-        <button class="btn-secondary" onclick="testBatchProcessing()">测试批量处理</button>
-        <button class="btn-danger" onclick="clearResults()">清空结果</button>
+        <button class="btn-primary" onclick="runAllTests()">🚀 執行所有測試</button>
+        <button class="btn-secondary" onclick="testSuperLongText()">測試超長文字 (100k字元)</button>
+        <button class="btn-secondary" onclick="testStreamingUpdates()">測試流式更新場景</button>
+        <button class="btn-secondary" onclick="testBatchProcessing()">測試批次處理</button>
+        <button class="btn-danger" onclick="clearResults()">清空結果</button>
       </div>
     </div>
 
     <div class="chart-container">
-      <h2>📊 性能对比图表</h2>
+      <h2>📊 效能對比圖表</h2>
       <div id="chart-area" class="bar-chart">
-        <p style="color: #666; text-align: center; padding: 20px;">运行测试后将显示图表...</p>
+        <p style="color: #666; text-align: center; padding: 20px;">執行測試後將顯示圖表...</p>
       </div>
     </div>
 
     <div class="test-grid" id="results-grid"></div>
 
     <div class="chart-container">
-      <h2>📝 测试日志</h2>
-      <div id="console-log" class="console-log">等待测试...</div>
+      <h2>📝 測試日誌</h2>
+      <div id="console-log" class="console-log">等待測試...</div>
     </div>
   </div>
 
-  <!-- 加载依赖 -->
+  <!-- 載入依賴 -->
   <script src="https://gcore.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="../../js/workers/markdown-worker-pool.js"></script>
 
@@ -285,11 +285,11 @@
     function generateMarkdown(charCount) {
       const paragraphSize = 200;
       const paragraphs = Math.ceil(charCount / paragraphSize);
-      let md = '# 性能测试文档\n\n';
+      let md = '# 效能測試文件\n\n';
 
       for (let i = 0; i < paragraphs; i++) {
         md += `## 第 ${i + 1} 章\n\n`;
-        md += `这是第 ${i + 1} 段的内容。`.repeat(10) + '\n\n';
+        md += `這是第 ${i + 1} 段的內容。`.repeat(10) + '\n\n';
 
         if (i % 10 === 0) {
           md += '```javascript\n';
@@ -312,7 +312,7 @@
     }
 
     async function testPerformance(testName, markdown, useWorker, rounds = 10) {
-      log(`开始测试: ${testName} (${useWorker ? 'Worker' : '主线程'})`, 'info');
+      log(`開始測試: ${testName} (${useWorker ? 'Worker' : '主執行緒'})`, 'info');
 
       const times = [];
       const startMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
@@ -330,7 +330,7 @@
           const duration = performance.now() - start;
           times.push(duration);
         } catch (error) {
-          log(`测试失败: ${error.message}`, 'error');
+          log(`測試失敗: ${error.message}`, 'error');
           times.push(NaN);
         }
       }
@@ -350,22 +350,22 @@
         memoryIncrease: endMemory - startMemory
       };
 
-      log(`${testName} (${useWorker ? 'Worker' : '主线程'}) 完成: 平均 ${result.avgTime.toFixed(2)} ms`, 'success');
+      log(`${testName} (${useWorker ? 'Worker' : '主執行緒'}) 完成: 平均 ${result.avgTime.toFixed(2)} ms`, 'success');
 
       return result;
     }
 
     async function testSuperLongText() {
       log('========================================', 'info');
-      log('测试场景: 超长文本 (100k 字符)', 'info');
+      log('測試場景: 超長文字 (100k 字元)', 'info');
       log('========================================', 'info');
 
       const markdown = generateMarkdown(100000);
-      log(`生成了 ${markdown.length} 字符的测试文本`, 'info');
+      log(`生成了 ${markdown.length} 字元的測試文字`, 'info');
 
-      const workerResult = await testPerformance('超长文本', markdown, true, 10);
+      const workerResult = await testPerformance('超長文字', markdown, true, 10);
       await new Promise(r => setTimeout(r, 500));
-      const mainResult = await testPerformance('超长文本', markdown, false, 10);
+      const mainResult = await testPerformance('超長文字', markdown, false, 10);
 
       testResults.push({ worker: workerResult, main: mainResult });
       updateResults();
@@ -373,7 +373,7 @@
 
     async function testStreamingUpdates() {
       log('========================================', 'info');
-      log('测试场景: 流式更新 (100次小更新)', 'info');
+      log('測試場景: 流式更新 (100次小更新)', 'info');
       log('========================================', 'info');
 
       let cumulativeText = '';
@@ -391,13 +391,13 @@
         await window.markdownWorkerPool.parse(cumulativeText);
         workerTimes.push(performance.now() - workerStart);
 
-        // 主线程模式
+        // 主執行緒模式
         const mainStart = performance.now();
         marked.parse(cumulativeText);
         mainTimes.push(performance.now() - mainStart);
 
         if (i % 20 === 0) {
-          log(`流式更新进度: ${i}/${updates}`, 'info');
+          log(`流式更新進度: ${i}/${updates}`, 'info');
         }
       }
 
@@ -425,12 +425,12 @@
 
       testResults.push({ worker: workerResult, main: mainResult });
       updateResults();
-      log('流式更新测试完成', 'success');
+      log('流式更新測試完成', 'success');
     }
 
     async function testBatchProcessing() {
       log('========================================', 'info');
-      log('测试场景: 批量处理 (10个大文档)', 'info');
+      log('測試場景: 批次處理 (10個大文件)', 'info');
       log('========================================', 'info');
 
       const docs = [];
@@ -438,18 +438,18 @@
         docs.push(generateMarkdown(20000));
       }
 
-      // Worker 并行处理
+      // Worker 並行處理
       const workerStart = performance.now();
       await Promise.all(docs.map(doc => window.markdownWorkerPool.parse(doc)));
       const workerTime = performance.now() - workerStart;
 
-      // 主线程串行处理
+      // 主執行緒序列處理
       const mainStart = performance.now();
       docs.forEach(doc => marked.parse(doc));
       const mainTime = performance.now() - mainStart;
 
       const workerResult = {
-        testName: '批量处理',
+        testName: '批次處理',
         mode: 'Worker',
         textLength: docs[0].length,
         rounds: docs.length,
@@ -458,7 +458,7 @@
       };
 
       const mainResult = {
-        testName: '批量处理',
+        testName: '批次處理',
         mode: 'MainThread',
         textLength: docs[0].length,
         rounds: docs.length,
@@ -468,7 +468,7 @@
 
       testResults.push({ worker: workerResult, main: mainResult });
       updateResults();
-      log(`批量处理完成: Worker ${workerTime.toFixed(0)}ms vs 主线程 ${mainTime.toFixed(0)}ms`, 'success');
+      log(`批次處理完成: Worker ${workerTime.toFixed(0)}ms vs 主執行緒 ${mainTime.toFixed(0)}ms`, 'success');
     }
 
     async function runAllTests() {
@@ -482,7 +482,7 @@
       await testBatchProcessing();
 
       log('========================================', 'success');
-      log('所有测试完成！', 'success');
+      log('所有測試完成！', 'success');
       log('========================================', 'success');
 
       displayWorkerPoolStats();
@@ -501,18 +501,18 @@
         card.innerHTML = `
           <h3>${worker.testName}</h3>
           <div class="metric">
-            <span>文本长度:</span>
-            <span>${(worker.textLength / 1000).toFixed(1)}k 字符</span>
+            <span>文字長度:</span>
+            <span>${(worker.textLength / 1000).toFixed(1)}k 字元</span>
           </div>
           <div class="metric ${isFaster ? 'highlight' : 'warning'}">
-            <span>性能提升:</span>
+            <span>效能提升:</span>
             <span>${isFaster ? '✅' : '⚠️'} ${improvement.toFixed(1)}%</span>
           </div>
           <table class="comparison-table">
             <tr>
               <th>模式</th>
-              <th>平均耗时</th>
-              <th>总耗时</th>
+              <th>平均耗時</th>
+              <th>總耗時</th>
             </tr>
             <tr class="${isFaster ? 'winner' : 'loser'}">
               <td>Worker</td>
@@ -520,7 +520,7 @@
               <td>${worker.totalTime.toFixed(0)} ms</td>
             </tr>
             <tr class="${!isFaster ? 'winner' : 'loser'}">
-              <td>主线程</td>
+              <td>主執行緒</td>
               <td>${main.avgTime.toFixed(2)} ms</td>
               <td>${main.totalTime.toFixed(0)} ms</td>
             </tr>
@@ -555,7 +555,7 @@
           </div>
           <div class="bar-track">
             <div class="bar-fill ${!isFaster ? '' : 'slow'}" style="width: ${mainPercent}%">
-              主线程: ${main.avgTime.toFixed(1)}ms
+              主執行緒: ${main.avgTime.toFixed(1)}ms
             </div>
           </div>
         `;
@@ -567,26 +567,26 @@
     function displayWorkerPoolStats() {
       const stats = window.markdownWorkerPool.getStats();
       log('========================================', 'info');
-      log('Worker Pool 统计信息:', 'info');
+      log('Worker Pool 統計資訊:', 'info');
       log(`  池大小: ${stats.poolSize}`, 'info');
       log(`  已完成: ${stats.tasksCompleted}`, 'info');
-      log(`  失败: ${stats.tasksFailed}`, 'info');
-      log(`  降级: ${stats.tasksFallback}`, 'info');
-      log(`  平均 Worker 耗时: ${stats.avgWorkerTime.toFixed(2)} ms`, 'info');
-      log(`  平均主线程耗时: ${stats.avgMainThreadTime.toFixed(2)} ms`, 'info');
+      log(`  失敗: ${stats.tasksFailed}`, 'info');
+      log(`  降級: ${stats.tasksFallback}`, 'info');
+      log(`  平均 Worker 耗時: ${stats.avgWorkerTime.toFixed(2)} ms`, 'info');
+      log(`  平均主執行緒耗時: ${stats.avgMainThreadTime.toFixed(2)} ms`, 'info');
       log('========================================', 'info');
     }
 
     function clearResults() {
       document.getElementById('results-grid').innerHTML = '';
-      document.getElementById('chart-area').innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">运行测试后将显示图表...</p>';
-      document.getElementById('console-log').innerHTML = '等待测试...\n';
+      document.getElementById('chart-area').innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">執行測試後將顯示圖表...</p>';
+      document.getElementById('console-log').innerHTML = '等待測試...\n';
     }
 
     window.addEventListener('load', function() {
-      log('页面加载完成', 'success');
+      log('頁面載入完成', 'success');
       log(`Worker Pool 已初始化，池大小: ${window.markdownWorkerPool.config.poolSize}`, 'info');
-      log(`当前配置 minTextLength: ${window.markdownWorkerPool.config.minTextLength} 字符`, 'info');
+      log(`當前配置 minTextLength: ${window.markdownWorkerPool.config.minTextLength} 字元`, 'info');
     });
   </script>
 </body>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>性能监控工具测试 - Phase 4.4.3</title>
+  <title>效能監控工具測試 - Phase 4.4.3</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -154,80 +154,80 @@
 </head>
 <body>
   <div class="container">
-    <h1>🔍 Phase 4.4.3 - 性能监控工具测试</h1>
+    <h1>🔍 Phase 4.4.3 - 效能監控工具測試</h1>
 
     <div class="info-box">
-      <h3>📋 使用说明</h3>
+      <h3>📋 使用說明</h3>
       <ul>
-        <li>点击"启动监控"开始收集性能数据</li>
-        <li>运行测试负载模拟真实渲染场景</li>
-        <li>点击"查看统计"查看实时性能指标</li>
-        <li>点击"导出数据"将数据输出到控制台（可复制保存）</li>
-        <li>所有数据仅在本地浏览器中，不会上传到任何服务器</li>
+        <li>點選"啟動監控"開始收集效能資料</li>
+        <li>執行測試負載模擬真實渲染場景</li>
+        <li>點選"檢視統計"檢視實時效能指標</li>
+        <li>點選"匯出資料"將資料輸出到主控台（可複製儲存）</li>
+        <li>所有資料僅在本地瀏覽器中，不會上傳到任何伺服器</li>
       </ul>
-      <p><strong>控制台命令：</strong></p>
+      <p><strong>主控台命令：</strong></p>
       <ul>
-        <li><code>PerfMonitor.start()</code> - 启动监控</li>
-        <li><code>PerfMonitor.stop()</code> - 停止监控</li>
-        <li><code>PerfMonitor.getStats()</code> - 查看统计</li>
-        <li><code>PerfMonitor.export()</code> - 导出数据</li>
+        <li><code>PerfMonitor.start()</code> - 啟動監控</li>
+        <li><code>PerfMonitor.stop()</code> - 停止監控</li>
+        <li><code>PerfMonitor.getStats()</code> - 檢視統計</li>
+        <li><code>PerfMonitor.export()</code> - 匯出資料</li>
       </ul>
     </div>
 
     <div id="status" class="status stopped">
-      ⏸️ 监控状态：未启动
+      ⏸️ 監控狀態：未啟動
     </div>
 
     <div class="controls">
-      <button class="btn-primary" onclick="startMonitor()">🚀 启动监控</button>
-      <button class="btn-danger" onclick="stopMonitor()">⏹️ 停止监控</button>
-      <button class="btn-secondary" onclick="viewStats()">📊 查看统计</button>
-      <button class="btn-secondary" onclick="exportData()">💾 导出数据</button>
-      <button class="btn-warning" onclick="clearData()">🗑️ 清空数据</button>
+      <button class="btn-primary" onclick="startMonitor()">🚀 啟動監控</button>
+      <button class="btn-danger" onclick="stopMonitor()">⏹️ 停止監控</button>
+      <button class="btn-secondary" onclick="viewStats()">📊 檢視統計</button>
+      <button class="btn-secondary" onclick="exportData()">💾 匯出資料</button>
+      <button class="btn-warning" onclick="clearData()">🗑️ 清空資料</button>
     </div>
   </div>
 
   <div class="container">
-    <h2>🔬 测试负载</h2>
-    <p>运行这些测试来模拟真实场景并收集性能数据：</p>
+    <h2>🔬 測試負載</h2>
+    <p>執行這些測試來模擬真實場景並收集效能資料：</p>
 
     <div class="controls">
-      <button class="btn-secondary" onclick="runLightWorkload()">轻度负载（50次渲染）</button>
-      <button class="btn-secondary" onclick="runMediumWorkload()">中度负载（200次渲染）</button>
-      <button class="btn-secondary" onclick="runHeavyWorkload()">重度负载（1000次渲染）</button>
-      <button class="btn-warning" onclick="runLongTask()">触发长任务（阻塞300ms）</button>
+      <button class="btn-secondary" onclick="runLightWorkload()">輕度負載（50次渲染）</button>
+      <button class="btn-secondary" onclick="runMediumWorkload()">中度負載（200次渲染）</button>
+      <button class="btn-secondary" onclick="runHeavyWorkload()">重度負載（1000次渲染）</button>
+      <button class="btn-warning" onclick="runLongTask()">觸發長任務（阻塞300ms）</button>
     </div>
 
     <div id="test-area" class="test-area">
       <div style="text-align: center; color: #666;">
-        点击上方按钮运行测试负载
+        點選上方按鈕執行測試負載
       </div>
     </div>
   </div>
 
   <div class="container">
-    <h2>📈 性能数据</h2>
+    <h2>📈 效能資料</h2>
     <div id="stats-output">
-等待数据...
+等待資料...
 
-点击"启动监控"后，运行一些测试负载，然后点击"查看统计"查看性能指标。
+點選"啟動監控"後，執行一些測試負載，然後點選"檢視統計"檢視效能指標。
     </div>
   </div>
 
-  <!-- 加载依赖脚本 -->
+  <!-- 載入依賴腳本 -->
   <script src="../../js/chatbot/config/performance-config.js"></script>
   <script src="../../js/chatbot/utils/performance-monitor.js"></script>
 
   <script>
-    // UI 控制函数
+    // UI 控制函式
     function updateStatus(isRunning) {
       const statusEl = document.getElementById('status');
       if (isRunning) {
         statusEl.className = 'status running';
-        statusEl.textContent = '▶️ 监控状态：运行中';
+        statusEl.textContent = '▶️ 監控狀態：執行中';
       } else {
         statusEl.className = 'status stopped';
-        statusEl.textContent = '⏸️ 监控状态：已停止';
+        statusEl.textContent = '⏸️ 監控狀態：已停止';
       }
     }
 
@@ -247,86 +247,86 @@
 
       output.textContent = `
 ═══════════════════════════════════════════════════════
-  📊 性能监控统计报告
+  📊 效能監控統計報告
 ═══════════════════════════════════════════════════════
 
-⏱️  会话信息：
-   状态：${stats.session.isRunning ? '运行中' : '已停止'}
-   时长：${stats.session.duration}
-   开始时间：${stats.session.startTime || 'N/A'}
+⏱️  會話資訊：
+   狀態：${stats.session.isRunning ? '執行中' : '已停止'}
+   時長：${stats.session.duration}
+   開始時間：${stats.session.startTime || 'N/A'}
 
-💻 设备信息：
-   性能等级：${stats.device.tier}
+💻 裝置資訊：
+   效能等級：${stats.device.tier}
    CPU 核心：${stats.device.cores}
-   内存：${stats.device.memory}
+   記憶體：${stats.device.memory}
 
-🎨 渲染性能：
-   样本数量：${stats.rendering.samples}
-   平均耗时：${stats.rendering.stats.avg.toFixed(1)} ms
-   最小耗时：${stats.rendering.stats.min.toFixed(1)} ms
-   最大耗时：${stats.rendering.stats.max.toFixed(1)} ms
-   P50（中位数）：${stats.rendering.stats.p50.toFixed(1)} ms
+🎨 渲染效能：
+   樣本數量：${stats.rendering.samples}
+   平均耗時：${stats.rendering.stats.avg.toFixed(1)} ms
+   最小耗時：${stats.rendering.stats.min.toFixed(1)} ms
+   最大耗時：${stats.rendering.stats.max.toFixed(1)} ms
+   P50（中位數）：${stats.rendering.stats.p50.toFixed(1)} ms
    P95：${stats.rendering.stats.p95.toFixed(1)} ms
    P99：${stats.rendering.stats.p99.toFixed(1)} ms
 
-📺 帧率 (FPS)：
-   样本数量：${stats.fps.samples}
-   当前 FPS：${stats.fps.current || 'N/A'}
+📺 幀率 (FPS)：
+   樣本數量：${stats.fps.samples}
+   當前 FPS：${stats.fps.current || 'N/A'}
    平均 FPS：${stats.fps.stats.avg.toFixed(0)}
    最低 FPS：${stats.fps.stats.min}
    最高 FPS：${stats.fps.stats.max}
 
-${stats.memory.available ? `💾 内存使用：
-   样本数量：${stats.memory.samples}
-   当前使用：${stats.memory.current?.used || 'N/A'}
-   总量：${stats.memory.current?.total || 'N/A'}
-   峰值：${stats.memory.peak?.used || 'N/A'}` : '💾 内存监控：不可用（仅 Chrome 支持）'}
+${stats.memory.available ? `💾 記憶體使用：
+   樣本數量：${stats.memory.samples}
+   當前使用：${stats.memory.current?.used || 'N/A'}
+   總量：${stats.memory.current?.total || 'N/A'}
+   峰值：${stats.memory.peak?.used || 'N/A'}` : '💾 記憶體監控：不可用（僅 Chrome 支援）'}
 
-⚠️  长任务（>${PerfMonitor._config.longTaskThreshold}ms）：
-   数量：${stats.longTasks.samples}
-   ${stats.longTasks.samples > 0 ? `平均耗时：${stats.longTasks.stats.avg.toFixed(1)} ms
-   最长耗时：${stats.longTasks.stats.max.toFixed(1)} ms` : ''}
+⚠️  長任務（>${PerfMonitor._config.longTaskThreshold}ms）：
+   數量：${stats.longTasks.samples}
+   ${stats.longTasks.samples > 0 ? `平均耗時：${stats.longTasks.stats.avg.toFixed(1)} ms
+   最長耗時：${stats.longTasks.stats.max.toFixed(1)} ms` : ''}
 
-🌳 DOM 节点：
-   当前总数：${stats.dom.current?.total || 'N/A'}
-   聊天消息数：${stats.dom.current?.chatMessages || 'N/A'}
+🌳 DOM 節點：
+   當前總數：${stats.dom.current?.total || 'N/A'}
+   聊天訊息數：${stats.dom.current?.chatMessages || 'N/A'}
 
 ═══════════════════════════════════════════════════════
-使用 PerfMonitor.export() 导出完整数据到控制台
+使用 PerfMonitor.export() 匯出完整資料到主控台
 ═══════════════════════════════════════════════════════
 `;
 
-      console.log('[测试] 统计数据：', stats);
+      console.log('[測試] 統計資料：', stats);
     }
 
     function exportData() {
       const data = PerfMonitor.export();
-      alert('数据已输出到控制台（F12）\n可以复制 JSON 数据保存到文件中进行分析');
+      alert('資料已輸出到主控台（F12）\n可以複製 JSON 資料儲存到檔案中進行分析');
     }
 
     function clearData() {
-      if (confirm('确定要清空所有性能数据吗？')) {
+      if (confirm('確定要清空所有效能資料嗎？')) {
         PerfMonitor.clear();
-        document.getElementById('stats-output').textContent = '数据已清空';
+        document.getElementById('stats-output').textContent = '資料已清空';
       }
     }
 
-    // 测试负载函数
+    // 測試負載函式
     function simulateRender(duration) {
       const start = performance.now();
 
-      // 模拟 CPU 密集操作
+      // 模擬 CPU 密集操作
       while (performance.now() - start < duration) {
         // 忙等待
       }
 
-      // 记录渲染耗时
+      // 記錄渲染耗時
       PerfMonitor.recordRender(duration, 'test_simulation');
     }
 
     function runLightWorkload() {
       const testArea = document.getElementById('test-area');
-      testArea.innerHTML = '<div class="workload-item">🟢 运行轻度负载测试...</div>';
+      testArea.innerHTML = '<div class="workload-item">🟢 執行輕度負載測試...</div>';
 
       let count = 0;
       const total = 50;
@@ -337,16 +337,16 @@ ${stats.memory.available ? `💾 内存使用：
 
         if (count >= total) {
           clearInterval(interval);
-          testArea.innerHTML = `<div class="workload-item">✅ 轻度负载完成：${total} 次渲染</div>`;
+          testArea.innerHTML = `<div class="workload-item">✅ 輕度負載完成：${total} 次渲染</div>`;
         } else {
-          testArea.innerHTML = `<div class="workload-item">🟢 轻度负载进行中... (${count}/${total})</div>`;
+          testArea.innerHTML = `<div class="workload-item">🟢 輕度負載進行中... (${count}/${total})</div>`;
         }
       }, 100);
     }
 
     function runMediumWorkload() {
       const testArea = document.getElementById('test-area');
-      testArea.innerHTML = '<div class="workload-item">🟡 运行中度负载测试...</div>';
+      testArea.innerHTML = '<div class="workload-item">🟡 執行中度負載測試...</div>';
 
       let count = 0;
       const total = 200;
@@ -357,16 +357,16 @@ ${stats.memory.available ? `💾 内存使用：
 
         if (count >= total) {
           clearInterval(interval);
-          testArea.innerHTML = `<div class="workload-item">✅ 中度负载完成：${total} 次渲染</div>`;
+          testArea.innerHTML = `<div class="workload-item">✅ 中度負載完成：${total} 次渲染</div>`;
         } else if (count % 20 === 0) {
-          testArea.innerHTML = `<div class="workload-item">🟡 中度负载进行中... (${count}/${total})</div>`;
+          testArea.innerHTML = `<div class="workload-item">🟡 中度負載進行中... (${count}/${total})</div>`;
         }
       }, 50);
     }
 
     function runHeavyWorkload() {
       const testArea = document.getElementById('test-area');
-      testArea.innerHTML = '<div class="workload-item">🔴 运行重度负载测试...</div>';
+      testArea.innerHTML = '<div class="workload-item">🔴 執行重度負載測試...</div>';
 
       let count = 0;
       const total = 1000;
@@ -377,45 +377,45 @@ ${stats.memory.available ? `💾 内存使用：
 
         if (count >= total) {
           clearInterval(interval);
-          testArea.innerHTML = `<div class="workload-item">✅ 重度负载完成：${total} 次渲染</div>`;
+          testArea.innerHTML = `<div class="workload-item">✅ 重度負載完成：${total} 次渲染</div>`;
         } else if (count % 100 === 0) {
-          testArea.innerHTML = `<div class="workload-item">🔴 重度负载进行中... (${count}/${total})</div>`;
+          testArea.innerHTML = `<div class="workload-item">🔴 重度負載進行中... (${count}/${total})</div>`;
         }
       }, 30);
     }
 
     function runLongTask() {
       const testArea = document.getElementById('test-area');
-      testArea.innerHTML = '<div class="workload-item">⚠️ 触发长任务（阻塞主线程 300ms）...</div>';
+      testArea.innerHTML = '<div class="workload-item">⚠️ 觸發長任務（阻塞主執行緒 300ms）...</div>';
 
-      // 阻塞主线程 300ms
+      // 阻塞主執行緒 300ms
       simulateRender(300);
 
       setTimeout(() => {
-        testArea.innerHTML = '<div class="workload-item">✅ 长任务完成（应该在长任务列表中可见）</div>';
+        testArea.innerHTML = '<div class="workload-item">✅ 長任務完成（應該在長任務列表中可見）</div>';
       }, 100);
     }
 
-    // 页面加载完成提示
+    // 頁面載入完成提示
     window.addEventListener('load', function() {
       console.log('%c═══════════════════════════════════════', 'color: #4CAF50; font-weight: bold');
-      console.log('%c   Phase 4.4.3 性能监控工具测试页面', 'color: #4CAF50; font-weight: bold');
+      console.log('%c   Phase 4.4.3 效能監控工具測試頁面', 'color: #4CAF50; font-weight: bold');
       console.log('%c═══════════════════════════════════════', 'color: #4CAF50; font-weight: bold');
       console.log('');
-      console.log('📌 这是一个本地性能监控工具，所有数据仅存储在浏览器中');
-      console.log('📌 不会上传任何数据到服务器');
+      console.log('📌 這是一個本地效能監控工具，所有資料僅儲存在瀏覽器中');
+      console.log('📌 不會上傳任何資料到伺服器');
       console.log('');
       console.log('使用方法：');
-      console.log('  1. 点击"启动监控"开始收集数据');
-      console.log('  2. 运行测试负载模拟真实场景');
-      console.log('  3. 点击"查看统计"查看性能指标');
-      console.log('  4. 点击"导出数据"将数据输出到控制台');
+      console.log('  1. 點選"啟動監控"開始收集資料');
+      console.log('  2. 執行測試負載模擬真實場景');
+      console.log('  3. 點選"檢視統計"檢視效能指標');
+      console.log('  4. 點選"匯出資料"將資料輸出到主控台');
       console.log('');
       console.log('PerfMonitor API:');
-      console.log('  PerfMonitor.start()    - 启动监控');
-      console.log('  PerfMonitor.stop()     - 停止监控');
-      console.log('  PerfMonitor.getStats() - 查看统计');
-      console.log('  PerfMonitor.export()   - 导出数据');
+      console.log('  PerfMonitor.start()    - 啟動監控');
+      console.log('  PerfMonitor.stop()     - 停止監控');
+      console.log('  PerfMonitor.getStats() - 檢視統計');
+      console.log('  PerfMonitor.export()   - 匯出資料');
     });
   </script>
 </body>

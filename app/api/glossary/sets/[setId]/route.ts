@@ -3,12 +3,12 @@ import fs from 'fs/promises';
 import path from 'path';
 
 /**
- * 术语库数据存储路径
+ * 術語庫資料儲存路徑
  */
 const GLOSSARY_DATA_DIR = path.join(process.cwd(), 'data', 'glossary');
 
 /**
- * 确保数据目录存在
+ * 確保資料目錄存在
  */
 async function ensureDataDir() {
   try {
@@ -19,7 +19,7 @@ async function ensureDataDir() {
 }
 
 /**
- * 保存术语库集合
+ * 儲存術語庫集合
  */
 async function saveGlossarySet(setId: string, set: any, entries: any[]) {
   await ensureDataDir();
@@ -35,7 +35,7 @@ async function saveGlossarySet(setId: string, set: any, entries: any[]) {
 }
 
 /**
- * 删除术语库集合
+ * 刪除術語庫集合
  */
 async function deleteGlossarySet(setId: string) {
   const filePath = path.join(GLOSSARY_DATA_DIR, `set_${setId}.json`);
@@ -48,7 +48,7 @@ async function deleteGlossarySet(setId: string) {
 }
 
 /**
- * 加载指定术语库的条目
+ * 載入指定術語庫的條目
  */
 async function loadEntriesForSet(setId: string) {
   const filePath = path.join(GLOSSARY_DATA_DIR, `set_${setId}.json`);
@@ -64,7 +64,7 @@ async function loadEntriesForSet(setId: string) {
 }
 
 /**
- * PUT /api/glossary/sets/[setId] - 保存/更新术语库集合
+ * PUT /api/glossary/sets/[setId] - 儲存/更新術語庫集合
  */
 export async function PUT(
   request: Request,
@@ -104,7 +104,7 @@ export async function PUT(
 }
 
 /**
- * DELETE /api/glossary/sets/[setId] - 删除术语库集合
+ * DELETE /api/glossary/sets/[setId] - 刪除術語庫集合
  */
 export async function DELETE(
   request: Request,
@@ -132,7 +132,7 @@ export async function DELETE(
 }
 
 /**
- * GET /api/glossary/sets/[setId]/entries - 获取指定术语库的条目
+ * GET /api/glossary/sets/[setId]/entries - 獲取指定術語庫的條目
  */
 export async function GET(
   request: Request,

@@ -1,7 +1,7 @@
 /* css/reference-manager-base.css */
-/* 参考文献管理器基础样式 - 模态框、工具栏、表格 */
+/* 參考文獻管理器基礎樣式 - 模態框、工具列、表格 */
 
-/* 模态框基础样式 */
+/* 模態框基礎樣式 */
 .reference-modal {
     display: none;
     position: fixed;
@@ -48,7 +48,7 @@
     max-width: 800px;
 }
 
-/* 头部样式 */
+/* 標頭樣式 */
 .reference-modal-header {
     display: flex;
     justify-content: space-between;
@@ -87,7 +87,7 @@
     background-color: #f0f0f0;
 }
 
-/* 工具栏样式 */
+/* 工具列樣式 */
 .reference-toolbar {
     display: flex;
     justify-content: space-between;
@@ -174,7 +174,7 @@
     cursor: pointer;
 }
 
-/* 统计信息样式 */
+/* 統計資訊樣式 */
 .reference-stats {
     display: flex;
     gap: 30px;
@@ -190,14 +190,14 @@
     font-weight: 600;
 }
 
-/* 表格容器样式 */
+/* 表格容器樣式 */
 .reference-table-container {
     flex: 1;
     overflow: auto;
     padding: 0;
 }
 
-/* 表格样式 */
+/* 表格樣式 */
 .reference-table {
     width: 100%;
     border-collapse: collapse;
@@ -251,7 +251,7 @@
     font-style: italic;
 }
 
-/* 表格特定列样式 */
+/* 表格特定列樣式 */
 .ref-authors,
 .ref-title,
 .ref-journal {
@@ -300,14 +300,14 @@
     background-color: #e0e0e0;
 }
 
-/* 复选框样式 */
+/* 核取方塊樣式 */
 .ref-checkbox {
     cursor: pointer;
     width: 16px;
     height: 16px;
 }
 
-/* 底部样式 */
+/* 底部樣式 */
 .reference-modal-footer {
     display: flex;
     justify-content: space-between;
@@ -327,7 +327,7 @@
     gap: 10px;
 }
 
-/* 编辑表单样式 */
+/* 編輯表單樣式 */
 .reference-edit-form {
     padding: 20px 30px;
     max-height: 60vh;
@@ -368,7 +368,7 @@
     gap: 15px;
 }
 
-/* 进度提示样式 */
+/* 進度提示樣式 */
 .ref-progress {
     position: fixed;
     top: 50%;
@@ -403,7 +403,7 @@
     to { transform: rotate(360deg); }
 }
 
-/* 侧栏菜单样式 */
+/* 側欄選單樣式 */
 .ref-sidebar-menu {
     padding: 8px 0;
 }
@@ -428,7 +428,7 @@
     color: #1976d2;
 }
 
-/* 响应式设计 */
+/* 響應式設計 */
 @media (max-width: 1200px) {
     .reference-modal-content {
         width: 95%;
@@ -472,7 +472,7 @@
     }
 }
 
-/* 深色模式支持 */
+/* 深色模式支援 */
 @media (prefers-color-scheme: dark) {
     .reference-modal {
         background-color: rgba(0, 0, 0, 0.8);
@@ -548,7 +548,7 @@
 }
 
 /* ============================================
-   提取方式选择模态框
+   提取方式選擇模態框
    ============================================ */
 
 .extraction-method-options {
@@ -626,14 +626,14 @@
     line-height: 1.4;
 }
 
-/* 特殊标记混合模式 */
+/* 特殊標記混合模式 */
 .extraction-method-item[data-method="hybrid"] {
     border-color: #10b981;
     position: relative;
 }
 
 .extraction-method-item[data-method="hybrid"]::before {
-    content: '推荐';
+    content: '推薦';
     position: absolute;
     top: -12px;
     right: 20px;

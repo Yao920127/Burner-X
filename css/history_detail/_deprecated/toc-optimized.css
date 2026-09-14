@@ -1,8 +1,8 @@
 /* ==========================
- * TOC 优化样式 - 现代化设计
+ * TOC 最佳化樣式 - 現代化設計
  * ========================== */
 
-/* TOC 浮动按钮 - 现代化设计 */
+/* TOC 浮動按鈕 - 現代化設計 */
 #toc-float-btn {
   position: fixed !important;
   left: 20px !important;
@@ -35,7 +35,7 @@
   transform: translateY(-50%) scale(0.95) !important;
 }
 
-/* TOC 弹窗 - 现代化设计 */
+/* TOC 彈出視窗 - 現代化設計 */
 #toc-popup {
   display: none;
   position: fixed;
@@ -59,7 +59,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* TOC 弹窗头部 */
+/* TOC 彈出視窗標頭 */
 #toc-popup-header {
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@
   font-size: 1.2rem;
 }
 
-/* 关闭按钮 */
+/* 關閉按鈕 */
 #toc-popup-close-btn {
   background: rgba(148, 163, 184, 0.1);
   border: none;
@@ -106,7 +106,7 @@
   transform: scale(1.1);
 }
 
-/* TOC 模式选择器 */
+/* TOC 模式選擇器 */
 .toc-mode-selector {
   display: none;
   gap: 8px;
@@ -193,7 +193,7 @@
   background: rgba(59, 130, 246, 0.5);
 }
 
-/* TOC 子项容器 */
+/* TOC 子項容器 */
 #toc-list ul.toc-children {
   list-style: none;
   padding-left: 0;
@@ -202,7 +202,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* TOC 项级别样式 */
+/* TOC 項級別樣式 */
 #toc-list li.toc-h1 {
   margin-top: 10px;
   border-left: 4px solid #3b82f6;
@@ -223,7 +223,7 @@
   border-left: 2px solid rgba(148, 163, 184, 0.4);
 }
 
-/* 折叠按钮 */
+/* 摺疊按鈕 */
 #toc-list .toc-toggle {
   display: inline-flex;
   align-items: center;
@@ -260,7 +260,7 @@
   background: rgba(148, 163, 184, 0.2);
 }
 
-/* TOC 链接样式 */
+/* TOC 連結樣式 */
 #toc-list li {
   margin-bottom: 0;
   line-height: 1.6;
@@ -308,7 +308,7 @@
   transform: translateX(3px) scale(0.98);
 }
 
-/* 有子项的TOC项样式 */
+/* 有子項的TOC項樣式 */
 #toc-list li.has-children > a {
   font-weight: 600;
   position: relative;
@@ -330,7 +330,7 @@
   width: 100%;
 }
 
-/* 折叠状态下的子项容器 */
+/* 摺疊狀態下的子項容器 */
 #toc-list .toc-children.collapsed {
   height: 0 !important;
   margin: 0;
@@ -339,7 +339,7 @@
   transform: translateY(-10px);
 }
 
-/* TOC 文本内容 */
+/* TOC 文字內容 */
 .toc-text {
   display: flex;
   flex-wrap: wrap;
@@ -347,7 +347,7 @@
   flex: 1;
 }
 
-/* TOC 前缀样式 */
+/* TOC 字首樣式 */
 .toc-prefix {
   font-weight: 700;
   color: #3b82f6;
@@ -359,7 +359,7 @@
   font-size: 0.85rem;
 }
 
-/* TOC 内容 */
+/* TOC 內容 */
 .toc-content {
   display: inline-block;
   flex: 1;
@@ -367,7 +367,7 @@
   font-weight: 500;
 }
 
-/* TOC 英文翻译 */
+/* TOC 英文翻譯 */
 .toc-en-translation {
   font-size: 0.85rem;
   color: #64748b;
@@ -376,7 +376,7 @@
   opacity: 0.8;
 }
 
-/* 图表标题样式 */
+/* 圖表標題樣式 */
 .toc-caption {
   font-style: italic;
   color: #7c3aed;
@@ -396,7 +396,7 @@
   transform: scale(1.1);
 }
 
-/* 结构化标题样式 */
+/* 結構化標題樣式 */
 .toc-structured .toc-prefix {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(99, 102, 241, 0.15));
   border: 1px solid rgba(59, 130, 246, 0.2);
@@ -413,7 +413,7 @@
   letter-spacing: 0.5px;
 }
 
-/* TOC 控制按钮区域 */
+/* TOC 控制按鈕區域 */
 .toc-controls {
   display: flex;
   justify-content: space-between;
@@ -450,7 +450,7 @@
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
-/* TOC 弹窗状态 */
+/* TOC 彈出視窗狀態 */
 .toc-popup-visible {
   display: block !important;
   opacity: 1 !important;
@@ -466,7 +466,7 @@
   transform: translateY(-50%) translateX(-20px) scale(0.9) !important;
 }
 
-/* TOC 展开状态 */
+/* TOC 展開狀態 */
 #toc-popup.toc-expanded {
   width: 450px;
   max-height: 85vh;
@@ -476,7 +476,7 @@
   max-height: calc(85vh - 160px);
 }
 
-/* 目标高亮效果 */
+/* 目標醒目提示效果 */
 .toc-target-highlight {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(99, 102, 241, 0.15)) !important;
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important;
@@ -486,7 +486,7 @@
   padding: 12px !important;
 }
 
-/* 加载效果 */
+/* 載入效果 */
 .loading-effect {
   position: fixed;
   top: 50%;
@@ -515,7 +515,7 @@
   transition: filter 0.3s ease;
 }
 
-/* 响应式设计 */
+/* 響應式設計 */
 @media (max-width: 768px) {
   #toc-float-btn {
     left: 15px !important;

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>验证：页面隐藏不影响异步任务</title>
+    <title>驗證：頁面隱藏不影響非同步任務</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -95,32 +95,32 @@
 </head>
 <body>
     <div class="container">
-        <h1>🧪 验证：页面隐藏不影响异步任务</h1>
+        <h1>🧪 驗證：頁面隱藏不影響非同步任務</h1>
 
         <div class="warning">
-            <strong>⚠️ 重要说明</strong><br>
-            本测试证明：即使页面隐藏，<strong>fetch()、Promise、async/await</strong> 等异步任务<strong>仍然正常执行</strong>。
-            <br>我们的优化只影响了 <code>setInterval</code> 轮询，不影响核心业务。
+            <strong>⚠️ 重要說明</strong><br>
+            本測試證明：即使頁面隱藏，<strong>fetch()、Promise、async/await</strong> 等非同步任務<strong>仍然正常執行</strong>。
+            <br>我們的最佳化隻影響了 <code>setInterval</code> 輪詢，不影響核心業務。
         </div>
 
         <div class="info">
-            <strong>📋 测试步骤</strong><br>
-            1. 点击下面的按钮开始模拟翻译任务<br>
-            2. <strong>立即切换到其他标签页</strong>（这会触发页面隐藏）<br>
-            3. 等待 3-5 秒后切回来<br>
-            4. 查看结果：任务应该已经完成 ✅
+            <strong>📋 測試步驟</strong><br>
+            1. 點選下面的按鈕開始模擬翻譯任務<br>
+            2. <strong>立即切換到其他分頁</strong>（這會觸發頁面隱藏）<br>
+            3. 等待 3-5 秒後切回來<br>
+            4. 檢視結果：任務應該已經完成 ✅
         </div>
 
-        <h2>测试 1: 模拟翻译 API 调用</h2>
-        <button onclick="testTranslationAPI()">🔄 开始模拟翻译（3秒）</button>
-        <button onclick="testMultipleAPIs()">🔄 模拟多个并发翻译（5秒）</button>
+        <h2>測試 1: 模擬翻譯 API 呼叫</h2>
+        <button onclick="testTranslationAPI()">🔄 開始模擬翻譯（3秒）</button>
+        <button onclick="testMultipleAPIs()">🔄 模擬多個並行翻譯（5秒）</button>
 
-        <h2>测试 2: 模拟 AI 对话</h2>
-        <button onclick="testAIChatAPI()">💬 开始模拟AI对话（3秒）</button>
+        <h2>測試 2: 模擬 AI 對話</h2>
+        <button onclick="testAIChatAPI()">💬 開始模擬AI對話（3秒）</button>
 
-        <h2>测试 3: 对比 setInterval（我们优化的部分）</h2>
-        <button onclick="testSetInterval()">⏱️ 启动定时器（观察页面隐藏时的行为）</button>
-        <button onclick="stopSetInterval()">⏹️ 停止定时器</button>
+        <h2>測試 3: 對比 setInterval（我們最佳化的部分）</h2>
+        <button onclick="testSetInterval()">⏱️ 啟動定時器（觀察頁面隱藏時的行為）</button>
+        <button onclick="stopSetInterval()">⏹️ 停止定時器</button>
 
         <div id="result"></div>
 
@@ -146,35 +146,35 @@
             resultEl.innerHTML = '';
         }
 
-        // 监听页面可见性变化
+        // 監聽頁面可見性變化
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                log('🔒 页面已隐藏（切换到其他标签页）', 'warning');
+                log('🔒 頁面已隱藏（切換到其他分頁）', 'warning');
             } else {
-                log('👁️ 页面可见（切回当前标签页）', 'info');
+                log('👁️ 頁面可見（切回當前分頁）', 'info');
             }
         });
 
         // ================================================
-        // 测试 1: 模拟翻译 API
+        // 測試 1: 模擬翻譯 API
         // ================================================
         async function testTranslationAPI() {
             clearLog();
-            log('=== 开始测试：模拟翻译 API ===', 'info');
-            log('⚠️ 请在 3 秒内切换到其他标签页！', 'warning');
+            log('=== 開始測試：模擬翻譯 API ===', 'info');
+            log('⚠️ 請在 3 秒內切換到其他分頁！', 'warning');
 
             const startTime = Date.now();
 
-            // 模拟翻译 API 调用（3秒延迟）
+            // 模擬翻譯 API 呼叫（3秒延遲）
             try {
-                log('📤 发送翻译请求...', 'info');
+                log('📤 傳送翻譯請求...', 'info');
 
-                // 使用真实的 Promise（模拟网络请求）
+                // 使用真實的 Promise（模擬網路請求）
                 const result = await new Promise((resolve) => {
                     setTimeout(() => {
                         resolve({
                             success: true,
-                            translatedText: '这是翻译后的文本',
+                            translatedText: '這是翻譯後的文字',
                             pageHiddenDuringTranslation: false
                         });
                     }, 3000);
@@ -183,26 +183,26 @@
                 const endTime = Date.now();
                 const elapsed = ((endTime - startTime) / 1000).toFixed(1);
 
-                log('✅ 翻译完成！', 'success');
-                log(`⏱️ 耗时: ${elapsed} 秒`, 'info');
-                log(`📥 结果: ${result.translatedText}`, 'success');
+                log('✅ 翻譯完成！', 'success');
+                log(`⏱️ 耗時: ${elapsed} 秒`, 'info');
+                log(`📥 結果: ${result.translatedText}`, 'success');
 
-                // 显示结果
+                // 顯示結果
                 resultEl.innerHTML = `
                     <div class="result pass">
-                        ✅ 测试通过！<br>
-                        即使页面被隐藏，翻译任务仍然完成了！<br>
-                        <small>耗时: ${elapsed} 秒</small>
+                        ✅ 測試透過！<br>
+                        即使頁面被隱藏，翻譯任務仍然完成了！<br>
+                        <small>耗時: ${elapsed} 秒</small>
                     </div>
                 `;
 
-                log('💡 结论：fetch() / Promise 不受页面隐藏影响', 'success');
+                log('💡 結論：fetch() / Promise 不受頁面隱藏影響', 'success');
 
             } catch (error) {
-                log(`❌ 错误: ${error.message}`, 'error');
+                log(`❌ 錯誤: ${error.message}`, 'error');
                 resultEl.innerHTML = `
                     <div class="result fail">
-                        ❌ 测试失败！<br>
+                        ❌ 測試失敗！<br>
                         ${error.message}
                     </div>
                 `;
@@ -210,16 +210,16 @@
         }
 
         // ================================================
-        // 测试 2: 模拟多个并发翻译
+        // 測試 2: 模擬多個並行翻譯
         // ================================================
         async function testMultipleAPIs() {
             clearLog();
-            log('=== 开始测试：多个并发翻译 ===', 'info');
-            log('⚠️ 请在 5 秒内切换到其他标签页！', 'warning');
+            log('=== 開始測試：多個並行翻譯 ===', 'info');
+            log('⚠️ 請在 5 秒內切換到其他分頁！', 'warning');
 
             const startTime = Date.now();
 
-            // 模拟 3 个并发翻译任务
+            // 模擬 3 個並行翻譯任務
             const tasks = [
                 simulateTranslation('段落 1', 2000),
                 simulateTranslation('段落 2', 3000),
@@ -227,60 +227,60 @@
             ];
 
             try {
-                log('📤 发送 3 个并发翻译请求...', 'info');
+                log('📤 傳送 3 個並行翻譯請求...', 'info');
 
                 const results = await Promise.all(tasks);
 
                 const endTime = Date.now();
                 const elapsed = ((endTime - startTime) / 1000).toFixed(1);
 
-                log('✅ 所有翻译完成！', 'success');
-                log(`⏱️ 总耗时: ${elapsed} 秒`, 'info');
+                log('✅ 所有翻譯完成！', 'success');
+                log(`⏱️ 總耗時: ${elapsed} 秒`, 'info');
                 results.forEach((result, i) => {
-                    log(`📥 结果 ${i + 1}: ${result}`, 'success');
+                    log(`📥 結果 ${i + 1}: ${result}`, 'success');
                 });
 
                 resultEl.innerHTML = `
                     <div class="result pass">
-                        ✅ 测试通过！<br>
-                        ${results.length} 个并发翻译任务都完成了！<br>
-                        <small>总耗时: ${elapsed} 秒</small>
+                        ✅ 測試透過！<br>
+                        ${results.length} 個並行翻譯任務都完成了！<br>
+                        <small>總耗時: ${elapsed} 秒</small>
                     </div>
                 `;
 
-                log('💡 结论：多个异步任务可以并发执行，不受页面隐藏影响', 'success');
+                log('💡 結論：多個非同步任務可以並行執行，不受頁面隱藏影響', 'success');
 
             } catch (error) {
-                log(`❌ 错误: ${error.message}`, 'error');
+                log(`❌ 錯誤: ${error.message}`, 'error');
             }
         }
 
         async function simulateTranslation(text, delay) {
             return new Promise((resolve) => {
                 setTimeout(() => {
-                    resolve(`${text} (已翻译)`);
+                    resolve(`${text} (已翻譯)`);
                 }, delay);
             });
         }
 
         // ================================================
-        // 测试 3: 模拟 AI 对话
+        // 測試 3: 模擬 AI 對話
         // ================================================
         async function testAIChatAPI() {
             clearLog();
-            log('=== 开始测试：模拟 AI 对话 ===', 'info');
-            log('⚠️ 请在 3 秒内切换到其他标签页！', 'warning');
+            log('=== 開始測試：模擬 AI 對話 ===', 'info');
+            log('⚠️ 請在 3 秒內切換到其他分頁！', 'warning');
 
             const startTime = Date.now();
 
             try {
-                log('💬 发送 AI 对话请求...', 'info');
+                log('💬 傳送 AI 對話請求...', 'info');
 
-                // 模拟 AI API 调用
+                // 模擬 AI API 呼叫
                 const result = await new Promise((resolve) => {
                     setTimeout(() => {
                         resolve({
-                            message: '这是 AI 的回复内容',
+                            message: '這是 AI 的回覆內容',
                             tokens: 150
                         });
                     }, 3000);
@@ -289,81 +289,81 @@
                 const endTime = Date.now();
                 const elapsed = ((endTime - startTime) / 1000).toFixed(1);
 
-                log('✅ AI 回复完成！', 'success');
-                log(`⏱️ 耗时: ${elapsed} 秒`, 'info');
-                log(`💬 回复: ${result.message}`, 'success');
+                log('✅ AI 回覆完成！', 'success');
+                log(`⏱️ 耗時: ${elapsed} 秒`, 'info');
+                log(`💬 回覆: ${result.message}`, 'success');
 
                 resultEl.innerHTML = `
                     <div class="result pass">
-                        ✅ 测试通过！<br>
-                        AI 对话在页面隐藏时仍然正常完成！<br>
-                        <small>耗时: ${elapsed} 秒</small>
+                        ✅ 測試透過！<br>
+                        AI 對話在頁面隱藏時仍然正常完成！<br>
+                        <small>耗時: ${elapsed} 秒</small>
                     </div>
                 `;
 
-                log('💡 结论：AI 对话 API 不受页面隐藏影响', 'success');
+                log('💡 結論：AI 對話 API 不受頁面隱藏影響', 'success');
 
             } catch (error) {
-                log(`❌ 错误: ${error.message}`, 'error');
+                log(`❌ 錯誤: ${error.message}`, 'error');
             }
         }
 
         // ================================================
-        // 测试 4: setInterval（对比）
+        // 測試 4: setInterval（對比）
         // ================================================
         let intervalId = null;
         let intervalCount = 0;
 
         function testSetInterval() {
             if (intervalId) {
-                log('⚠️ 定时器已在运行', 'warning');
+                log('⚠️ 定時器已在執行', 'warning');
                 return;
             }
 
             clearLog();
-            log('=== 开始测试：setInterval 行为（对比） ===', 'info');
-            log('🔄 定时器启动（每秒执行一次）', 'info');
-            log('⚠️ 请切换标签页观察行为', 'warning');
+            log('=== 開始測試：setInterval 行為（對比） ===', 'info');
+            log('🔄 定時器啟動（每秒執行一次）', 'info');
+            log('⚠️ 請切換分頁觀察行為', 'warning');
 
             intervalCount = 0;
 
             intervalId = setInterval(() => {
                 intervalCount++;
 
-                // 检查页面是否隐藏
+                // 檢查頁面是否隱藏
                 if (document.hidden) {
-                    log(`⏭️ 跳过执行（页面隐藏，计数: ${intervalCount}）`, 'warning');
-                    // 这就是我们在 annotations_summary_modal.js 中做的优化
+                    log(`⏭️ 跳過執行（頁面隱藏，計數: ${intervalCount}）`, 'warning');
+                    // 這就是我們在 annotations_summary_modal.js 中做的最佳化
                 } else {
-                    log(`✓ 正常执行（页面可见，计数: ${intervalCount}）`, 'success');
+                    log(`✓ 正常執行（頁面可見，計數: ${intervalCount}）`, 'success');
                 }
             }, 1000);
 
-            log('💡 说明：这就是我们的优化逻辑 - 页面隐藏时跳过执行', 'info');
-            log('💡 但 fetch() 等异步任务不会被跳过！', 'success');
+            log('💡 說明：這就是我們的最佳化邏輯 - 頁面隱藏時跳過執行', 'info');
+            log('💡 但 fetch() 等非同步任務不會被跳過！', 'success');
         }
 
         function stopSetInterval() {
             if (!intervalId) {
-                log('⚠️ 定时器未运行', 'warning');
+                log('⚠️ 定時器未執行', 'warning');
                 return;
             }
 
             clearInterval(intervalId);
             intervalId = null;
 
-            log(`⏹️ 定时器已停止（总计执行 ${intervalCount} 次）`, 'info');
+            log(`⏹️ 定時器已停止（總計執行 ${intervalCount} 次）`, 'info');
         }
 
         // ================================================
-        // 页面加载时的提示
+        // 頁面載入時的提示
         // ================================================
         window.addEventListener('load', () => {
-            log('🚀 测试工具已加载', 'info');
-            log('💡 提示：测试过程中请切换标签页来验证异步任务不受影响', 'info');
+            log('🚀 測試工具已載入', 'info');
+            log('💡 提示：測試過程中請切換分頁來驗證非同步任務不受影響', 'info');
         });
 
-        // 页面卸载时清理
+        // 頁面解除安裝時清理
         window.addEventListener('beforeunload', () => {
             if (intervalId) {
                 clearInterval(intervalId);

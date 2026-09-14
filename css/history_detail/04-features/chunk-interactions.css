@@ -1,5 +1,5 @@
 /* ==========================
- * 分块对比 Flex 样式
+ * 分塊對比 Flex 樣式
  * ========================== */
 .align-flex {
   display: flex;
@@ -90,7 +90,7 @@
 }
 
 /* ==========================
- * 分块工具栏样式
+ * 分塊工具列樣式
  * ========================== */
 .block-toolbar {
   margin-bottom: 8px;
@@ -166,7 +166,7 @@
 }
 
 /* ==========================
- * 分块高亮样式
+ * 分塊醒目提示樣式
  * ========================== */
 .block-outer.block-highlight {
   box-shadow: 0 0 0 3px #2563eb44;
@@ -184,7 +184,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 0; /* 隐藏原来的 ↑/↓ 文本 */
+  font-size: 0; /* 隱藏原來的 ↑/↓ 文字 */
   padding: 0;
   width: 22px;
   height: 18px;
@@ -200,7 +200,7 @@
   display: inline-block;
   width: 0;
   height: 0;
-  /* 短粗三角：底宽更大，高度相对较小 */
+  /* 短粗三角：底寬更大，高度相對較小 */
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
 }
@@ -219,7 +219,7 @@
 }
 
 /* ==========================
- * 批注高亮样式
+ * 批註醒目提示樣式
  * ========================== */
 .annotation-highlight {
   cursor: pointer;

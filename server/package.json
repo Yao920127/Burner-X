@@ -2,19 +2,20 @@
   "name": "paper-burner-server",
   "version": "1.0.0",
   "description": "Paper Burner X Backend Server",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
     "test": "NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
     "openapi:validate": "node -e \"require('yaml'); const fs=require('fs'); const y=require('yaml').parse(fs.readFileSync('../docs/openapi.yaml','utf8')); console.log('OpenAPI parsed OK:', !!y);\"",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
-    "smoke:health": "node ./scripts/smoke-health.mjs"
+    "smoke:health": "tsx ./scripts/smoke-health.mjs"
   },
   "keywords": ["paper-burner", "translation", "ocr"],
   "author": "",
@@ -36,11 +37,23 @@
     "uuid": "^11.0.3"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.0.0",
+    "@types/uuid": "^10.0.0",
     "jest": "^29.7.0",
     "supertest": "^7.1.1",
     "eslint": "^9.12.0",
     "nodemon": "^3.1.7",
     "prisma": "^5.22.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
     "yaml": "^2.6.0"
   }
 }
+

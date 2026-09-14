@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>表格列数不匹配修复测试</title>
+    <title>表格列數不比對修復測試</title>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="../js/processing/markdown_processor_ast.js"></script>
     <style>
@@ -79,7 +79,7 @@
     </style>
 </head>
 <body>
-    <h1>🔧 表格列数不匹配修复测试</h1>
+    <h1>🔧 表格列數不比對修復測試</h1>
 
     <div id="output"></div>
 
@@ -87,31 +87,31 @@
         const output = document.getElementById('output');
         const logs = [];
 
-        // 拦截console.log
+        // 攔截console.log
         const originalLog = console.log;
         console.log = function(...args) {
             logs.push(args.join(' '));
             originalLog.apply(console, args);
         };
 
-        // 测试用例
+        // 測試用例
         const testCases = [
             {
-                name: 'Block #31 (表头6列，分隔符7列)',
-                markdown: `| | | | 五分位数 (Quintiles) | | |
+                name: 'Block #31 (表頭6列，分隔符7列)',
+                markdown: `| | | | 五分位數 (Quintiles) | | |
 |---|---|---|---|---|---|---|
 | | 1 | 2 | 3 | 4 | 5 | 5-1 |
-| 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 |`
+| 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 |`
             },
             {
-                name: '简单测试 (表头3列，分隔符4列)',
+                name: '簡單測試 (表頭3列，分隔符4列)',
                 markdown: `| A | B | C |
 |---|---|---|---|
 | 1 | 2 | 3 |
 | 4 | 5 | 6 |`
             },
             {
-                name: '表头多列 (表头5列，分隔符3列)',
+                name: '表頭多列 (表頭5列，分隔符3列)',
                 markdown: `| A | B | C | D | E |
 |---|---|---|
 | 1 | 2 | 3 | 4 | 5 |`
@@ -119,28 +119,28 @@
         ];
 
         testCases.forEach((test, idx) => {
-            logs.length = 0; // 清空日志
+            logs.length = 0; // 清空日誌
 
             const testDiv = document.createElement('div');
             testDiv.className = 'test-case';
 
             testDiv.innerHTML = `<h2>${test.name}</h2>`;
 
-            // 显示原始 Markdown
+            // 顯示原始 Markdown
             testDiv.innerHTML += `
                 <h3>原始 Markdown:</h3>
                 <div class="source">${test.markdown}</div>
             `;
 
-            // 分析列数
+            // 分析列數
             const lines = test.markdown.split('\n');
             const headerPipes = (lines[0].match(/\|/g) || []).length;
             const separatorPipes = (lines[1].match(/\|/g) || []).length;
 
             testDiv.innerHTML += `
-                <p>表头管道符: <strong>${headerPipes}</strong> (${headerPipes - 1} 列)</p>
+                <p>表頭管道符: <strong>${headerPipes}</strong> (${headerPipes - 1} 列)</p>
                 <p>分隔符管道符: <strong>${separatorPipes}</strong> (${separatorPipes - 1} 列)</p>
-                ${headerPipes !== separatorPipes ? '<p class="fail">⚠️ 列数不匹配！</p>' : '<p class="success">✓ 列数匹配</p>'}
+                ${headerPipes !== separatorPipes ? '<p class="fail">⚠️ 列數不比對！</p>' : '<p class="success">✓ 列數比對</p>'}
             `;
 
             // 使用 MarkdownProcessorAST 渲染
@@ -149,46 +149,46 @@
                 const isTable = rendered.trim().startsWith('<table');
 
                 testDiv.innerHTML += `
-                    <h3>渲染结果:</h3>
-                    <p>${isTable ? '<span class="success">✓ 成功渲染为 &lt;table&gt;</span>' : '<span class="fail">✗ 渲染为 &lt;p&gt;</span>'}</p>
+                    <h3>渲染結果:</h3>
+                    <p>${isTable ? '<span class="success">✓ 成功渲染為 &lt;table&gt;</span>' : '<span class="fail">✗ 渲染為 &lt;p&gt;</span>'}</p>
                     <div class="result">${rendered}</div>
                 `;
 
                 if (logs.length > 0) {
                     testDiv.innerHTML += `
-                        <h3>修复日志:</h3>
+                        <h3>修復日誌:</h3>
                         <div class="log">${logs.join('\n')}</div>
                     `;
                 }
             } else {
-                testDiv.innerHTML += '<p class="fail">✗ MarkdownProcessorAST 未加载</p>';
+                testDiv.innerHTML += '<p class="fail">✗ MarkdownProcessorAST 未載入</p>';
             }
 
             output.appendChild(testDiv);
         });
 
-        // 添加说明
+        // 新增說明
         setTimeout(() => {
             const infoDiv = document.createElement('div');
             infoDiv.className = 'test-case';
             infoDiv.innerHTML = `
-                <h2>📋 测试说明</h2>
-                <p><strong>修复策略：</strong></p>
+                <h2>📋 測試說明</h2>
+                <p><strong>修復策略：</strong></p>
                 <ul>
-                    <li><strong>表头列数 < 分隔符列数：</strong>删除分隔符的多余列</li>
-                    <li><strong>表头列数 > 分隔符列数：</strong>给分隔符添加 <code>---|</code></li>
-                    <li><strong>数据行列数 < 分隔符列数：</strong>给数据行添加空单元格 <code> |</code></li>
+                    <li><strong>表頭列數 < 分隔符列數：</strong>刪除分隔符的多餘列</li>
+                    <li><strong>表頭列數 > 分隔符列數：</strong>給分隔符新增 <code>---|</code></li>
+                    <li><strong>資料行列數 < 分隔符列數：</strong>給資料行新增空單元格 <code> |</code></li>
                 </ul>
 
-                <h2>✅ 验证步骤</h2>
+                <h2>✅ 驗證步驟</h2>
                 <ol>
-                    <li>所有测试用例应显示为 <code>&lt;table&gt;</code> 而非 <code>&lt;p&gt;</code></li>
-                    <li>修复日志应显示列数调整信息</li>
-                    <li>表格应正确显示边框和样式</li>
+                    <li>所有測試用例應顯示為 <code>&lt;table&gt;</code> 而非 <code>&lt;p&gt;</code></li>
+                    <li>修復日誌應顯示列數調整資訊</li>
+                    <li>表格應正確顯示邊框和樣式</li>
                 </ol>
 
                 <h2>🚀 下一步</h2>
-                <p>如果此测试通过，请刷新实际应用 (Ctrl + Shift + R) 来验证 Block #31 的渲染。</p>
+                <p>如果此測試透過，請重新整理實際應用 (Ctrl + Shift + R) 來驗證 Block #31 的渲染。</p>
             `;
             output.appendChild(infoDiv);
         }, 100);

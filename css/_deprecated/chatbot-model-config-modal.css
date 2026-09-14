@@ -1,13 +1,13 @@
-/* Chatbot 模型配置弹窗样式 - 优化版 */
+/* Chatbot 模型配置彈出視窗樣式 - 最佳化版 */
 
-/* 弹窗容器 */
+/* 彈出視窗容器 */
 .chatbot-config-modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 999999; /* 必须高于chatbot的100001 */
+  z-index: 999999; /* 必須高於chatbot的100001 */
   display: none;
   animation: fadeIn 0.2s ease-out;
 }
@@ -47,7 +47,7 @@
   backdrop-filter: blur(8px);
 }
 
-/* 弹窗主体 */
+/* 彈出視窗主體 */
 .chatbot-config-wrapper {
   position: fixed;
   top: 0;
@@ -75,7 +75,7 @@
   animation: slideUp 0.3s ease-out;
 }
 
-/* 头部 */
+/* 標頭 */
 .chatbot-config-header {
   display: flex;
   justify-content: space-between;
@@ -152,7 +152,7 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* 内容区域 */
+/* 內容區域 */
 .chatbot-config-body {
   flex: 1;
   overflow-y: auto;
@@ -160,7 +160,7 @@
   background: #fafafa;
 }
 
-/* 自定义滚动条 */
+/* 自定義捲軸 */
 .chatbot-config-body::-webkit-scrollbar {
   width: 8px;
 }
@@ -186,7 +186,7 @@
   margin-bottom: 0;
 }
 
-/* 模型来源选择 */
+/* 模型來源選擇 */
 .chatbot-source-selector {
   background: white;
   border-radius: 12px;
@@ -275,7 +275,7 @@
   opacity: 1;
 }
 
-/* 表单控件 */
+/* 表單控制元件 */
 .chatbot-form-group {
   background: white;
   border-radius: 12px;
@@ -342,7 +342,7 @@
   border-left: 3px solid #3b82f6;
 }
 
-/* 获取模型列表按钮 */
+/* 獲取模型列表按鈕 */
 .chatbot-fetch-models-btn {
   margin-top: 12px;
   width: 100%;
@@ -387,7 +387,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* 刷新按钮 */
+/* 重新整理按鈕 */
 .chatbot-refresh-btn {
   padding: 6px 10px;
   border-radius: 6px;
@@ -418,7 +418,7 @@
   animation: spin 0.6s linear;
 }
 
-/* 源站点信息 */
+/* 源站點資訊 */
 .chatbot-source-info {
   background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
   border-radius: 10px;
@@ -530,7 +530,7 @@
   opacity: 1;
 }
 
-/* 搜索框 */
+/* 搜尋框 */
 .chatbot-search-wrapper {
   position: relative;
 }
@@ -548,7 +548,7 @@
   pointer-events: none;
 }
 
-/* 参数配置区域 */
+/* 引數配置區域 */
 .chatbot-params-section {
   background: white;
   border-radius: 12px;
@@ -574,7 +574,7 @@
   font-size: 16px;
 }
 
-/* 滑块 */
+/* 滑塊 */
 .chatbot-slider-group {
   margin-bottom: 20px;
   padding-bottom: 20px;
@@ -669,7 +669,7 @@
   font-weight: 500;
 }
 
-/* 底部按钮 */
+/* 底部按鈕 */
 .chatbot-config-footer {
   display: flex;
   justify-content: flex-end;
@@ -742,17 +742,17 @@
   font-size: 15px;
 }
 
-/* 隐藏类 */
+/* 隱藏類 */
 .chatbot-hidden {
   display: none !important;
 }
 
-/* 文本居中 */
+/* 文字居中 */
 .chatbot-text-center {
   text-align: center;
 }
 
-/* 提示框样式 */
+/* 提示框樣式 */
 .chatbot-hint-box {
   background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
   border: 1px solid #bfdbfe;
@@ -804,7 +804,7 @@
   font-size: 16px;
 }
 
-/* 响应式 */
+/* 響應式 */
 @media (max-width: 768px) {
   .chatbot-config-wrapper {
     padding: 12px;

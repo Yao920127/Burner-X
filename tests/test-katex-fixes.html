@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>KaTeX 错误修复测试</title>
+    <title>KaTeX 錯誤修復測試</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
     <script src="../js/processing/formula_post_processor.js"></script>
@@ -62,44 +62,44 @@
     </style>
 </head>
 <body>
-    <h1>🔧 KaTeX 错误自动修复测试</h1>
+    <h1>🔧 KaTeX 錯誤自動修復測試</h1>
 
     <div id="output"></div>
 
     <script>
         const output = document.getElementById('output');
 
-        // 测试用例
+        // 測試用例
         const testCases = [
             {
-                name: '用户问题 1: 行内公式中的 \\tag',
+                name: '使用者問題 1: 行內公式中的 \\tag',
                 before: `$i = \\left| {{0.37}{v}_{\\mathrm{r}}}\\right| + \\left| {{0.28}{d}_{\\mathrm{r}}}\\right| + \\left| {{0.2}{o}_{\\mathrm{r}}}\\right| + \\left| {{0.15}{t}_{\\mathrm{r}}}\\right| \\tag{7}$`,
-                error: '\\tag 只能在块级公式中使用',
-                fix: '自动移除行内公式中的 \\tag'
+                error: '\\tag 只能在塊級公式中使用',
+                fix: '自動移除行內公式中的 \\tag'
             },
             {
-                name: '用户问题 2: \\;^\\circ 语法错误',
+                name: '使用者問題 2: \\;^\\circ 語法錯誤',
                 before: `$0.1 - 0.2 \\mathrm{\\;^\\circ C}$`,
                 error: 'Got group of unknown type: internal',
-                fix: '修复为 \\,^{\\circ}\\mathrm{C}'
+                fix: '修復為 \\,^{\\circ}\\mathrm{C}'
             },
             {
-                name: '额外修复: 双花括号',
+                name: '額外修復: 雙花括號',
                 before: `$\\left| {{0.37}{v}_{\\mathrm{r}}}\\right|$`,
-                error: '可能导致内部组错误',
-                fix: '移除多余的花括号 {{...}} → {...}'
+                error: '可能導致內部組錯誤',
+                fix: '移除多餘的花括號 {{...}} → {...}'
             },
             {
-                name: '块级公式测试: \\tag 应保留',
+                name: '塊級公式測試: \\tag 應保留',
                 before: `$$i = a + b \\tag{1}$$`,
-                error: '无错误（块级公式）',
-                fix: '保持不变（\\tag 在块级公式中有效）'
+                error: '無錯誤（塊級公式）',
+                fix: '保持不變（\\tag 在塊級公式中有效）'
             },
             {
-                name: '温度符号测试',
+                name: '溫度符號測試',
                 before: `$25\\;^\\circ\\mathrm{C}$`,
-                error: '\\;^\\circ 错误',
-                fix: '修复为 25\\,^{\\circ}\\mathrm{C}'
+                error: '\\;^\\circ 錯誤',
+                fix: '修復為 25\\,^{\\circ}\\mathrm{C}'
             }
         ];
 
@@ -109,44 +109,44 @@
 
             testDiv.innerHTML = `
                 <h2>${test.name}</h2>
-                <p><strong>原始公式:</strong> <span class="badge badge-before">修复前</span></p>
+                <p><strong>原始公式:</strong> <span class="badge badge-before">修復前</span></p>
                 <div class="source">${test.before}</div>
-                <p><strong>错误原因:</strong> ${test.error}</p>
-                <p><strong>修复策略:</strong> ${test.fix}</p>
+                <p><strong>錯誤原因:</strong> ${test.error}</p>
+                <p><strong>修復策略:</strong> ${test.fix}</p>
             `;
 
-            // 修复前
+            // 修復前
             const beforeDiv = document.createElement('div');
             beforeDiv.className = 'result';
-            beforeDiv.innerHTML = '<p><strong>修复前渲染:</strong></p>' + test.before;
+            beforeDiv.innerHTML = '<p><strong>修復前渲染:</strong></p>' + test.before;
 
             testDiv.appendChild(beforeDiv);
 
-            // 应用公式后处理器
+            // 應用公式後處理器
             if (typeof FormulaPostProcessor !== 'undefined') {
                 FormulaPostProcessor.processFormulasInElement(beforeDiv);
             }
 
-            // 修复后
+            // 修復後
             const afterDiv = document.createElement('div');
             afterDiv.className = 'result';
-            afterDiv.innerHTML = '<p><strong><span class="badge badge-after">修复后</span> 渲染:</strong></p>' + test.before;
+            afterDiv.innerHTML = '<p><strong><span class="badge badge-after">修復後</span> 渲染:</strong></p>' + test.before;
 
             testDiv.appendChild(afterDiv);
 
-            // 应用公式后处理器
+            // 應用公式後處理器
             setTimeout(() => {
                 if (typeof FormulaPostProcessor !== 'undefined') {
                     FormulaPostProcessor.processFormulasInElement(afterDiv);
 
-                    // 检查是否有错误
+                    // 檢查是否有錯誤
                     setTimeout(() => {
                         const hasError = afterDiv.querySelector('.katex-error') !== null;
                         const statusDiv = document.createElement('div');
                         statusDiv.style.marginTop = '15px';
                         statusDiv.innerHTML = hasError
-                            ? '<p class="fail">✗ 仍有错误</p>'
-                            : '<p class="success">✓ 修复成功</p>';
+                            ? '<p class="fail">✗ 仍有錯誤</p>'
+                            : '<p class="success">✓ 修復成功</p>';
                         testDiv.appendChild(statusDiv);
                     }, 100);
                 }
@@ -155,34 +155,34 @@
             output.appendChild(testDiv);
         });
 
-        // 添加说明
+        // 新增說明
         setTimeout(() => {
             const infoDiv = document.createElement('div');
             infoDiv.className = 'test-case';
             infoDiv.innerHTML = `
-                <h2>📋 修复规则说明</h2>
+                <h2>📋 修復規則說明</h2>
                 <ol>
-                    <li><strong>\\tag 移除规则:</strong> 检测行内公式（$...$）中的 \\tag{...}，自动移除</li>
-                    <li><strong>\\;^\\circ 修复:</strong> 替换为 \\,^{\\circ}（更安全的语法）</li>
-                    <li><strong>双花括号移除:</strong> 递归移除 {{...}} → {...}</li>
-                    <li><strong>\\mathrm{\\;^\\circ C} 重写:</strong> 提取到外部 → \\,^{\\circ}\\mathrm{C}</li>
-                    <li><strong>上标花括号补全:</strong> ^xy → ^{xy}（多字符上标）</li>
+                    <li><strong>\\tag 移除規則:</strong> 檢測行內公式（$...$）中的 \\tag{...}，自動移除</li>
+                    <li><strong>\\;^\\circ 修復:</strong> 替換為 \\,^{\\circ}（更安全的語法）</li>
+                    <li><strong>雙花括號移除:</strong> 遞迴移除 {{...}} → {...}</li>
+                    <li><strong>\\mathrm{\\;^\\circ C} 重寫:</strong> 提取到外部 → \\,^{\\circ}\\mathrm{C}</li>
+                    <li><strong>上標花括號補全:</strong> ^xy → ^{xy}（多字元上標）</li>
                 </ol>
 
-                <h2>✅ 验证步骤</h2>
+                <h2>✅ 驗證步驟</h2>
                 <ol>
-                    <li>检查"修复前"是否显示错误（红色 katex-error）</li>
-                    <li>检查"修复后"是否正确渲染（无错误）</li>
-                    <li>在实际应用中刷新页面（Ctrl + Shift + R）</li>
-                    <li>查看控制台日志确认修复规则执行</li>
+                    <li>檢查"修復前"是否顯示錯誤（紅色 katex-error）</li>
+                    <li>檢查"修復後"是否正確渲染（無錯誤）</li>
+                    <li>在實際應用中重新整理頁面（Ctrl + Shift + R）</li>
+                    <li>檢視主控台日誌確認修復規則執行</li>
                 </ol>
 
-                <h2>🔍 控制台日志</h2>
-                <p>打开浏览器开发者工具（F12），应该能看到：</p>
-                <pre>[FormulaPostProcessor] 移除行内公式中的 \\tag
-[FormulaPostProcessor] 修复 \\;^\\circ → \\,^{\\circ}
-[FormulaPostProcessor] 修复双花括号 {{...}} → {...}
-[FormulaPostProcessor] 修复 \\mathrm{\\;^\\circ C}</pre>
+                <h2>🔍 主控台日誌</h2>
+                <p>開啟瀏覽器開發者工具（F12），應該能看到：</p>
+                <pre>[FormulaPostProcessor] 移除行內公式中的 \\tag
+[FormulaPostProcessor] 修復 \\;^\\circ → \\,^{\\circ}
+[FormulaPostProcessor] 修復雙花括號 {{...}} → {...}
+[FormulaPostProcessor] 修復 \\mathrm{\\;^\\circ C}</pre>
             `;
             output.appendChild(infoDiv);
         }, 200);

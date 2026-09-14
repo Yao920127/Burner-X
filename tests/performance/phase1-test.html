@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phase 1 性能优化测试工具</title>
+    <title>Phase 1 效能最佳化測試工具</title>
     <style>
         * {
             margin: 0;
@@ -228,41 +228,41 @@
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Phase 1 性能优化测试工具</h1>
-        <p class="subtitle">自动化测试防抖和定时器优化效果</p>
+        <h1>🚀 Phase 1 效能最佳化測試工具</h1>
+        <p class="subtitle">自動化測試防抖和定時器最佳化效果</p>
 
-        <!-- 测试 1: 防抖功能 -->
+        <!-- 測試 1: 防抖功能 -->
         <div class="test-section">
             <h2>
                 <span class="icon">🔍</span>
-                测试 1: 搜索防抖优化
-                <span class="status-badge pending" id="test1-status">待测试</span>
+                測試 1: 搜尋防抖最佳化
+                <span class="status-badge pending" id="test1-status">待測試</span>
             </h2>
             <p class="test-description">
-                测试历史记录搜索输入的防抖功能。模拟快速输入多个字符，验证是否只触发一次渲染。
-                <br><strong>预期结果</strong>：快速输入 10 次，只触发 1 次函数调用（减少 90%）
+                測試歷史記錄搜尋輸入的防抖功能。模擬快速輸入多個字元，驗證是否只觸發一次渲染。
+                <br><strong>預期結果</strong>：快速輸入 10 次，只觸發 1 次函式呼叫（減少 90%）
             </p>
 
             <div class="test-controls">
-                <button onclick="runDebounceTest()">▶️ 运行测试</button>
-                <button class="secondary" onclick="clearDebounceLog()">🗑️ 清空日志</button>
+                <button onclick="runDebounceTest()">▶️ 執行測試</button>
+                <button class="secondary" onclick="clearDebounceLog()">🗑️ 清空日誌</button>
             </div>
 
             <div class="results" id="debounce-results" style="display: none;">
                 <div class="result-item">
-                    <span class="result-label">触发次数:</span>
+                    <span class="result-label">觸發次數:</span>
                     <span class="result-value" id="debounce-triggers">-</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">实际执行次数:</span>
+                    <span class="result-label">實際執行次數:</span>
                     <span class="result-value good" id="debounce-calls">-</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">减少比例:</span>
+                    <span class="result-label">減少比例:</span>
                     <span class="result-value" id="debounce-reduction">-</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">总耗时:</span>
+                    <span class="result-label">總耗時:</span>
                     <span class="result-value" id="debounce-time">-</span>
                 </div>
             </div>
@@ -270,39 +270,39 @@
             <div class="log-area" id="debounce-log"></div>
         </div>
 
-        <!-- 测试 2: 定时器优化 -->
+        <!-- 測試 2: 定時器最佳化 -->
         <div class="test-section">
             <h2>
                 <span class="icon">⏱️</span>
-                测试 2: 轮询定时器优化
-                <span class="status-badge pending" id="test2-status">待测试</span>
+                測試 2: 輪詢定時器最佳化
+                <span class="status-badge pending" id="test2-status">待測試</span>
             </h2>
             <p class="test-description">
-                测试页面可见性检测功能。验证页面隐藏时是否跳过轮询执行。
-                <br><strong>预期结果</strong>：页面隐藏时，轮询函数内部逻辑不执行（0 次）
+                測試頁面可見性檢測功能。驗證頁面隱藏時是否跳過輪詢執行。
+                <br><strong>預期結果</strong>：頁面隱藏時，輪詢函式內部邏輯不執行（0 次）
             </p>
 
             <div class="test-controls">
-                <button onclick="startPollingTest()">▶️ 开始监控</button>
-                <button class="danger" onclick="stopPollingTest()">⏹️ 停止监控</button>
-                <button class="secondary" onclick="clearPollingLog()">🗑️ 清空日志</button>
+                <button onclick="startPollingTest()">▶️ 開始監控</button>
+                <button class="danger" onclick="stopPollingTest()">⏹️ 停止監控</button>
+                <button class="secondary" onclick="clearPollingLog()">🗑️ 清空日誌</button>
             </div>
 
             <div class="results" id="polling-results" style="display: none;">
                 <div class="result-item">
-                    <span class="result-label">页面状态:</span>
+                    <span class="result-label">頁面狀態:</span>
                     <span class="result-value" id="page-visibility">-</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">定时器运行次数:</span>
+                    <span class="result-label">定時器執行次數:</span>
                     <span class="result-value" id="polling-ticks">-</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">函数执行次数:</span>
+                    <span class="result-label">函式執行次數:</span>
                     <span class="result-value good" id="polling-executions">-</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">跳过次数（页面隐藏）:</span>
+                    <span class="result-label">跳過次數（頁面隱藏）:</span>
                     <span class="result-value" id="polling-skipped">-</span>
                 </div>
             </div>
@@ -310,24 +310,24 @@
             <div class="log-area" id="polling-log"></div>
         </div>
 
-        <!-- 综合报告 -->
+        <!-- 綜合報告 -->
         <div class="test-section" style="border-left-color: #2196F3;">
             <h2>
                 <span class="icon">📊</span>
-                综合测试报告
+                綜合測試報告
             </h2>
             <div class="results">
                 <div class="result-item">
-                    <span class="result-label">防抖测试:</span>
-                    <span class="result-value" id="summary-debounce">未运行</span>
+                    <span class="result-label">防抖測試:</span>
+                    <span class="result-value" id="summary-debounce">未執行</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">定时器测试:</span>
-                    <span class="result-value" id="summary-polling">未运行</span>
+                    <span class="result-label">定時器測試:</span>
+                    <span class="result-value" id="summary-polling">未執行</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">总体评价:</span>
-                    <span class="result-value" id="summary-overall">等待测试...</span>
+                    <span class="result-label">總體評價:</span>
+                    <span class="result-value" id="summary-overall">等待測試...</span>
                 </div>
             </div>
         </div>
@@ -335,10 +335,10 @@
 
     <script>
         // ============================================
-        // 测试 1: 防抖功能测试
+        // 測試 1: 防抖功能測試
         // ============================================
 
-        // 防抖函数实现（从 history.js 复制）
+        // 防抖函式實現（從 history.js 複製）
         function debounce(fn, delay) {
             let timer = null;
             return function debounced(...args) {
@@ -373,32 +373,32 @@
 
         async function runDebounceTest() {
             const status = document.getElementById('test1-status');
-            status.textContent = '运行中...';
+            status.textContent = '執行中...';
             status.className = 'status-badge running';
 
-            // 重置数据
+            // 重置資料
             debounceTestData = { triggers: 0, calls: 0, startTime: performance.now() };
             clearDebounceLog();
 
-            logDebounce('=== 开始防抖测试 ===', 'info');
-            logDebounce('配置: 延迟 300ms, 快速触发 10 次', 'info');
+            logDebounce('=== 開始防抖測試 ===', 'info');
+            logDebounce('配置: 延遲 300ms, 快速觸發 10 次', 'info');
 
-            // 创建测试函数
+            // 建立測試函式
             let callCount = 0;
             const testFn = debounce(() => {
                 callCount++;
                 debounceTestData.calls = callCount;
-                logDebounce(`✓ 函数执行 (第 ${callCount} 次)`, 'success');
+                logDebounce(`✓ 函式執行 (第 ${callCount} 次)`, 'success');
                 updateDebounceResults();
             }, 300);
 
-            // 模拟快速输入 10 次
-            logDebounce('开始模拟快速输入...', 'info');
+            // 模擬快速輸入 10 次
+            logDebounce('開始模擬快速輸入...', 'info');
             for (let i = 1; i <= 10; i++) {
                 debounceTestData.triggers++;
-                logDebounce(`触发 #${i}`, 'info');
+                logDebounce(`觸發 #${i}`, 'info');
                 testFn();
-                await new Promise(resolve => setTimeout(resolve, 50)); // 50ms 间隔
+                await new Promise(resolve => setTimeout(resolve, 50)); // 50ms 間隔
             }
 
             logDebounce('等待防抖完成...', 'warning');
@@ -407,24 +407,24 @@
             await new Promise(resolve => setTimeout(resolve, 400));
 
             const totalTime = performance.now() - debounceTestData.startTime;
-            logDebounce(`=== 测试完成 (耗时 ${totalTime.toFixed(0)}ms) ===`, 'success');
+            logDebounce(`=== 測試完成 (耗時 ${totalTime.toFixed(0)}ms) ===`, 'success');
 
-            // 显示结果
+            // 顯示結果
             document.getElementById('debounce-results').style.display = 'block';
             updateDebounceResults();
 
-            // 评估结果
+            // 評估結果
             if (debounceTestData.calls === 1) {
-                status.textContent = '✅ 通过';
+                status.textContent = '✅ 透過';
                 status.className = 'status-badge passed';
-                logDebounce('✓ 测试通过！防抖功能正常工作', 'success');
-                document.getElementById('summary-debounce').textContent = '✅ 通过';
+                logDebounce('✓ 測試透過！防抖功能正常工作', 'success');
+                document.getElementById('summary-debounce').textContent = '✅ 透過';
                 document.getElementById('summary-debounce').className = 'result-value good';
             } else {
-                status.textContent = '❌ 失败';
+                status.textContent = '❌ 失敗';
                 status.className = 'status-badge failed';
-                logDebounce(`✗ 测试失败！预期 1 次执行，实际 ${debounceTestData.calls} 次`, 'error');
-                document.getElementById('summary-debounce').textContent = '❌ 失败';
+                logDebounce(`✗ 測試失敗！預期 1 次執行，實際 ${debounceTestData.calls} 次`, 'error');
+                document.getElementById('summary-debounce').textContent = '❌ 失敗';
                 document.getElementById('summary-debounce').className = 'result-value bad';
             }
 
@@ -445,7 +445,7 @@
         }
 
         // ============================================
-        // 测试 2: 轮询定时器测试
+        // 測試 2: 輪詢定時器測試
         // ============================================
 
         let pollingTestData = {
@@ -471,30 +471,30 @@
         }
 
         function mockCheckFunction() {
-            // 模拟批注颜色检查函数
+            // 模擬批註顏色檢查函式
             pollingTestData.executions++;
-            logPolling(`✓ 执行函数逻辑 (第 ${pollingTestData.executions} 次)`, 'success');
+            logPolling(`✓ 執行函式邏輯 (第 ${pollingTestData.executions} 次)`, 'success');
             updatePollingResults();
         }
 
         function startPollingTest() {
             const status = document.getElementById('test2-status');
-            status.textContent = '运行中...';
+            status.textContent = '執行中...';
             status.className = 'status-badge running';
 
-            // 重置数据
+            // 重置資料
             pollingTestData = { ticks: 0, executions: 0, skipped: 0, timerId: null, isActive: true };
             clearPollingLog();
 
-            logPolling('=== 开始定时器监控 ===', 'info');
-            logPolling('说明: 请切换到其他标签页测试页面隐藏检测', 'warning');
+            logPolling('=== 開始定時器監控 ===', 'info');
+            logPolling('說明: 請切換到其他分頁測試頁面隱藏檢測', 'warning');
 
             document.getElementById('polling-results').style.display = 'block';
 
-            // 启动轮询（模拟优化后的逻辑）
+            // 啟動輪詢（模擬最佳化後的邏輯）
             function poll() {
                 if (!pollingTestData.isActive) {
-                    logPolling('轮询已停止', 'info');
+                    logPolling('輪詢已停止', 'info');
                     return;
                 }
 
@@ -502,7 +502,7 @@
 
                 if (document.hidden) {
                     pollingTestData.skipped++;
-                    logPolling(`⏭️ 跳过执行 (页面隐藏, 总跳过: ${pollingTestData.skipped})`, 'warning');
+                    logPolling(`⏭️ 跳過執行 (頁面隱藏, 總跳過: ${pollingTestData.skipped})`, 'warning');
                 } else {
                     mockCheckFunction();
                 }
@@ -513,18 +513,18 @@
 
             poll();
 
-            // 监听页面可见性变化
+            // 監聽頁面可見性變化
             document.addEventListener('visibilitychange', handleVisibilityChange);
 
-            status.textContent = '监控中...';
-            document.getElementById('summary-polling').textContent = '🔄 运行中';
+            status.textContent = '監控中...';
+            document.getElementById('summary-polling').textContent = '🔄 執行中';
         }
 
         function stopPollingTest() {
             const status = document.getElementById('test2-status');
 
             if (!pollingTestData.isActive) {
-                logPolling('⚠️ 测试未运行', 'warning');
+                logPolling('⚠️ 測試未執行', 'warning');
                 return;
             }
 
@@ -537,21 +537,21 @@
 
             document.removeEventListener('visibilitychange', handleVisibilityChange);
 
-            logPolling('=== 测试停止 ===', 'info');
-            logPolling(`总计: 轮询 ${pollingTestData.ticks} 次, 执行 ${pollingTestData.executions} 次, 跳过 ${pollingTestData.skipped} 次`, 'success');
+            logPolling('=== 測試停止 ===', 'info');
+            logPolling(`總計: 輪詢 ${pollingTestData.ticks} 次, 執行 ${pollingTestData.executions} 次, 跳過 ${pollingTestData.skipped} 次`, 'success');
 
-            // 评估结果
+            // 評估結果
             if (pollingTestData.skipped > 0) {
-                status.textContent = '✅ 通过';
+                status.textContent = '✅ 透過';
                 status.className = 'status-badge passed';
-                logPolling('✓ 测试通过！页面隐藏时正确跳过执行', 'success');
-                document.getElementById('summary-polling').textContent = '✅ 通过';
+                logPolling('✓ 測試透過！頁面隱藏時正確跳過執行', 'success');
+                document.getElementById('summary-polling').textContent = '✅ 透過';
                 document.getElementById('summary-polling').className = 'result-value good';
             } else {
-                status.textContent = '⚠️ 未验证';
+                status.textContent = '⚠️ 未驗證';
                 status.className = 'status-badge pending';
-                logPolling('⚠️ 未检测到页面隐藏，请切换标签页后再测试', 'warning');
-                document.getElementById('summary-polling').textContent = '⚠️ 未充分测试';
+                logPolling('⚠️ 未檢測到頁面隱藏，請切換分頁後再測試', 'warning');
+                document.getElementById('summary-polling').textContent = '⚠️ 未充分測試';
                 document.getElementById('summary-polling').className = 'result-value';
             }
 
@@ -561,7 +561,7 @@
         function handleVisibilityChange() {
             const isHidden = document.hidden;
             logPolling(
-                isHidden ? '🔒 页面隐藏 - 将跳过执行' : '👁️ 页面可见 - 恢复执行',
+                isHidden ? '🔒 頁面隱藏 - 將跳過執行' : '👁️ 頁面可見 - 恢復執行',
                 isHidden ? 'warning' : 'success'
             );
             updatePollingResults();
@@ -569,7 +569,7 @@
 
         function updatePollingResults() {
             document.getElementById('page-visibility').textContent =
-                document.hidden ? '🔒 隐藏' : '👁️ 可见';
+                document.hidden ? '🔒 隱藏' : '👁️ 可見';
             document.getElementById('polling-ticks').textContent = pollingTestData.ticks;
             document.getElementById('polling-executions').textContent = pollingTestData.executions;
             document.getElementById('polling-skipped').textContent = pollingTestData.skipped;
@@ -579,15 +579,15 @@
             const debounceResult = document.getElementById('summary-debounce').textContent;
             const pollingResult = document.getElementById('summary-polling').textContent;
 
-            let overall = '等待测试...';
+            let overall = '等待測試...';
             if (debounceResult.includes('✅') && pollingResult.includes('✅')) {
-                overall = '🎉 所有测试通过！';
+                overall = '🎉 所有測試透過！';
                 document.getElementById('summary-overall').className = 'result-value good';
             } else if (debounceResult.includes('❌') || pollingResult.includes('❌')) {
-                overall = '❌ 部分测试失败';
+                overall = '❌ 部分測試失敗';
                 document.getElementById('summary-overall').className = 'result-value bad';
             } else if (debounceResult.includes('✅') || pollingResult.includes('✅')) {
-                overall = '⚠️ 部分测试完成';
+                overall = '⚠️ 部分測試完成';
                 document.getElementById('summary-overall').className = 'result-value';
             }
 
@@ -596,8 +596,8 @@
 
         // 初始化
         window.addEventListener('load', () => {
-            console.log('%c🚀 Phase 1 测试工具已加载', 'color: #4CAF50; font-size: 16px; font-weight: bold;');
-            console.log('%c提示: 在这个页面测试防抖和定时器优化', 'color: #666;');
+            console.log('%c🚀 Phase 1 測試工具已載入', 'color: #4CAF50; font-size: 16px; font-weight: bold;');
+            console.log('%c提示: 在這個頁面測試防抖和定時器最佳化', 'color: #666;');
         });
     </script>
 </body>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot 拖拽测试</title>
+    <title>Chatbot 拖拽測試</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -57,52 +57,52 @@
 </head>
 <body>
     <div class="test-content">
-        <h1>🤖 Chatbot 增强拖拽功能测试</h1>
-        <p>这个页面用来测试 chatbot 的新增拖拽和浮动功能。</p>
+        <h1>🤖 Chatbot 增強拖拽功能測試</h1>
+        <p>這個頁面用來測試 chatbot 的新增拖拽和浮動功能。</p>
         
         <div class="features">
-            <h3>✨ 新功能介绍：</h3>
+            <h3>✨ 新功能介紹：</h3>
             <div class="feature-item">
-                <strong>🎯 浮动模式：</strong> 点击浮动按钮可以将 chatbot 切换为自由浮动窗口
+                <strong>🎯 浮動模式：</strong> 點選浮動按鈕可以將 chatbot 切換為自由浮動視窗
             </div>
             <div class="feature-item">
-                <strong>🖱️ 拖拽移动：</strong> 在浮动模式下，可以拖拽标题栏移动窗口位置
+                <strong>🖱️ 拖拽移動：</strong> 在浮動模式下，可以拖拽標題欄移動視窗位置
             </div>
             <div class="feature-item">
-                <strong>📏 八方向调整大小：</strong> 可以拖拽窗口的上下左右边缘和四个角来调整大小
+                <strong>📏 八方向調整大小：</strong> 可以拖拽視窗的上下左右邊緣和四個角來調整大小
             </div>
             <div class="feature-item">
-                <strong>💾 状态保存：</strong> 位置和大小会自动保存，下次打开时恢复
+                <strong>💾 狀態儲存：</strong> 位置和大小會自動儲存，下次開啟時恢復
             </div>
             <div class="feature-item">
-                <strong>🔄 切换模式：</strong> 可以在固定模式和浮动模式之间自由切换
+                <strong>🔄 切換模式：</strong> 可以在固定模式和浮動模式之間自由切換
             </div>
         </div>
 
         <button class="open-btn" onclick="openChatbot()">
-            打开 Chatbot 测试功能
+            開啟 Chatbot 測試功能
         </button>
 
         <div style="margin-top: 30px; padding: 20px; background: #e3f2fd; border-radius: 8px;">
-            <h4>🔧 操作说明：</h4>
+            <h4>🔧 操作說明：</h4>
             <ol>
-                <li>点击上方按钮打开 chatbot</li>
-                <li>找到右上角的浮动按钮（立方体图标），点击切换到浮动模式</li>
-                <li>在浮动模式下：
+                <li>點選上方按鈕開啟 chatbot</li>
+                <li>找到右上角的浮動按鈕（立方體圖示），點選切換到浮動模式</li>
+                <li>在浮動模式下：
                     <ul>
-                        <li>拖拽标题栏可以移动窗口</li>
-                        <li>拖拽窗口边缘可以调整大小</li>
-                        <li>右上角图标会变为固定模式按钮</li>
+                        <li>拖拽標題欄可以移動視窗</li>
+                        <li>拖拽視窗邊緣可以調整大小</li>
+                        <li>右上角圖示會變為固定模式按鈕</li>
                     </ul>
                 </li>
-                <li>再次点击可以切换回固定模式</li>
+                <li>再次點選可以切換回固定模式</li>
             </ol>
         </div>
     </div>
 
-    <!-- 模拟必要的全局对象和函数 -->
+    <!-- 模擬必要的全域物件和函式 -->
     <script>
-        // 模拟必要的全局对象
+        // 模擬必要的全域物件
         window.ChatbotCore = {
             getChatbotConfig: () => ({ model: 'test', settings: {}, siteSpecificAvailableModels: [] }),
             getCurrentDocId: () => 'test_doc',
@@ -134,22 +134,22 @@
         };
 
         window.ChatbotMessageRenderer = {
-            renderUserMessage: () => '<div>用户消息</div>',
-            renderAssistantMessage: () => '<div>AI回复</div>',
-            renderTypingIndicator: () => '<div>正在输入...</div>',
-            renderFinalSummaryMessage: () => '<div>总结</div>',
+            renderUserMessage: () => '<div>使用者訊息</div>',
+            renderAssistantMessage: () => '<div>AI回覆</div>',
+            renderTypingIndicator: () => '<div>正在輸入...</div>',
+            renderFinalSummaryMessage: () => '<div>總結</div>',
             getMarkdownStyles: () => ''
         };
 
-        // 打开chatbot的函数
+        // 開啟chatbot的函式
         function openChatbot() {
             window.isChatbotOpen = true;
             window.ChatbotUI.updateChatbotUI();
         }
 
-        // 模拟发送消息
+        // 模擬傳送訊息
         window.handleChatbotSend = function() {
-            console.log('发送消息');
+            console.log('傳送訊息');
         };
     </script>
 

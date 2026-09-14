@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AST 注释插件测试</title>
+    <title>AST 註釋外掛測試</title>
     <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -102,34 +102,34 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎯 AST 注释插件测试</h1>
+        <h1>🎯 AST 註釋外掛測試</h1>
 
         <div class="test-info">
-            <strong>测试说明：</strong>
+            <strong>測試說明：</strong>
             <ul>
-                <li>AST 插件会<strong>精准匹配</strong>指定的文本并高亮显示</li>
-                <li>自动<strong>跳过代码块和公式</strong>中的相同文本</li>
-                <li>鼠标悬停注释可查看 ID</li>
-                <li>对比旧版基于 marked.Renderer 的字符串替换</li>
+                <li>AST 外掛會<strong>精準比對</strong>指定的文字並醒目提示顯示</li>
+                <li>自動<strong>跳過程式碼塊和公式</strong>中的相同文字</li>
+                <li>滑鼠懸停註釋可檢視 ID</li>
+                <li>對比舊版基於 marked.Renderer 的字串替換</li>
             </ul>
         </div>
 
         <div class="controls">
-            <button onclick="testBasic()">测试 1: 基础注释</button>
-            <button onclick="testSkipCode()">测试 2: 跳过代码块</button>
-            <button onclick="testSkipMath()">测试 3: 跳过公式</button>
-            <button onclick="testComplex()">测试 4: 复杂场景</button>
+            <button onclick="testBasic()">測試 1: 基礎註釋</button>
+            <button onclick="testSkipCode()">測試 2: 跳過程式碼塊</button>
+            <button onclick="testSkipMath()">測試 3: 跳過公式</button>
+            <button onclick="testComplex()">測試 4: 複雜場景</button>
         </div>
 
         <div class="result-panel" id="result"></div>
     </div>
 
-    <!-- 依赖库 -->
+    <!-- 依賴庫 -->
     <script src="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>
 
-    <!-- AST 处理器 -->
+    <!-- AST 處理器 -->
     <script src="js/processing/markdown_processor_enhanced.js"></script>
     <script src="js/processing/annotation_plugin_ast.js"></script>
     <script src="js/processing/markdown_processor_ast.js"></script>
@@ -139,7 +139,7 @@
 
         function testBasic() {
             const markdown = `
-# 基础注释测试
+# 基礎註釋測試
 
 This is a **test** document. The word "test" appears multiple times.
 We can annotate the word test here as well.
@@ -152,12 +152,12 @@ Another paragraph with some test content.
                 { text: 'document', id: 'ann-2' }
             ];
 
-            render(markdown, annotations, '测试 1: 基础注释 - "test" 和 "document" 被高亮');
+            render(markdown, annotations, '測試 1: 基礎註釋 - "test" 和 "document" 被醒目提示');
         }
 
         function testSkipCode() {
             const markdown = `
-# 跳过代码块测试
+# 跳過程式碼塊測試
 
 The variable \`result\` stores the result of computation.
 
@@ -173,12 +173,12 @@ Note that "result" in code blocks is NOT annotated.
                 { text: 'result', id: 'ann-3' }
             ];
 
-            render(markdown, annotations, '测试 2: "result" 只在正文中高亮，代码块中的 result 被跳过');
+            render(markdown, annotations, '測試 2: "result" 只在正文中醒目提示，程式碼塊中的 result 被跳過');
         }
 
         function testSkipMath() {
             const markdown = `
-# 跳过公式测试
+# 跳過公式測試
 
 The variable $x$ represents the unknown.
 
@@ -191,14 +191,14 @@ The letter x appears here in normal text too.
                 { text: 'x', id: 'ann-4' }
             ];
 
-            render(markdown, annotations, '测试 3: "x" 只在正文中高亮，公式中的 x 被跳过（如果公式插件正常工作）');
+            render(markdown, annotations, '測試 3: "x" 只在正文中醒目提示，公式中的 x 被跳過（如果公式外掛正常工作）');
         }
 
         function testComplex() {
             const markdown = `
-# 复杂场景测试
+# 複雜場景測試
 
-## 论文分析
+## 論文分析
 
 The **regression model** is defined as:
 
@@ -224,7 +224,7 @@ The word "model" appears in text, code, and math contexts.
                 { text: 'parameters', id: 'ann-7' }
             ];
 
-            render(markdown, annotations, '测试 4: "model" 只在正文中高亮，代码和公式中被跳过');
+            render(markdown, annotations, '測試 4: "model" 只在正文中醒目提示，程式碼和公式中被跳過');
         }
 
         function render(markdown, annotations, description) {
@@ -242,28 +242,28 @@ The word "model" appears in text, code, and math contexts.
                     </div>
                     ${html}
                     <div style="margin-top: 30px; padding: 15px; background: #f1f5f9; border-radius: 8px;">
-                        <strong>注释列表：</strong>
+                        <strong>註釋列表：</strong>
                         <ul style="margin-top: 10px; margin-left: 20px;">
                             ${annotations.map(a => `<li>${a.text} (ID: ${a.id})</li>`).join('')}
                         </ul>
                     </div>
                 `;
 
-                // 添加点击事件
+                // 新增點選事件
                 document.querySelectorAll('.annotation-highlight').forEach(el => {
                     el.addEventListener('click', () => {
-                        alert(`注释信息：\n文本: ${el.dataset.annotationText}\nID: ${el.dataset.annotationId}`);
+                        alert(`註釋資訊：\n文字: ${el.dataset.annotationText}\nID: ${el.dataset.annotationId}`);
                     });
                 });
 
                 console.log('✓ 渲染成功');
             } catch (error) {
-                resultDiv.innerHTML = `<div style="color: red;">渲染失败: ${error.message}</div>`;
+                resultDiv.innerHTML = `<div style="color: red;">渲染失敗: ${error.message}</div>`;
                 console.error(error);
             }
         }
 
-        // 页面加载时运行第一个测试
+        // 頁面載入時執行第一個測試
         window.addEventListener('load', () => {
             testBasic();
         });

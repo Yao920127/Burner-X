@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>表格修复前后对比</title>
+    <title>表格修復前後對比</title>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked@4.0.0/marked.min.js"></script>
     <script src="js/processing/markdown_processor_ast.js"></script>
@@ -203,21 +203,21 @@
     </style>
 </head>
 <body>
-    <h1>🔍 表格渲染修复：前后对比</h1>
+    <h1>🔍 表格渲染修復：前後對比</h1>
 
     <div id="output"></div>
 
     <script>
         const output = document.getElementById('output');
 
-        // 测试表格数据
-        const compressedTable = `| | | | 五分位数 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 规模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
+        // 測試表格資料
+        const compressedTable = `| | | | 五分位數 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 規模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
 
-        // ==================== 测试案例 1: Block #31 压缩表格 ====================
+        // ==================== 測試案例 1: Block #31 壓縮表格 ====================
         const testCase1 = document.createElement('div');
         testCase1.className = 'test-case';
         testCase1.innerHTML = `
-            <h2>📊 测试案例：Block #31 压缩表格</h2>
+            <h2>📊 測試案例：Block #31 壓縮表格</h2>
             <div class="source-markdown"><strong>源 Markdown:</strong><br>${compressedTable.substring(0, 200)}...</div>
         `;
         output.appendChild(testCase1);
@@ -225,19 +225,19 @@
         const comparison1 = document.createElement('div');
         comparison1.className = 'comparison-container';
 
-        // ========== 修复前 ==========
+        // ========== 修復前 ==========
         const beforePanel = document.createElement('div');
         beforePanel.className = 'panel before';
         beforePanel.innerHTML = `
-            <div class="panel-header">❌ 修复前</div>
-            <div class="badge badge-error">渲染为 &lt;p&gt; 标签</div>
+            <div class="panel-header">❌ 修復前</div>
+            <div class="badge badge-error">渲染為 &lt;p&gt; 標籤</div>
             <div class="badge badge-error">被 sub-block 分割</div>
-            <div class="badge badge-error">压缩表格未修复</div>
+            <div class="badge badge-error">壓縮表格未修復</div>
 
-            <h3>HTML 结构:</h3>
+            <h3>HTML 結構:</h3>
             <div class="code-display">&lt;p data-block-index="31"&gt;
   &lt;span class="sub-block" data-sub-block-id="31.0"&gt;
-    | | | | 五分位数 (Quintiles) | | |
+    | | | | 五分位數 (Quintiles) | | |
   &lt;/span&gt;
   &lt;span class="sub-block" data-sub-block-id="31.1"&gt;
     |---|---|---|---|---|---|---|
@@ -248,18 +248,18 @@
   ...
 &lt;/p&gt;</div>
 
-            <h3>浏览器显示:</h3>
+            <h3>瀏覽器顯示:</h3>
             <div class="result-box">
-                <p>| | | | 五分位数 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 |</p>
+                <p>| | | | 五分位數 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 |</p>
             </div>
         `;
         comparison1.appendChild(beforePanel);
 
-        // ========== 修复后 ==========
+        // ========== 修復後 ==========
         const afterPanel = document.createElement('div');
         afterPanel.className = 'panel after';
 
-        // 实际渲染表格
+        // 實際渲染表格
         let renderedTable = '';
         if (typeof MarkdownProcessorAST !== 'undefined' && MarkdownProcessorAST.render) {
             renderedTable = MarkdownProcessorAST.render(compressedTable, {});
@@ -271,15 +271,15 @@
         const isTable = renderedTable.trim().startsWith('<table');
 
         afterPanel.innerHTML = `
-            <div class="panel-header">✅ 修复后</div>
-            <div class="badge badge-success">渲染为 &lt;table&gt; 标签</div>
+            <div class="panel-header">✅ 修復後</div>
+            <div class="badge badge-success">渲染為 &lt;table&gt; 標籤</div>
             <div class="badge badge-success">保持表格完整性</div>
-            <div class="badge badge-success">压缩表格自动修复</div>
+            <div class="badge badge-success">壓縮表格自動修復</div>
 
-            <h3>HTML 结构:</h3>
+            <h3>HTML 結構:</h3>
             <div class="code-display">${renderedTable.substring(0, 400).replace(/</g, '&lt;').replace(/>/g, '&gt;')}...</div>
 
-            <h3>浏览器显示:</h3>
+            <h3>瀏覽器顯示:</h3>
             <div class="result-box">
                 ${renderedTable}
             </div>
@@ -288,7 +288,7 @@
 
         output.appendChild(comparison1);
 
-        // ==================== 三层修复机制说明 ====================
+        // ==================== 三層修復機制說明 ====================
         const arrow = document.createElement('div');
         arrow.className = 'arrow-down';
         arrow.innerHTML = '⬇️';
@@ -297,38 +297,38 @@
         const mechanismSection = document.createElement('div');
         mechanismSection.className = 'test-case';
         mechanismSection.innerHTML = `
-            <h2>🛡️ 三层修复机制详解</h2>
+            <h2>🛡️ 三層修復機制詳解</h2>
 
             <div class="fix-layer">
-                <h4>🔍 第一层：Token 类型检测与强制转换</h4>
-                <p><strong>问题：</strong><code>marked.lexer()</code> 错误地将表格标记为 paragraph token</p>
-                <p><strong>解决：</strong>在 <code>renderBatch</code> 中检测表格语法，强制修改 token 类型</p>
+                <h4>🔍 第一層：Token 型別檢測與強制轉換</h4>
+                <p><strong>問題：</strong><code>marked.lexer()</code> 錯誤地將表格標記為 paragraph token</p>
+                <p><strong>解決：</strong>在 <code>renderBatch</code> 中檢測表格語法，強制修改 token 型別</p>
                 <div class="code-display">const hasTableSyntax = /\\|(:?-+:?\\|)+/.test(tokenRaw);
 if (tokens[i].type === 'paragraph' && hasTableSyntax) {
-  console.log('[renderBatch] 检测到 paragraph token 包含表格语法');
-  tokens[i].type = 'table'; // 强制改为 table 类型
+  console.log('[renderBatch] 檢測到 paragraph token 包含表格語法');
+  tokens[i].type = 'table'; // 強制改為 table 型別
 }</div>
             </div>
 
             <div class="fix-layer">
-                <h4>⚙️ 第二层：优先使用 AST 渲染器</h4>
-                <p><strong>优势：</strong>AST 渲染器支持压缩表格自动修复</p>
+                <h4>⚙️ 第二層：優先使用 AST 渲染器</h4>
+                <p><strong>優勢：</strong>AST 渲染器支援壓縮表格自動修復</p>
                 <div class="code-display">if (typeof MarkdownProcessorAST !== 'undefined') {
   htmlStr = MarkdownProcessorAST.render(tokenRaw, data.images);
-  // ✓ 自动修复压缩表格
-  // ✓ 支持表格中的公式
-  // ✓ 完整的 Markdown 语法支持
+  // ✓ 自動修復壓縮表格
+  // ✓ 支援表格中的公式
+  // ✓ 完整的 Markdown 語法支援
 }</div>
             </div>
 
             <div class="fix-layer">
-                <h4>🔄 第三层：后验检查与重新渲染</h4>
-                <p><strong>兜底保护：</strong>如果前两层失败，从 &lt;p&gt; 标签中提取并重新渲染</p>
+                <h4>🔄 第三層：後驗檢查與重新渲染</h4>
+                <p><strong>兜底保護：</strong>如果前兩層失敗，從 &lt;p&gt; 標籤中提取並重新渲染</p>
                 <div class="code-display">if (hasTableSyntax && htmlStr.trim().startsWith('&lt;p')) {
-  console.warn('[renderBatch] 渲染后仍然是 &lt;p&gt;，重新渲染');
-  // 提取 &lt;p&gt; 中的 Markdown 文本
+  console.warn('[renderBatch] 渲染後仍然是 &lt;p&gt;，重新渲染');
+  // 提取 &lt;p&gt; 中的 Markdown 文字
   const tableMarkdown = pElement.textContent;
-  // 重新渲染为表格
+  // 重新渲染為表格
   htmlStr = MarkdownProcessorAST.render(tableMarkdown);
   console.log('[renderBatch] 重新渲染表格成功');
 }</div>
@@ -336,7 +336,7 @@ if (tokens[i].type === 'paragraph' && hasTableSyntax) {
         `;
         output.appendChild(mechanismSection);
 
-        // ==================== 简单测试案例 ====================
+        // ==================== 簡單測試案例 ====================
         const arrow2 = document.createElement('div');
         arrow2.className = 'arrow-down';
         arrow2.innerHTML = '⬇️';
@@ -356,38 +356,38 @@ if (tokens[i].type === 'paragraph' && hasTableSyntax) {
         }
 
         simpleTest.innerHTML = `
-            <h2>📋 测试案例：普通多行表格</h2>
+            <h2>📋 測試案例：普通多行表格</h2>
             <div class="source-markdown"><strong>源 Markdown:</strong><br>${simpleTable}</div>
 
-            <h3>渲染结果:</h3>
+            <h3>渲染結果:</h3>
             <div class="result-box after">
                 ${simpleRendered}
             </div>
 
-            <div class="badge badge-success">✓ 正确渲染为 &lt;table&gt;</div>
+            <div class="badge badge-success">✓ 正確渲染為 &lt;table&gt;</div>
         `;
         output.appendChild(simpleTest);
 
-        // ==================== 验证清单 ====================
+        // ==================== 驗證清單 ====================
         const checklistSection = document.createElement('div');
         checklistSection.className = 'test-case';
         checklistSection.innerHTML = `
-            <h2>✅ 验证清单</h2>
+            <h2>✅ 驗證清單</h2>
             <div style="font-size: 16px; line-height: 2;">
-                <div>✓ <strong>压缩表格</strong>：单行表格自动展开为多行格式</div>
+                <div>✓ <strong>壓縮表格</strong>：單行表格自動展開為多行格式</div>
                 <div>✓ <strong>表格完整性</strong>：不被 sub-block 分割</div>
-                <div>✓ <strong>正确渲染</strong>：显示为 &lt;table&gt; 元素而非 &lt;p&gt;</div>
-                <div>✓ <strong>样式显示</strong>：带有边框、表头背景色</div>
-                <div>✓ <strong>公式支持</strong>：表格内的公式正确渲染</div>
-                <div>✓ <strong>性能优化</strong>：批量渲染，不阻塞 UI</div>
+                <div>✓ <strong>正確渲染</strong>：顯示為 &lt;table&gt; 元素而非 &lt;p&gt;</div>
+                <div>✓ <strong>樣式顯示</strong>：帶有邊框、表頭背景色</div>
+                <div>✓ <strong>公式支援</strong>：表格內的公式正確渲染</div>
+                <div>✓ <strong>效能最佳化</strong>：批次渲染，不阻塞 UI</div>
             </div>
 
             <h3 style="margin-top: 30px;">🚀 下一步操作</h3>
             <ol style="font-size: 16px; line-height: 2;">
-                <li>在实际应用中按 <code style="background:#f1f3f5;padding:2px 8px;border-radius:3px;">Ctrl + Shift + R</code> 清除缓存并刷新</li>
-                <li>打开浏览器开发者工具（F12）查看控制台日志</li>
-                <li>检查 Block #31 是否正确渲染为表格</li>
-                <li>验证表格中的公式和特殊符号显示正常</li>
+                <li>在實際應用中按 <code style="background:#f1f3f5;padding:2px 8px;border-radius:3px;">Ctrl + Shift + R</code> 清除快取並重新整理</li>
+                <li>開啟瀏覽器開發者工具（F12）檢視主控台日誌</li>
+                <li>檢查 Block #31 是否正確渲染為表格</li>
+                <li>驗證表格中的公式和特殊符號顯示正常</li>
             </ol>
         `;
         output.appendChild(checklistSection);

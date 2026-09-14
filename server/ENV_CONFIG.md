@@ -1,83 +1,83 @@
-# 环境变量配置指南
+# 環境變數配置指南
 
-本文档说明 Paper Burner X 项目的环境变量配置要求。
+本文件說明 Paper Burner X 專案的環境變數配置要求。
 
-## 快速开始
+## 快速開始
 
-### 开发环境（开箱即用）
+### 開發環境（開箱即用）
 
-开发环境可以使用默认值，系统会自动生成安全的开发密钥并给出警告提示：
+開發環境可以使用預設值，系統會自動生成安全的開發金鑰並給出警告提示：
 
 ```bash
-# 无需配置即可运行（会有警告提示）
+# 無需配置即可執行（會有警告提示）
 npm run dev
 ```
 
-### 生产环境（必须配置）
+### 生產環境（必須配置）
 
-生产环境必须设置以下关键安全变量：
+生產環境必須設定以下關鍵安全變數：
 
 ```bash
-# 必需的环境变量
+# 必需的環境變數
 NODE_ENV=production
-JWT_SECRET=<生成强随机字符串>
-ENCRYPTION_SALT=<生成强随机字符串>
+JWT_SECRET=<生成強隨機字串>
+ENCRYPTION_SALT=<生成強隨機字串>
 CORS_ORIGIN=https://yourdomain.com,https://www.yourdomain.com
 
-# 推荐配置
+# 推薦配置
 FILE_VALIDATION_STRICT=true
 DATABASE_URL=postgresql://...
 ```
 
-## 环境变量说明
+## 環境變數說明
 
-### 🔴 必需配置（生产环境）
+### 🔴 必需配置（生產環境）
 
-| 变量名 | 说明 | 示例 | 开发环境 | 生产环境 |
+| 變數名 | 說明 | 示例 | 開發環境 | 生產環境 |
 |--------|------|------|----------|----------|
-| `NODE_ENV` | 环境模式 | `production` | 可选 | **必需** |
-| `JWT_SECRET` | JWT 签名密钥 | 随机字符串 | 自动生成 | **必需** |
-| `ENCRYPTION_SALT` | 加密 salt | 随机字符串 | 使用默认值 | **必需** |
+| `NODE_ENV` | 環境模式 | `production` | 可選 | **必需** |
+| `JWT_SECRET` | JWT 簽名金鑰 | 隨機字串 | 自動生成 | **必需** |
+| `ENCRYPTION_SALT` | 加密 salt | 隨機字串 | 使用預設值 | **必需** |
 
 ### 🟡 部署配置
 
-| 变量名 | 说明 | 示例 | 默认值 |
+| 變數名 | 說明 | 示例 | 預設值 |
 |--------|------|------|--------|
 | `DEPLOYMENT_MODE` | 部署模式 | `frontend` / `backend` | `frontend` |
-| `CORS_ORIGIN` | CORS 允许的源 | `https://example.com` | 开发环境允许所有源 |
-| `PORT` | 服务器端口 | `3000` | `3000` |
+| `CORS_ORIGIN` | CORS 允許的源 | `https://example.com` | 開發環境允許所有源 |
+| `PORT` | 伺服器埠 | `3000` | `3000` |
 
 ### 🟢 安全配置
 
-| 变量名 | 说明 | 示例 | 默认值 |
+| 變數名 | 說明 | 示例 | 預設值 |
 |--------|------|------|--------|
 | `DISABLE_CSP` | 是否禁用 CSP | `true` / `false` | `false` |
-| `CSP_ALLOW_INLINE` | 是否允许内联脚本 | `true` / `false` | 前端模式自动启用 |
-| `FILE_VALIDATION_STRICT` | 文件类型验证严格模式 | `true` / `false` | `false` |
-| `ALLOWED_MIME_TYPES` | 允许的文件类型 | `application/pdf,text/markdown` | 内置白名单 |
-| `MAX_UPLOAD_SIZE` | 最大文件大小（MB） | `100` | `100` |
+| `CSP_ALLOW_INLINE` | 是否允許內聯腳本 | `true` / `false` | 前端模式自動啟用 |
+| `FILE_VALIDATION_STRICT` | 檔案型別驗證嚴格模式 | `true` / `false` | `false` |
+| `ALLOWED_MIME_TYPES` | 允許的檔案型別 | `application/pdf,text/markdown` | 內建白名單 |
+| `MAX_UPLOAD_SIZE` | 最大檔案大小（MB） | `100` | `100` |
 
-### 🔵 数据库配置
+### 🔵 資料庫配置
 
-| 变量名 | 说明 | 示例 |
+| 變數名 | 說明 | 示例 |
 |--------|------|------|
-| `DATABASE_URL` | Prisma 数据库连接 URL | `postgresql://user:pass@localhost:5432/db` |
+| `DATABASE_URL` | Prisma 資料庫連線 URL | `postgresql://user:pass@localhost:5432/db` |
 
 ### 🟣 JWT 配置
 
-| 变量名 | 说明 | 示例 | 默认值 |
+| 變數名 | 說明 | 示例 | 預設值 |
 |--------|------|------|--------|
-| `JWT_EXPIRES_IN` | JWT 过期时间 | `7d` | `7d` |
+| `JWT_EXPIRES_IN` | JWT 過期時間 | `7d` | `7d` |
 
-## 生成安全密钥
+## 生成安全金鑰
 
 ### 使用 OpenSSL
 
 ```bash
-# 生成 JWT_SECRET（32 字节 Base64）
+# 生成 JWT_SECRET（32 位元組 Base64）
 openssl rand -base64 32
 
-# 生成 ENCRYPTION_SALT（32 字节 Base64）
+# 生成 ENCRYPTION_SALT（32 位元組 Base64）
 openssl rand -base64 32
 ```
 
@@ -89,20 +89,20 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 ## 配置示例
 
-### .env（开发环境）
+### .env（開發環境）
 
 ```bash
 NODE_ENV=development
 DEPLOYMENT_MODE=frontend
-# JWT_SECRET 和 ENCRYPTION_SALT 可以不设置，系统会自动生成
+# JWT_SECRET 和 ENCRYPTION_SALT 可以不設定，系統會自動生成
 ```
 
-### .env（生产环境）
+### .env（生產環境）
 
 ```bash
 NODE_ENV=production
-JWT_SECRET=<生成的强随机字符串>
-ENCRYPTION_SALT=<生成的强随机字符串>
+JWT_SECRET=<生成的強隨機字串>
+ENCRYPTION_SALT=<生成的強隨機字串>
 CORS_ORIGIN=https://yourdomain.com,https://www.yourdomain.com
 FILE_VALIDATION_STRICT=true
 DATABASE_URL=postgresql://user:password@localhost:5432/paperburner
@@ -110,19 +110,19 @@ DATABASE_URL=postgresql://user:password@localhost:5432/paperburner
 
 ## 安全提示
 
-1. **永远不要将 `.env` 文件提交到 Git**
-2. **生产环境必须设置所有安全相关变量**
-3. **定期轮换密钥**（会影响现有用户登录，需要配合迁移策略）
-4. **使用强随机字符串作为密钥**（至少 32 字节）
-5. **限制 CORS_ORIGIN 为实际需要的域名**
+1. **永遠不要將 `.env` 檔案提交到 Git**
+2. **生產環境必須設定所有安全相關變數**
+3. **定期輪換金鑰**（會影響現有使用者登入，需要配合遷移策略）
+4. **使用強隨機字串作為金鑰**（至少 32 位元組）
+5. **限制 CORS_ORIGIN 為實際需要的域名**
 
-## 迁移注意事项
+## 遷移注意事項
 
-⚠️ **重要**：更改 `ENCRYPTION_SALT` 会导致已加密的数据无法解密。如需更改 salt，需要：
+⚠️ **重要**：更改 `ENCRYPTION_SALT` 會導致已加密的資料無法解密。如需更改 salt，需要：
 
-1. 先解密所有数据
+1. 先解密所有資料
 2. 更改 salt
-3. 重新加密数据
+3. 重新加密資料
 
-因此，建议在生产环境部署前就设置好 `ENCRYPTION_SALT`。
+因此，建議在生產環境部署前就設定好 `ENCRYPTION_SALT`。
 

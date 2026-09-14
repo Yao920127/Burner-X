@@ -1,95 +1,95 @@
-# PDF Compare View 重构状态报告
+# PDF Compare View 重構狀態報告
 
-## 📊 总体进度: 70% 完成
+## 📊 總體進度: 70% 完成
 
 ### ✅ 已完成 (70%)
 
-#### 1. 模块提取 (100%)
-- ✅ **TextFitting.js** (450行) - 文本自适应渲染
-  - 包含: 文本换行、字号计算、公式渲染
-  - 状态: ✅ 已提取并修复bug
+#### 1. 模組提取 (100%)
+- ✅ **TextFitting.js** (450行) - 文字自適應渲染
+  - 包含: 文字換行、字號計算、公式渲染
+  - 狀態: ✅ 已提取並修復bug
 
-- ✅ **PDFExporter.js** (450行) - PDF导出功能
-  - 包含: PDF生成、文本覆盖、字体嵌入
-  - 状态: ✅ 已提取并修复bug
+- ✅ **PDFExporter.js** (450行) - PDF匯出功能
+  - 包含: PDF生成、文字覆蓋、字型嵌入
+  - 狀態: ✅ 已提取並修復bug
 
-- ✅ **SegmentManager.js** (400行) - 长画布分段管理
-  - 包含: 懒加载、分段渲染、事件管理
-  - 状态: ✅ 已提取并修复bug
+- ✅ **SegmentManager.js** (400行) - 長畫布分段管理
+  - 包含: 懶載入、分段渲染、事件管理
+  - 狀態: ✅ 已提取並修復bug
 
-#### 2. Bug修复 (100%)
-- ✅ TextFitting: 添加 `bboxNormalizedRange` 配置
-- ✅ PDFExporter: 统一文本高度计算公式
-- ✅ SegmentManager: 修复事件监听器内存泄漏
+#### 2. Bug修復 (100%)
+- ✅ TextFitting: 新增 `bboxNormalizedRange` 配置
+- ✅ PDFExporter: 統一文字高度計算公式
+- ✅ SegmentManager: 修復事件監聽器記憶體洩漏
 
-#### 3. 文档 (100%)
-- ✅ 创建详细的测试指南 ([TESTING_GUIDE.md](TESTING_GUIDE.md))
-- ✅ Code Review 文档
-- ✅ 本状态报告
+#### 3. 文件 (100%)
+- ✅ 建立詳細的測試指南 ([TESTING_GUIDE.md](TESTING_GUIDE.md))
+- ✅ Code Review 文件
+- ✅ 本狀態報告
 
-#### 4. 主类初始化 (30%)
-- ✅ 修改构造函数，初始化模块
-- ⏳ 方法包装器适配 (进行中)
+#### 4. 主類初始化 (30%)
+- ✅ 修改建構函式，初始化模組
+- ⏳ 方法包裝器適配 (進行中)
 
-### 🔄 进行中 (20%)
+### 🔄 進行中 (20%)
 
-#### 5. 主类方法适配
-需要修改以下方法使用新模块：
+#### 5. 主類方法適配
+需要修改以下方法使用新模組：
 
-**TextFittingAdapter 相关**:
-- `initializeTextFitting()` - 调用模块的 initialize()
-- `preprocessGlobalFontSizes()` - 调用模块方法
-- `drawPlainTextInBox()` - 调用模块方法
-- `drawPlainTextWithFitting()` - 调用模块方法
-- `wrapText()` - 调用模块方法
-- `renderFormulasInText()` - 调用模块方法
+**TextFittingAdapter 相關**:
+- `initializeTextFitting()` - 呼叫模組的 initialize()
+- `preprocessGlobalFontSizes()` - 呼叫模組方法
+- `drawPlainTextInBox()` - 呼叫模組方法
+- `drawPlainTextWithFitting()` - 呼叫模組方法
+- `wrapText()` - 呼叫模組方法
+- `renderFormulasInText()` - 呼叫模組方法
 
-**PDFExporter 相关**:
-- `exportStructuredTranslation()` - 调用模块的 exportStructuredTranslation()
-- `calculatePdfTextLayout()` - 由模块内部处理
-- `wrapTextForPdf()` - 由模块内部处理
-- `loadPdfLib()` - 由模块内部处理
+**PDFExporter 相關**:
+- `exportStructuredTranslation()` - 呼叫模組的 exportStructuredTranslation()
+- `calculatePdfTextLayout()` - 由模組內部處理
+- `wrapTextForPdf()` - 由模組內部處理
+- `loadPdfLib()` - 由模組內部處理
 
-**SegmentManager 相关**:
-- `renderAllPagesContinuous()` - 使用模块的 renderAllPagesContinuous()
-- `createSegmentDom()` - 由模块内部处理
-- `initLazyLoadingSegments()` - 由模块内部处理
-- `renderVisibleSegments()` - 由模块内部处理
-- `renderSegment()` - 由模块内部处理
-- `renderSegmentOverlays()` - 由模块内部处理
+**SegmentManager 相關**:
+- `renderAllPagesContinuous()` - 使用模組的 renderAllPagesContinuous()
+- `createSegmentDom()` - 由模組內部處理
+- `initLazyLoadingSegments()` - 由模組內部處理
+- `renderVisibleSegments()` - 由模組內部處理
+- `renderSegment()` - 由模組內部處理
+- `renderSegmentOverlays()` - 由模組內部處理
 
 ### ⏳ 待完成 (10%)
 
-#### 6. HTML文件更新
-需要在HTML中添加模块引用：
+#### 6. HTML檔案更新
+需要在HTML中新增模組參考：
 ```html
-<!-- 在 history_pdf_compare.js 之前添加 -->
+<!-- 在 history_pdf_compare.js 之前新增 -->
 <script src="js/history/modules/TextFitting.js"></script>
 <script src="js/history/modules/PDFExporter.js"></script>
 <script src="js/history/modules/SegmentManager.js"></script>
 ```
 
-#### 7. 功能测试
-按照 [TESTING_GUIDE.md](TESTING_GUIDE.md) 执行完整测试。
+#### 7. 功能測試
+按照 [TESTING_GUIDE.md](TESTING_GUIDE.md) 執行完整測試。
 
 ---
 
-## 📋 详细实施计划
+## 📋 詳細實施計劃
 
-### 阶段1: 方法适配器包装 (估计: 2小时)
+### 階段1: 方法介面卡包裝 (估計: 2小時)
 
-创建包装器方法，保持接口兼容性：
+建立包裝器方法，保持介面相容性：
 
 ```javascript
-// 示例：TextFitting 方法包装
+// 示例：TextFitting 方法包裝
 initializeTextFitting() {
   if (this.textFittingAdapter) {
     this.textFittingAdapter.initialize();
-    // 兼容性: 同步到旧属性
+    // 相容性: 同步到舊屬性
     this.textFittingEngine = this.textFittingAdapter.textFittingEngine;
   } else {
-    // 回退到原有实现
-    // ...(保留原有代码)
+    // 回退到原有實現
+    // ...(保留原有程式碼)
   }
 }
 
@@ -99,26 +99,26 @@ preprocessGlobalFontSizes() {
       this.contentListJson,
       this.translatedContentList
     );
-    // 同步缓存
+    // 同步快取
     this.globalFontSizeCache = this.textFittingAdapter.globalFontSizeCache;
     this.hasPreprocessed = this.textFittingAdapter.hasPreprocessed;
   } else {
-    // 回退实现
+    // 回退實現
   }
 }
 ```
 
-### 阶段2: SegmentManager 集成 (估计: 3小时)
+### 階段2: SegmentManager 整合 (估計: 3小時)
 
-最复杂的部分，需要：
+最複雜的部分，需要：
 1. 在 `renderAllPagesContinuous()` 中初始化 SegmentManager
-2. 设置依赖注入
-3. 替换原有的分段逻辑
+2. 設定依賴注入
+3. 替換原有的分段邏輯
 
 ```javascript
 async renderAllPagesContinuous() {
   if (typeof SegmentManager !== 'undefined') {
-    // 使用新模块
+    // 使用新模組
     this.segmentManager = new SegmentManager(this.pdfDoc, {
       maxSegmentPixels: this.dpr >= 2 ? 4096 : 8192,
       bufferRatio: 0.5,
@@ -126,7 +126,7 @@ async renderAllPagesContinuous() {
       bboxNormalizedRange: 1000
     });
 
-    // 设置容器
+    // 設定容器
     this.segmentManager.setContainers(
       this.originalSegmentsContainer,
       this.translationSegmentsContainer,
@@ -134,7 +134,7 @@ async renderAllPagesContinuous() {
       document.getElementById('pdf-translation-scroll')
     );
 
-    // 设置依赖
+    // 設定依賴
     this.segmentManager.setDependencies({
       renderPageBboxesToCtx: this.renderPageBboxesToCtx.bind(this),
       renderPageTranslationToCtx: this.renderPageTranslationToCtx.bind(this),
@@ -144,22 +144,22 @@ async renderAllPagesContinuous() {
       contentListJson: this.contentListJson
     });
 
-    // 执行渲染
+    // 執行渲染
     await this.segmentManager.renderAllPagesContinuous();
 
-    // 同步属性
+    // 同步屬性
     this.pageInfos = this.segmentManager.pageInfos;
     this.scale = this.segmentManager.scale;
   } else {
-    // 回退到原有实现
-    // ...(保留原有代码)
+    // 回退到原有實現
+    // ...(保留原有程式碼)
   }
 }
 ```
 
-### 阶段3: PDFExporter 集成 (估计: 1小时)
+### 階段3: PDFExporter 整合 (估計: 1小時)
 
-相对简单：
+相對簡單：
 
 ```javascript
 async exportStructuredTranslation() {
@@ -170,10 +170,10 @@ async exportStructuredTranslation() {
       typeof showNotification === 'function' ? showNotification : null
     );
   } else {
-    // 回退实现或提示用户
-    console.error('[PDFCompareView] PDFExporter 未加载');
+    // 回退實現或提示使用者
+    console.error('[PDFCompareView] PDFExporter 未載入');
     if (typeof showNotification === 'function') {
-      showNotification('导出功能不可用', 'error');
+      showNotification('匯出功能不可用', 'error');
     }
   }
 }
@@ -181,140 +181,140 @@ async exportStructuredTranslation() {
 
 ---
 
-## 🎯 快速完成方案 (推荐)
+## 🎯 快速完成方案 (推薦)
 
-为了快速完成并测试，建议采用**双轨制**：
+為了快速完成並測試，建議採用**雙軌制**：
 
-### 方案A: 保持原有代码 + 可选模块 (推荐, 风险低)
+### 方案A: 保持原有程式碼 + 可選模組 (推薦, 風險低)
 ```javascript
-// 在每个方法中检查模块是否可用
+// 在每個方法中檢查模組是否可用
 drawPlainTextInBox(...) {
   if (this.textFittingAdapter) {
-    // 使用新模块
+    // 使用新模組
     return this.textFittingAdapter.drawPlainTextInBox(...);
   } else {
-    // 使用原有代码
-    // ...(保留全部原有实现)
+    // 使用原有程式碼
+    // ...(保留全部原有實現)
   }
 }
 ```
 
-**优点**:
-- ✅ 安全：模块加载失败时自动回退
-- ✅ 可测试：可以对比新旧实现
-- ✅ 渐进式：可以逐步迁移
+**優點**:
+- ✅ 安全：模組載入失敗時自動回退
+- ✅ 可測試：可以對比新舊實現
+- ✅ 漸進式：可以逐步遷移
 
-**缺点**:
-- ❌ 代码冗余：需要保留原有代码
-- ❌ 文件仍然较大
+**缺點**:
+- ❌ 程式碼冗餘：需要保留原有程式碼
+- ❌ 檔案仍然較大
 
-### 方案B: 完全替换 (激进, 风险高)
-直接删除原有实现，只保留模块调用。
+### 方案B: 完全替換 (激進, 風險高)
+直接刪除原有實現，只保留模組呼叫。
 
-**优点**:
-- ✅ 代码简洁：文件从2606行减少到~1300行
-- ✅ 维护简单：只需维护模块
+**優點**:
+- ✅ 程式碼簡潔：檔案從2606行減少到~1300行
+- ✅ 維護簡單：只需維護模組
 
-**缺点**:
-- ❌ 风险高：模块问题会导致功能完全失效
-- ❌ 难以回滚：需要git revert
+**缺點**:
+- ❌ 風險高：模組問題會導致功能完全失效
+- ❌ 難以回滾：需要git revert
 
 ---
 
-## 🚀 继续重构的两个选项
+## 🚀 繼續重構的兩個選項
 
-### 选项1: 完成当前文件重构 (推荐)
-**工作量**: ~6小时
-**内容**:
-1. 完成方法适配 (2小时)
-2. 完成 SegmentManager 集成 (3小时)
-3. 测试和修复 (1小时)
+### 選項1: 完成當前檔案重構 (推薦)
+**工作量**: ~6小時
+**內容**:
+1. 完成方法適配 (2小時)
+2. 完成 SegmentManager 整合 (3小時)
+3. 測試和修復 (1小時)
 
-**优先级**: ⭐⭐⭐⭐⭐
+**優先順序**: ⭐⭐⭐⭐⭐
 
-### 选项2: 重构其他大文件
-按照相同模式重构：
+### 選項2: 重構其他大檔案
+按照相同模式重構：
 - [history.js](js/history/history.js) (2583行)
 - [history_exporter_docx.js](js/history/exporter/history_exporter_docx.js) (2255行)
 - [app.js](js/app.js) (2242行)
 
-**工作量**: ~每个文件 8-12小时
+**工作量**: ~每個檔案 8-12小時
 
 ---
 
-## 📈 代码行数对比
+## 📈 程式碼行數對比
 
-| 文件 | 重构前 | 提取后 | 主类 (估计) | 减少 |
+| 檔案 | 重構前 | 提取後 | 主類 (估計) | 減少 |
 |------|--------|--------|-------------|------|
-| history_pdf_compare.js | 2606行 | -1270行(模块) | ~1336行 | -49% |
+| history_pdf_compare.js | 2606行 | -1270行(模組) | ~1336行 | -49% |
 | modules/TextFitting.js | - | +450行 | - | +新增 |
 | modules/PDFExporter.js | - | +450行 | - | +新增 |
 | modules/SegmentManager.js | - | +420行 | - | +新增 |
-| **总计** | **2606行** | **2956行** | **-** | **+13.4%** |
+| **總計** | **2606行** | **2956行** | **-** | **+13.4%** |
 
-**注意**: 总行数略有增加是因为：
-1. 添加了模块导出代码
-2. 添加了详细的文档注释
-3. 添加了参数验证和错误处理
+**注意**: 總行數略有增加是因為：
+1. 新增了模組匯出程式碼
+2. 新增了詳細的文件註釋
+3. 新增了引數驗證和錯誤處理
 
-但模块化带来的收益远大于行数增加：
-- ✅ 可维护性大幅提升
-- ✅ 可测试性提升
-- ✅ 可复用性提升
-- ✅ 代码清晰度提升
+但模組化帶來的收益遠大於行數增加：
+- ✅ 可維護性大幅提升
+- ✅ 可測試性提升
+- ✅ 可複用性提升
+- ✅ 程式碼清晰度提升
 
 ---
 
-## 🔍 已提交的Git记录
+## 🔍 已提交的Git記錄
 
 ```bash
 git log --oneline -5
 ```
 
 ```
-2181f18 docs: 添加PDF对比功能重构测试指南
-06c5cf0 fix: 修复模块中的3个高优先级bug
-fe5056f refactor: 从history_pdf_compare.js中提取核心模块
+2181f18 docs: 新增PDF對比功能重構測試指南
+06c5cf0 fix: 修復模組中的3個高優先順序bug
+fe5056f refactor: 從history_pdf_compare.js中提取核心模組
 ...
 ```
 
 ---
 
-## ✨ 下一步行动建议
+## ✨ 下一步行動建議
 
-### 立即行动 (今天)
-1. ✅ 完成主类构造函数修改 (已完成)
-2. 🔄 完成方法适配器包装
-3. 🔄 更新HTML文件引用
-4. 🔄 基础功能测试
+### 立即行動 (今天)
+1. ✅ 完成主類建構函式修改 (已完成)
+2. 🔄 完成方法介面卡包裝
+3. 🔄 更新HTML檔案參考
+4. 🔄 基礎功能測試
 
-### 本周内
-5. 完成 SegmentManager 集成
-6. 完整功能测试
-7. 性能对比测试
+### 本週內
+5. 完成 SegmentManager 整合
+6. 完整功能測試
+7. 效能對比測試
 
-### 后续计划
-8. 根据测试结果优化
-9. 考虑重构其他大文件
-10. 编写开发者文档
+### 後續計劃
+8. 根據測試結果最佳化
+9. 考慮重構其他大檔案
+10. 編寫開發者文件
 
 ---
 
-## 📞 需要决策
+## 📞 需要決策
 
-请选择：
-1. **继续完成当前文件** (推荐)
-   - 采用方案A (保持回退) 还是 方案B (完全替换)?
+請選擇：
+1. **繼續完成當前檔案** (推薦)
+   - 採用方案A (保持回退) 還是 方案B (完全替換)?
 
-2. **先测试当前进度**
+2. **先測試當前進度**
    - 完成HTML更新
-   - 测试基础功能
+   - 測試基礎功能
 
-3. **暂停并转向其他文件**
-   - 开始重构 history.js
+3. **暫停並轉向其他檔案**
+   - 開始重構 history.js
 
 ---
 
-**当前分支**: `refactor/split-large-files`
-**最后更新**: 2025-11-11
-**下一个里程碑**: 完成 history_pdf_compare.js 集成并通过测试
+**當前分支**: `refactor/split-large-files`
+**最後更新**: 2025-11-11
+**下一個里程碑**: 完成 history_pdf_compare.js 整合並透過測試

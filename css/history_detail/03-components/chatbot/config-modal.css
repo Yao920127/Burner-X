@@ -1,20 +1,20 @@
 /**
  * Chatbot - Model Configuration Modal Styles
  *
- * 职责：聊天机器人模型配置弹窗
- * 作用域：配置模态框、模型选择、参数配置
- * 依赖：variables.css
+ * 職責：聊天機器人模型配置彈出視窗
+ * 作用域：配置模態框、模型選擇、引數配置
+ * 依賴：variables.css
  *
  * 提取自：chatbot-model-config-modal.css
  *
  * 包含：
- * - 弹窗容器和布局
- * - 模型来源选择
- * - 表单控件样式
- * - 参数滑块配置
+ * - 彈出視窗容器和版面
+ * - 模型來源選擇
+ * - 表單控制元件樣式
+ * - 引數滑塊配置
  */
 
-/* ==================== 1. 弹窗容器 ==================== */
+/* ==================== 1. 彈出視窗容器 ==================== */
 
 .chatbot-config-modal {
     position: fixed;
@@ -22,7 +22,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 999999; /* 必须高于chatbot的100001 */
+    z-index: 999999; /* 必須高於chatbot的100001 */
     display: none;
     animation: fadeIn var(--transition-fast) ease-out;
 }
@@ -63,7 +63,7 @@
     backdrop-filter: blur(8px);
 }
 
-/* ==================== 3. 弹窗主体 ==================== */
+/* ==================== 3. 彈出視窗主體 ==================== */
 
 .chatbot-config-wrapper {
     position: fixed;
@@ -92,7 +92,7 @@
     animation: slideUp var(--transition-base) ease-out;
 }
 
-/* ==================== 4. 头部 ==================== */
+/* ==================== 4. 標頭 ==================== */
 
 .chatbot-config-header {
     display: flex;
@@ -170,7 +170,7 @@
     box-shadow: var(--shadow-md);
 }
 
-/* ==================== 5. 内容区域 ==================== */
+/* ==================== 5. 內容區域 ==================== */
 
 .chatbot-config-body {
     flex: 1;
@@ -179,7 +179,7 @@
     background: #fafafa;
 }
 
-/* 自定义滚动条 */
+/* 自定義捲軸 */
 .chatbot-config-body::-webkit-scrollbar {
     width: 8px;
 }
@@ -205,7 +205,7 @@
     margin-bottom: 0;
 }
 
-/* ==================== 6. 模型来源选择 ==================== */
+/* ==================== 6. 模型來源選擇 ==================== */
 
 .chatbot-source-selector {
     background: white;
@@ -295,7 +295,7 @@
     opacity: 1;
 }
 
-/* ==================== 7. 表单控件 ==================== */
+/* ==================== 7. 表單控制元件 ==================== */
 
 .chatbot-form-group {
     background: white;
@@ -363,7 +363,7 @@
     border-left: 3px solid var(--color-primary);
 }
 
-/* ==================== 8. 获取模型列表按钮 ==================== */
+/* ==================== 8. 獲取模型列表按鈕 ==================== */
 
 .chatbot-fetch-models-btn {
     margin-top: var(--spacing-md);
@@ -409,7 +409,7 @@
     to { transform: rotate(360deg); }
 }
 
-/* ==================== 9. 刷新按钮 ==================== */
+/* ==================== 9. 重新整理按鈕 ==================== */
 
 .chatbot-refresh-btn {
     padding: 6px 10px;
@@ -441,7 +441,7 @@
     animation: spin 0.6s linear;
 }
 
-/* ==================== 10. 源站点信息 ==================== */
+/* ==================== 10. 源站點資訊 ==================== */
 
 .chatbot-source-info {
     background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
@@ -555,7 +555,7 @@
     opacity: 1;
 }
 
-/* ==================== 12. 搜索框 ==================== */
+/* ==================== 12. 搜尋框 ==================== */
 
 .chatbot-search-wrapper {
     position: relative;
@@ -574,7 +574,7 @@
     pointer-events: none;
 }
 
-/* ==================== 13. 参数配置区域 ==================== */
+/* ==================== 13. 引數配置區域 ==================== */
 
 .chatbot-params-section {
     background: white;
@@ -601,7 +601,7 @@
     font-size: var(--font-size-base);
 }
 
-/* ==================== 14. 滑块 ==================== */
+/* ==================== 14. 滑塊 ==================== */
 
 .chatbot-slider-group {
     margin-bottom: var(--spacing-lg);
@@ -697,7 +697,7 @@
     font-weight: var(--font-weight-medium);
 }
 
-/* ==================== 15. 底部按钮 ==================== */
+/* ==================== 15. 底部按鈕 ==================== */
 
 .chatbot-config-footer {
     display: flex;
@@ -771,7 +771,7 @@
     font-size: 15px;
 }
 
-/* ==================== 16. 辅助类 ==================== */
+/* ==================== 16. 輔助類 ==================== */
 
 .chatbot-hidden {
     display: none !important;
@@ -781,7 +781,7 @@
     text-align: center;
 }
 
-/* ==================== 17. 提示框样式 ==================== */
+/* ==================== 17. 提示框樣式 ==================== */
 
 .chatbot-hint-box {
     background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
@@ -834,7 +834,7 @@
     font-size: var(--font-size-base);
 }
 
-/* ==================== 18. 响应式设计 ==================== */
+/* ==================== 18. 響應式設計 ==================== */
 
 @media (max-width: 768px) {
     .chatbot-config-wrapper {

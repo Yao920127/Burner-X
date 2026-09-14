@@ -1,74 +1,74 @@
-# history_pdf_compare.js 模块拆分方案
+# history_pdf_compare.js 模組拆分方案
 
-## 文件结构
+## 檔案結構
 
-原文件 (2205行) 拆分为 4 个模块：
+原檔案 (2205行) 拆分為 4 個模組：
 
 ```
 js/history/
-├── pdf-compare-renderer.js      (已创建 - 文本渲染引擎)
-├── pdf-compare-segments.js       (待创建 - 分段和懒加载)
-├── pdf-compare-ui.js             (待创建 - UI 交互)
-└── history_pdf_compare.js        (简化 - 主协调类)
+├── pdf-compare-renderer.js      (已建立 - 文字渲染引擎)
+├── pdf-compare-segments.js       (待建立 - 分段和懶載入)
+├── pdf-compare-ui.js             (待建立 - UI 互動)
+└── history_pdf_compare.js        (簡化 - 主協調類)
 ```
 
-## HTML 引用顺序
+## HTML 參考順序
 
 ```html
-<!-- 1. 基础依赖 -->
+<!-- 1. 基礎依賴 -->
 <script src="../../js/utils/text-fitting.js"></script>
 <script src="../../js/utils/text-fitting-integration.js"></script>
 
-<!-- 2. PDF 对照视图模块 (按依赖顺序加载) -->
+<!-- 2. PDF 對照檢視模組 (按依賴順序載入) -->
 <script src="../../js/history/pdf-compare-renderer.js"></script>
 <script src="../../js/history/pdf-compare-segments.js"></script>
 <script src="../../js/history/pdf-compare-ui.js"></script>
 <script src="../../js/history/history_pdf_compare.js"></script>
 
-<!-- 3. 页面主逻辑 -->
+<!-- 3. 頁面主邏輯 -->
 <script src="../../js/history/history_detail_show_tab.js"></script>
 ```
 
-## 模块职责
+## 模組職責
 
 ### 1. pdf-compare-renderer.js ✅
-- 文本渲染引擎
-- 白色背景绘制
-- 文本自适应算法
-- 换行处理
+- 文字渲染引擎
+- 白色背景繪製
+- 文字自適應演算法
+- 換行處理
 - 暴露: `window.PDFCompareRenderer`
 
-### 2. pdf-compare-segments.js (待创建)
-- 分段创建和管理
-- 懒加载逻辑
-- 可见区域检测
-- Canvas 渲染队列
+### 2. pdf-compare-segments.js (待建立)
+- 分段建立和管理
+- 懶載入邏輯
+- 可見區域檢測
+- Canvas 渲染佇列
 - 暴露: `window.PDFCompareSegments`
 
-### 3. pdf-compare-ui.js (待创建)
-- 事件绑定 (点击、滚动)
-- 高亮显示
-- 滚动同步
-- bbox 交互
+### 3. pdf-compare-ui.js (待建立)
+- 事件綁定 (點選、滾動)
+- 醒目提示顯示
+- 滾動同步
+- bbox 互動
 - 暴露: `window.PDFCompareUI`
 
-### 4. history_pdf_compare.js (简化主类)
-- 核心数据管理
-- 模块协调
+### 4. history_pdf_compare.js (簡化主類)
+- 核心資料管理
+- 模組協調
 - PDF 初始化
-- 全局字号预处理
+- 全域字號預處理
 - 暴露: `window.PDFCompareView`
 
-## 通信方式
+## 通訊方式
 
-各模块通过主类实例通信：
+各模組透過主類例項通訊：
 
 ```javascript
 class PDFCompareView {
   constructor() {
-    // ... 初始化数据 ...
+    // ... 初始化資料 ...
 
-    // 创建子模块实例，传入 this
+    // 建立子模組例項，傳入 this
     this.renderer = new PDFCompareRenderer(this);
     this.segments = new PDFCompareSegments(this);
     this.ui = new PDFCompareUI(this);
@@ -76,11 +76,11 @@ class PDFCompareView {
 }
 ```
 
-子模块通过 `this.view` 访问主类数据和方法。
+子模組透過 `this.view` 訪問主類資料和方法。
 
-## 兼容性
+## 相容性
 
-- ✅ 不使用 ES6 模块 (import/export)
-- ✅ 通过全局变量通信
-- ✅ 浏览器直接可用 (file:// 协议)
-- ✅ 保持原有 API 不变
+- ✅ 不使用 ES6 模組 (import/export)
+- ✅ 透過全域變數通訊
+- ✅ 瀏覽器直接可用 (file:// 協議)
+- ✅ 保持原有 API 不變

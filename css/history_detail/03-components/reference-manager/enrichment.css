@@ -1,19 +1,19 @@
 /**
  * Reference Manager - Metadata Enrichment Styles
  *
- * 职责：参考文献元数据丰富配置
- * 作用域：配置模态框样式
- * 依赖：variables.css
+ * 職責：參考文獻後設資料豐富配置
+ * 作用域：配置模態框樣式
+ * 依賴：variables.css
  *
  * 提取自：reference-manager-enrichment.css
  *
  * 包含：
- * - 元数据丰富配置模态框
- * - 字段配置选项
- * - 策略说明
+ * - 後設資料豐富配置模態框
+ * - 欄位配置選項
+ * - 策略說明
  */
 
-/* ==================== 1. 元数据丰富配置模态框 ==================== */
+/* ==================== 1. 後設資料豐富配置模態框 ==================== */
 
 .enrichment-config-section {
     padding: var(--spacing-lg) 30px;
@@ -37,7 +37,7 @@
     color: var(--color-primary);
 }
 
-/* ==================== 2. 字段配置 ==================== */
+/* ==================== 2. 欄位配置 ==================== */
 
 .enrichment-field-config {
     display: flex;
@@ -104,7 +104,7 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-/* ==================== 3. 策略说明 ==================== */
+/* ==================== 3. 策略說明 ==================== */
 
 .enrichment-strategy-legend {
     margin-top: 24px;
@@ -159,7 +159,7 @@
     font-weight: var(--font-weight-semibold);
 }
 
-/* ==================== 4. 美化配置模态框滚动条 ==================== */
+/* ==================== 4. 美化配置模態框捲軸 ==================== */
 
 .enrichment-config-section::-webkit-scrollbar {
     width: 6px;

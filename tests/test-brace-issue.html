@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>花括号公式测试</title>
+    <title>花括號公式測試</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -57,29 +57,29 @@
     </style>
 </head>
 <body>
-    <h1>花括号公式渲染测试</h1>
+    <h1>花括號公式渲染測試</h1>
 
     <div class="test-case">
-        <div class="test-title">问题：包含转义花括号的公式</div>
+        <div class="test-title">問題：包含轉義花括號的公式</div>
         <div class="source" id="source1"></div>
         <div class="result" id="result1"></div>
         <div class="debug" id="debug1"></div>
     </div>
 
     <div class="test-case">
-        <div class="test-title">单独测试：单个公式</div>
+        <div class="test-title">單獨測試：單個公式</div>
         <div class="source" id="source2"></div>
         <div class="result" id="result2"></div>
     </div>
 
     <div class="test-case">
-        <div class="test-title">单独测试：三个公式</div>
+        <div class="test-title">單獨測試：三個公式</div>
         <div class="source" id="source3"></div>
         <div class="result" id="result3"></div>
     </div>
 
     <script>
-        // 开启调试模式
+        // 開啟除錯模式
         if (typeof MarkdownProcessorAST !== 'undefined') {
             MarkdownProcessorAST.setDebug(true);
         }
@@ -87,20 +87,20 @@
         const testCases = [
             {
                 title: '完整段落',
-                input: '其中 $p \\in \\{0,1, \\cdots, d-1\\}$，$o \\in \\{0,1\\}$，$r \\in \\mathbb{Z}$。为了测量 $|\\psi_{r}\\rangle$，我们定义测量算符为'
+                input: '其中 $p \\in \\{0,1, \\cdots, d-1\\}$，$o \\in \\{0,1\\}$，$r \\in \\mathbb{Z}$。為了測量 $|\\psi_{r}\\rangle$，我們定義測量算符為'
             },
             {
-                title: '单个公式',
+                title: '單個公式',
                 input: '$p \\in \\{0,1, \\cdots, d-1\\}$'
             },
             {
-                title: '三个公式',
+                title: '三個公式',
                 input: '$p \\in \\{0,1, \\cdots, d-1\\}$，$o \\in \\{0,1\\}$，$r \\in \\mathbb{Z}$'
             }
         ];
 
         console.clear();
-        console.log('=== 开始测试 ===');
+        console.log('=== 開始測試 ===');
 
         testCases.forEach((testCase, index) => {
             const sourceEl = document.getElementById(`source${index + 1}`);
@@ -109,8 +109,8 @@
 
             sourceEl.textContent = testCase.input;
 
-            console.log(`\n--- 测试 ${index + 1}: ${testCase.title} ---`);
-            console.log('输入:', testCase.input);
+            console.log(`\n--- 測試 ${index + 1}: ${testCase.title} ---`);
+            console.log('輸入:', testCase.input);
 
             try {
                 const rendered = MarkdownProcessorAST.render(testCase.input);
@@ -118,18 +118,18 @@
 
                 console.log('渲染成功');
                 if (debugEl) {
-                    debugEl.textContent = `输出 HTML (前 500 字符):\n${rendered.substring(0, 500)}`;
+                    debugEl.textContent = `輸出 HTML (前 500 字元):\n${rendered.substring(0, 500)}`;
                 }
             } catch (error) {
-                console.error('渲染错误:', error);
-                resultEl.innerHTML = `<span style="color: red;">错误: ${error.message}</span>`;
+                console.error('渲染錯誤:', error);
+                resultEl.innerHTML = `<span style="color: red;">錯誤: ${error.message}</span>`;
                 if (debugEl) {
-                    debugEl.textContent = `错误: ${error.message}\n${error.stack}`;
+                    debugEl.textContent = `錯誤: ${error.message}\n${error.stack}`;
                 }
             }
         });
 
-        console.log('\n=== 测试完成 ===');
+        console.log('\n=== 測試完成 ===');
         console.log('Metrics:', MarkdownProcessorAST.getMetrics());
     </script>
 </body>

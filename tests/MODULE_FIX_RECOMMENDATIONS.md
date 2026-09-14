@@ -1,32 +1,32 @@
-# 模块修复建议清单
+# 模組修復建議清單
 
-## 🔴 高优先级 - 必须修复
+## 🔴 高優先順序 - 必須修復
 
-### 1. TextFittingAdapter - 未定义的常量
+### 1. TextFittingAdapter - 未定義的常量
 
-**问题位置**: `TextFittingAdapter.js` line 71
+**問題位置**: `TextFittingAdapter.js` line 71
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 preprocessGlobalFontSizes(contentListJson, translatedContentList) {
   // ...
   contentListJson.forEach((item, idx) => {
     // ...
-    const height = (bbox[3] - bbox[1]) / BBOX_NORMALIZED_RANGE;  // ❌ 未定义！
+    const height = (bbox[3] - bbox[1]) / BBOX_NORMALIZED_RANGE;  // ❌ 未定義！
   });
 }
 ```
 
-**修复方案**:
+**修復方案**:
 ```javascript
 preprocessGlobalFontSizes(contentListJson, translatedContentList) {
   if (this.hasPreprocessed) return;
 
-  console.log('[TextFittingAdapter] 开始预处理全局字号...');
+  console.log('[TextFittingAdapter] 開始預處理全域字號...');
   const startTime = performance.now();
 
   const globalFontScale = this.options.globalFontScale;
-  const BBOX_NORMALIZED_RANGE = 1000;  // ✅ 添加这行
+  const BBOX_NORMALIZED_RANGE = 1000;  // ✅ 新增這行
 
   contentListJson.forEach((item, idx) => {
     if (item.type !== 'text' || !item.bbox) return;
@@ -45,119 +45,119 @@ preprocessGlobalFontSizes(contentListJson, translatedContentList) {
     });
   });
 
-  console.log(`[TextFittingAdapter] 预处理完成：全局缩放=${globalFontScale}, 耗时=${(performance.now() - startTime).toFixed(0)}ms`);
+  console.log(`[TextFittingAdapter] 預處理完成：全域縮放=${globalFontScale}, 耗時=${(performance.now() - startTime).toFixed(0)}ms`);
   this.hasPreprocessed = true;
 }
 ```
 
-**影响**: 🔴 严重 - 会导致运行时NaN错误
+**影響**: 🔴 嚴重 - 會導致執行時NaN錯誤
 
 ---
 
-### 2. PDFExporter - Canvas和PDF文本高度公式不一致
+### 2. PDFExporter - Canvas和PDF文字高度公式不一致
 
-**问题位置**:
+**問題位置**:
 - Canvas版本: `history_pdf_compare.js` line 1463-1465
 - PDF版本: `PDFExporter.js` line 272-274
 
-**当前代码对比**:
+**當前程式碼對比**:
 
-Canvas (错误):
+Canvas (錯誤):
 ```javascript
 const totalHeight = lines.length === 1
-  ? mid * 1.2  // 单行文本额外增加20%
+  ? mid * 1.2  // 單行文字額外增加20%
   : (lines.length - 1) * lineHeight + mid * 1.2;
 ```
 
-PDF (错误):
+PDF (錯誤):
 ```javascript
 const totalHeight = lines.length > 0
-  ? (lines.length - 1) * lineHeight + mid  // 单行文本没有增加
+  ? (lines.length - 1) * lineHeight + mid  // 單行文字沒有增加
   : 0;
 ```
 
-**修复方案** - 统一为一致的公式:
+**修復方案** - 統一為一致的公式:
 
 ```javascript
-// 在 PDFExporter.calculatePdfTextLayout() 中修复 (line 272-274)
-// 改为与 Canvas 版本一致：
+// 在 PDFExporter.calculatePdfTextLayout() 中修復 (line 272-274)
+// 改為與 Canvas 版本一致：
 
 const totalHeight = lines.length > 0
-  ? (lines.length - 1) * lineHeight + mid * 1.2  // ✅ 与Canvas统一
+  ? (lines.length - 1) * lineHeight + mid * 1.2  // ✅ 與Canvas統一
   : 0;
 
-// 同时在 drawPlainTextWithFitting() 中保持一致 (line 1463-1465)
+// 同時在 drawPlainTextWithFitting() 中保持一致 (line 1463-1465)
 const totalHeight = lines.length > 0
   ? (lines.length - 1) * lineHeight + mid * 1.2  // ✅ 保持一致
   : 0;
 ```
 
-**说明**:
-- 这个 `* 1.2` 是为了给文本留出额外的垂直空间
-- Canvas 中确实使用了这个系数
-- PDF 版本遗漏了，导致文本可能超出bbox
+**說明**:
+- 這個 `* 1.2` 是為了給文字留出額外的垂直空間
+- Canvas 中確實使用了這個係數
+- PDF 版本遺漏了，導致文字可能超出bbox
 
-**影响**: 🔴 严重 - PDF导出的文本大小会与Canvas显示不同
+**影響**: 🔴 嚴重 - PDF匯出的文字大小會與Canvas顯示不同
 
 ---
 
-### 3. SegmentManager - 事件监听器无法清理
+### 3. SegmentManager - 事件監聽器無法清理
 
-**问题位置**: `SegmentManager.js` lines 216-234, 397-413
+**問題位置**: `SegmentManager.js` lines 216-234, 397-413
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 initLazyLoadingSegments() {
   if (!this._lazyInitialized) {
     this.originalScroll.addEventListener('scroll', () => onScroll(this.originalScroll));
     this.translationScroll.addEventListener('scroll', () => onScroll(this.translationScroll));
-    // ❌ 这些匿名箭头函数无法被移除
+    // ❌ 這些匿名箭頭函式無法被移除
     this._lazyInitialized = true;
   }
 }
 
 destroy() {
-  // 注意：由于事件监听使用了箭头函数，无法直接移除
-  // 这里设置标记位，防止继续渲染
-  // ❌ 这不能真正清理资源！
+  // 注意：由於事件監聽使用了箭頭函式，無法直接移除
+  // 這裡設定標記位，防止繼續渲染
+  // ❌ 這不能真正清理資源！
   this.segments = [];
   this.pageInfos = [];
 }
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
 constructor(pdfDoc, options = {}) {
   // ... 其他初始化 ...
 
-  this._destroyed = false;  // ✅ 添加销毁标志
-  this._scrollHandler = null;  // ✅ 保存事件处理函数引用
+  this._destroyed = false;  // ✅ 新增銷燬標誌
+  this._scrollHandler = null;  // ✅ 儲存事件處理函式參考
 }
 
 initLazyLoadingSegments() {
   if (!this.originalScroll || !this.translationScroll) return;
 
-  // 初始渲染可见段
+  // 初始渲染可見段
   this.renderVisibleSegments(this.originalScroll);
 
   const onScroll = (scroller) => {
     clearTimeout(this._lazyScrollTimer);
     this._lazyScrollTimer = setTimeout(() => {
-      if (!this._destroyed) {  // ✅ 检查销毁标志
+      if (!this._destroyed) {  // ✅ 檢查銷燬標誌
         this.renderVisibleSegments(scroller);
       }
     }, this.options.scrollDebounceMs);
   };
 
   if (!this._lazyInitialized) {
-    // ✅ 保存事件处理函数引用以便后续移除
+    // ✅ 儲存事件處理函式參考以便後續移除
     this._scrollHandler = onScroll;
 
     const originalScrollHandler = () => onScroll(this.originalScroll);
     const translationScrollHandler = () => onScroll(this.translationScroll);
 
-    // ✅ 保存处理函数引用
+    // ✅ 儲存處理函式參考
     this._originalScrollHandler = originalScrollHandler;
     this._translationScrollHandler = translationScrollHandler;
 
@@ -168,9 +168,9 @@ initLazyLoadingSegments() {
 }
 
 destroy() {
-  this._destroyed = true;  // ✅ 设置销毁标志
+  this._destroyed = true;  // ✅ 設定銷燬標誌
 
-  // ✅ 正确移除事件监听器
+  // ✅ 正確移除事件監聽器
   if (this._lazyInitialized && this.originalScroll && this.translationScroll) {
     if (this._originalScrollHandler) {
       this.originalScroll.removeEventListener('scroll', this._originalScrollHandler);
@@ -180,7 +180,7 @@ destroy() {
     }
   }
 
-  // ✅ 清除定时器
+  // ✅ 清除定時器
   if (this._lazyScrollTimer) {
     clearTimeout(this._lazyScrollTimer);
     this._lazyScrollTimer = null;
@@ -199,34 +199,34 @@ destroy() {
 }
 ```
 
-**影响**: 🔴 严重 - 内存泄漏，事件处理器持续执行
+**影響**: 🔴 嚴重 - 記憶體洩漏，事件處理器持續執行
 
 ---
 
-## 🟡 中优先级 - 应该改进
+## 🟡 中優先順序 - 應該改進
 
-### 4. TextFittingAdapter - 缺少错误处理改进
+### 4. TextFittingAdapter - 缺少錯誤處理改進
 
-**问题位置**: `TextFittingAdapter.js` line 34-57
+**問題位置**: `TextFittingAdapter.js` line 34-57
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 initialize() {
   if (typeof TextFittingEngine === 'undefined') {
-    console.error('[TextFittingAdapter] TextFittingEngine 未加载！...');
-    return;  // ❌ 静默失败
+    console.error('[TextFittingAdapter] TextFittingEngine 未載入！...');
+    return;  // ❌ 靜默失敗
   }
   // ...
 }
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
 initialize() {
-  // ✅ 改为throw，更容易被发现
+  // ✅ 改為throw，更容易被發現
   if (typeof TextFittingEngine === 'undefined') {
-    throw new Error('[TextFittingAdapter] TextFittingEngine 未加载！请确保 js/utils/text-fitting.js 已正确引入');
+    throw new Error('[TextFittingAdapter] TextFittingEngine 未載入！請確保 js/utils/text-fitting.js 已正確引入');
   }
 
   try {
@@ -240,10 +240,10 @@ initialize() {
       minLineHeight: this.options.minLineHeight
     });
 
-    console.log('[TextFittingAdapter] 文本自适应引擎已启用');
+    console.log('[TextFittingAdapter] 文字自適應引擎已啟用');
   } catch (error) {
-    console.error('[TextFittingAdapter] 文本自适应引擎初始化失败:', error);
-    throw error;  // ✅ 将错误传播给调用者
+    console.error('[TextFittingAdapter] 文字自適應引擎初始化失敗:', error);
+    throw error;  // ✅ 將錯誤傳播給呼叫者
   }
 }
 ```
@@ -254,51 +254,51 @@ try {
   const textFitter = new TextFittingAdapter();
   textFitter.initialize();
 } catch (error) {
-  console.error('初始化失败，将使用回退方案');
-  // 处理回退...
+  console.error('初始化失敗，將使用回退方案');
+  // 處理回退...
 }
 ```
 
-**影响**: 🟡 中等 - 便于发现问题
+**影響**: 🟡 中等 - 便於發現問題
 
 ---
 
-### 5. TextFittingAdapter - 添加参数验证
+### 5. TextFittingAdapter - 新增引數驗證
 
-**问题位置**: `TextFittingAdapter.js` line 64-93
+**問題位置**: `TextFittingAdapter.js` line 64-93
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 preprocessGlobalFontSizes(contentListJson, translatedContentList) {
-  // ❌ 没有验证参数
+  // ❌ 沒有驗證引數
   if (this.hasPreprocessed) return;
 
   const globalFontScale = this.options.globalFontScale;
 
-  contentListJson.forEach((item, idx) => {  // ❌ 可能不是数组
+  contentListJson.forEach((item, idx) => {  // ❌ 可能不是陣列
     // ...
   });
 }
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
 preprocessGlobalFontSizes(contentListJson, translatedContentList) {
   if (this.hasPreprocessed) return;
 
-  // ✅ 添加参数验证
+  // ✅ 新增引數驗證
   if (!contentListJson || !Array.isArray(contentListJson)) {
-    console.warn('[TextFittingAdapter] 无效的 contentListJson，跳过预处理');
+    console.warn('[TextFittingAdapter] 無效的 contentListJson，跳過預處理');
     return;
   }
 
   if (!translatedContentList || !Array.isArray(translatedContentList)) {
-    console.warn('[TextFittingAdapter] 无效的 translatedContentList，跳过预处理');
+    console.warn('[TextFittingAdapter] 無效的 translatedContentList，跳過預處理');
     return;
   }
 
-  console.log('[TextFittingAdapter] 开始预处理全局字号...');
+  console.log('[TextFittingAdapter] 開始預處理全域字號...');
   const startTime = performance.now();
 
   const globalFontScale = this.options.globalFontScale;
@@ -321,20 +321,20 @@ preprocessGlobalFontSizes(contentListJson, translatedContentList) {
     });
   });
 
-  console.log(`[TextFittingAdapter] 预处理完成：全局缩放=${globalFontScale}, 耗时=${(performance.now() - startTime).toFixed(0)}ms`);
+  console.log(`[TextFittingAdapter] 預處理完成：全域縮放=${globalFontScale}, 耗時=${(performance.now() - startTime).toFixed(0)}ms`);
   this.hasPreprocessed = true;
 }
 ```
 
-**影响**: 🟡 中等 - 防止崩溃
+**影響**: 🟡 中等 - 防止崩潰
 
 ---
 
-### 6. TextFittingAdapter - 添加ctx验证
+### 6. TextFittingAdapter - 新增ctx驗證
 
-**问题位置**: `TextFittingAdapter.js` line 309
+**問題位置**: `TextFittingAdapter.js` line 309
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 wrapText(ctx, text, maxWidth) {
   if (!text) return [];
@@ -343,25 +343,25 @@ wrapText(ctx, text, maxWidth) {
   let currentLine = '';
 
   // ...
-  const metrics = ctx.measureText(testLine);  // ❌ ctx 可能无效
+  const metrics = ctx.measureText(testLine);  // ❌ ctx 可能無效
 }
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
 wrapText(ctx, text, maxWidth) {
-  // ✅ 添加验证
+  // ✅ 新增驗證
   if (!text) return [];
 
   if (!ctx || typeof ctx.measureText !== 'function') {
-    console.warn('[TextFittingAdapter] 无效的 canvas context');
-    // 返回简单分割
+    console.warn('[TextFittingAdapter] 無效的 canvas context');
+    // 返回簡單分割
     return text.split('\n').length > 0 ? text.split('\n') : [''];
   }
 
   if (typeof maxWidth !== 'number' || maxWidth <= 0) {
-    console.warn('[TextFittingAdapter] 无效的 maxWidth');
+    console.warn('[TextFittingAdapter] 無效的 maxWidth');
     return text.split('\n');
   }
 
@@ -408,29 +408,29 @@ wrapText(ctx, text, maxWidth) {
 }
 ```
 
-**影响**: 🟡 中等 - 防止崩溃
+**影響**: 🟡 中等 - 防止崩潰
 
 ---
 
-### 7. PDFExporter - 改进fontkit失败处理
+### 7. PDFExporter - 改進fontkit失敗處理
 
-**问题位置**: `PDFExporter.js` line 73-90, 395-410
+**問題位置**: `PDFExporter.js` line 73-90, 395-410
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 let font = null;
 try {
   if (typeof fontkit === 'undefined') {
-    throw new Error('fontkit 未加载，无法嵌入中文字体');
+    throw new Error('fontkit 未載入，無法嵌入中文字型');
   }
   // ...
   font = await pdfDoc.embedFont(fontBytes);
 } catch (fontError) {
-  console.error('[PDFExporter] 中文字体加载失败:', fontError);
+  console.error('[PDFExporter] 中文字型載入失敗:', fontError);
   if (showNotification) {
-    showNotification('中文字体加载失败，无法导出PDF: ' + fontError.message, 'error');
+    showNotification('中文字型載入失敗，無法匯出PDF: ' + fontError.message, 'error');
   }
-  throw fontError;  // ❌ 中断流程
+  throw fontError;  // ❌ 中斷流程
 }
 
 // 但下面又有：
@@ -438,49 +438,49 @@ if (typeof fontkit === 'undefined') {
   await new Promise((resolve, reject) => {
     // ...
     script.onerror = (error) => {
-      console.warn('[PDFExporter] fontkit 加载失败:', error);
-      resolve();  // ❌ 失败也继续！
+      console.warn('[PDFExporter] fontkit 載入失敗:', error);
+      resolve();  // ❌ 失敗也繼續！
     };
   });
 }
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
 async loadPdfLib() {
-  // 加载 pdf-lib
+  // 載入 pdf-lib
   if (typeof PDFLib === 'undefined') {
     await new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = this.options.pdfLibUrl;
       script.onload = () => {
-        console.log('[PDFExporter] pdf-lib 加载成功');
+        console.log('[PDFExporter] pdf-lib 載入成功');
         this.pdfLibLoaded = true;
         resolve();
       };
       script.onerror = (error) => {
-        console.error('[PDFExporter] pdf-lib 加载失败:', error);
+        console.error('[PDFExporter] pdf-lib 載入失敗:', error);
         reject(new Error('Failed to load pdf-lib library'));
       };
       document.head.appendChild(script);
     });
   }
 
-  // 加载 fontkit （可选，失败不中断）
+  // 載入 fontkit （可選，失敗不中斷）
   if (typeof fontkit === 'undefined') {
     await new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = this.options.fontkitUrl;
       script.onload = () => {
-        console.log('[PDFExporter] fontkit 加载成功');
+        console.log('[PDFExporter] fontkit 載入成功');
         this.fontkitLoaded = true;
         resolve();
       };
       script.onerror = (error) => {
-        console.warn('[PDFExporter] fontkit 加载失败，中文字体可能无法正确显示:', error);
+        console.warn('[PDFExporter] fontkit 載入失敗，中文字型可能無法正確顯示:', error);
         this.fontkitLoaded = false;
-        resolve();  // 不中断流程，但记录失败
+        resolve();  // 不中斷流程，但記錄失敗
       };
       document.head.appendChild(script);
     });
@@ -489,66 +489,66 @@ async loadPdfLib() {
 
 async exportStructuredTranslation(originalPdfBase64, translatedContentList, showNotification = null) {
   try {
-    // ... 前面的检查 ...
+    // ... 前面的檢查 ...
 
-    // ✅ 改进字体加载
+    // ✅ 改進字型載入
     let font = null;
     if (!this.fontkitLoaded) {
-      console.warn('[PDFExporter] fontkit 未成功加载，中文字体可能无法正确显示');
+      console.warn('[PDFExporter] fontkit 未成功載入，中文字型可能無法正確顯示');
       if (showNotification) {
-        showNotification('警告：中文字体可能无法正确显示', 'warning');
+        showNotification('警告：中文字型可能無法正確顯示', 'warning');
       }
     } else {
       try {
-        console.log('[PDFExporter] 正在加载中文字体...');
+        console.log('[PDFExporter] 正在載入中文字型...');
         const fontBytes = await fetch(this.options.fontUrl).then(res => {
           if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
           return res.arrayBuffer();
         });
 
         font = await pdfDoc.embedFont(fontBytes);
-        console.log('[PDFExporter] 中文字体加载成功');
+        console.log('[PDFExporter] 中文字型載入成功');
       } catch (fontError) {
-        console.error('[PDFExporter] 中文字体加载失败:', fontError);
+        console.error('[PDFExporter] 中文字型載入失敗:', fontError);
         if (showNotification) {
-          showNotification('警告：中文字体加载失败，将使用默认字体', 'warning');
+          showNotification('警告：中文字型載入失敗，將使用預設字型', 'warning');
         }
-        // ✅ 不中断流程，继续使用默认字体
+        // ✅ 不中斷流程，繼續使用預設字型
       }
     }
 
-    // 如果没有字体，使用默认字体
+    // 如果沒有字型，使用預設字型
     if (!font) {
-      console.warn('[PDFExporter] 使用PDF默认字体，中文可能显示为空');
-      // 可以选择使用内置字体或继续
+      console.warn('[PDFExporter] 使用PDF預設字型，中文可能顯示為空');
+      // 可以選擇使用內建字型或繼續
     }
 
-    // ... 后续处理 ...
+    // ... 後續處理 ...
   } catch (error) {
     // ...
   }
 }
 ```
 
-**影响**: 🟡 中等 - 提高鲁棒性
+**影響**: 🟡 中等 - 提高穩健性
 
 ---
 
-### 8. PDFExporter - 添加showNotification类型检查
+### 8. PDFExporter - 新增showNotification型別檢查
 
-**问题位置**: `PDFExporter.js` 多处
+**問題位置**: `PDFExporter.js` 多處
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 if (showNotification) {
-  showNotification('没有翻译内容可导出', 'warning');  // ❌ 未检查是否为函数
+  showNotification('沒有翻譯內容可匯出', 'warning');  // ❌ 未檢查是否為函式
 }
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
-// 在类中添加辅助方法
+// 在類中新增輔助方法
 _notify(message, type = 'info') {
   if (typeof this._showNotification === 'function') {
     this._showNotification(message, type);
@@ -578,59 +578,59 @@ async exportStructuredTranslation(originalPdfBase64, translatedContentList, show
 
   try {
     if (!translatedContentList || translatedContentList.length === 0) {
-      this._notify('没有翻译内容可导出', 'warning');
+      this._notify('沒有翻譯內容可匯出', 'warning');
       return;
     }
 
     if (!originalPdfBase64) {
-      this._notify('原始PDF数据不可用', 'error');
+      this._notify('原始PDF資料不可用', 'error');
       return;
     }
 
-    this._notify('正在生成译文PDF，请稍候...', 'info');
+    this._notify('正在生成譯文PDF，請稍候...', 'info');
 
-    // ... 后续代码 ...
+    // ... 後續程式碼 ...
   } catch (error) {
-    this._notify('导出失败: ' + error.message, 'error');
+    this._notify('匯出失敗: ' + error.message, 'error');
   }
 }
 ```
 
-**影响**: 🟡 中等 - 提高健壮性
+**影響**: 🟡 中等 - 提高穩健性
 
 ---
 
-### 9. SegmentManager - 改进离屏canvas重用
+### 9. SegmentManager - 改進離屏canvas重用
 
-**问题位置**: `SegmentManager.js` line 280-299
+**問題位置**: `SegmentManager.js` line 280-299
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 async renderSegment(seg) {
-  const off = document.createElement('canvas');  // ❌ 每次创建
+  const off = document.createElement('canvas');  // ❌ 每次建立
   const offCtx = off.getContext('2d', { willReadFrequently: true, alpha: false });
 
   for (const p of seg.pages) {
-    if (off.width !== p.width) off.width = p.width;  // ❌ 频繁重新分配
+    if (off.width !== p.width) off.width = p.width;  // ❌ 頻繁重新分配
     if (off.height !== p.height) off.height = p.height;
     // ...
   }
-  // ❌ canvas 没有被清理，垃圾回收等待
+  // ❌ canvas 沒有被清理，垃圾回收等待
 }
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
 constructor(pdfDoc, options = {}) {
   // ... 其他初始化 ...
-  this._offscreenCanvas = null;  // ✅ 缓存离屏canvas
-  this._offscreenCtx = null;      // ✅ 缓存context
-  this._maxOffscreenSize = { width: 0, height: 0 };  // ✅ 追踪最大尺寸
+  this._offscreenCanvas = null;  // ✅ 快取離屏canvas
+  this._offscreenCtx = null;      // ✅ 快取context
+  this._maxOffscreenSize = { width: 0, height: 0 };  // ✅ 追蹤最大尺寸
 }
 
 _getOffscreenCanvas(width, height) {
-  // ✅ 复用或创建离屏canvas
+  // ✅ 複用或建立離屏canvas
   if (!this._offscreenCanvas) {
     this._offscreenCanvas = document.createElement('canvas');
     this._offscreenCtx = this._offscreenCanvas.getContext('2d', {
@@ -639,13 +639,13 @@ _getOffscreenCanvas(width, height) {
     });
   }
 
-  // ✅ 只在需要时扩大（不缩小，避免频繁分配）
+  // ✅ 只在需要時擴大（不縮小，避免頻繁分配）
   if (width > this._maxOffscreenSize.width || height > this._maxOffscreenSize.height) {
     this._offscreenCanvas.width = Math.max(width, this._maxOffscreenSize.width);
     this._offscreenCanvas.height = Math.max(height, this._maxOffscreenSize.height);
     this._maxOffscreenSize.width = this._offscreenCanvas.width;
     this._maxOffscreenSize.height = this._offscreenCanvas.height;
-    console.log(`[SegmentManager] 离屏canvas扩展为 ${this._offscreenCanvas.width}x${this._offscreenCanvas.height}`);
+    console.log(`[SegmentManager] 離屏canvas擴充為 ${this._offscreenCanvas.width}x${this._offscreenCanvas.height}`);
   }
 
   return { canvas: this._offscreenCanvas, ctx: this._offscreenCtx };
@@ -655,26 +655,26 @@ async renderSegment(seg) {
   for (const p of seg.pages) {
     const { canvas: off, ctx: offCtx } = this._getOffscreenCanvas(p.width, p.height);
 
-    // ✅ 重新设置尺寸为当前page的尺寸（只是清除，不重新分配）
+    // ✅ 重新設定尺寸為當前page的尺寸（只是清除，不重新分配）
     off.width = p.width;
     off.height = p.height;
 
     offCtx.clearRect(0, 0, off.width, off.height);
     await p.page.render({ canvasContext: offCtx, viewport: p.viewport }).promise;
 
-    // 绘制到左右段画布
+    // 繪製到左右段畫布
     seg.left.ctx.drawImage(off, 0, p.yInSegPx);
     seg.right.ctx.drawImage(off, 0, p.yInSegPx);
   }
 
-  // 绘制 overlays
+  // 繪製 overlays
   await this.renderSegmentOverlays(seg);
 }
 
 destroy() {
   // ... 其他清理 ...
 
-  // ✅ 清理离屏canvas
+  // ✅ 清理離屏canvas
   this._offscreenCanvas = null;
   this._offscreenCtx = null;
   this._maxOffscreenSize = { width: 0, height: 0 };
@@ -684,35 +684,35 @@ destroy() {
 }
 ```
 
-**影响**: 🟡 中等 - 性能优化
+**影響**: 🟡 中等 - 效能最佳化
 
 ---
 
-### 10. SegmentManager - 添加容器验证
+### 10. SegmentManager - 新增容器驗證
 
-**问题位置**: `SegmentManager.js` line 209-210
+**問題位置**: `SegmentManager.js` line 209-210
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 createSegmentDom(seg, dpr) {
   // ...
-  buildSide(this.originalSegmentsContainer, 'left');  // ❌ 容器可能为null
+  buildSide(this.originalSegmentsContainer, 'left');  // ❌ 容器可能為null
   buildSide(this.translationSegmentsContainer, 'right');
 }
 
 const buildSide = (container, side) => {
   // ...
-  container.appendChild(wrapper);  // ❌ 如果container为null会崩溃
+  container.appendChild(wrapper);  // ❌ 如果container為null會崩潰
 };
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
 createSegmentDom(seg, dpr) {
-  // ✅ 验证容器
+  // ✅ 驗證容器
   if (!this.originalSegmentsContainer || !this.translationSegmentsContainer) {
-    console.error('[SegmentManager] 容器未初始化，无法创建段DOM');
+    console.error('[SegmentManager] 容器未初始化，無法建立段DOM');
     return false;
   }
 
@@ -721,7 +721,7 @@ createSegmentDom(seg, dpr) {
 
   const buildSide = (container, side) => {
     if (!container) {
-      console.error(`[SegmentManager] ${side} 容器为null`);
+      console.error(`[SegmentManager] ${side} 容器為null`);
       return;
     }
 
@@ -758,7 +758,7 @@ createSegmentDom(seg, dpr) {
     if (side === 'left') seg.left = sideObj;
     else seg.right = sideObj;
 
-    // 绑定点击事件
+    // 綁定點選事件
     if (side === 'left' && this.onOverlayClick) {
       overlay.addEventListener('click', (e) => this.onOverlayClick(e, seg));
     }
@@ -771,64 +771,64 @@ createSegmentDom(seg, dpr) {
 }
 ```
 
-**影响**: 🟡 中等 - 防止崩溃
+**影響**: 🟡 中等 - 防止崩潰
 
 ---
 
-## 🟢 低优先级 - 可选改进
+## 🟢 低優先順序 - 可選改進
 
-### 11. SegmentManager - 添加BBOX_NORMALIZED_RANGE验证
+### 11. SegmentManager - 新增BBOX_NORMALIZED_RANGE驗證
 
-**问题位置**: `SegmentManager.js` line 334-365
+**問題位置**: `SegmentManager.js` line 334-365
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 const BBOX_NORMALIZED_RANGE = this.options.bboxNormalizedRange;
 // ...
-const scaleX = p.width / BBOX_NORMALIZED_RANGE;  // ❌ 如果为0会导致Infinity
+const scaleX = p.width / BBOX_NORMALIZED_RANGE;  // ❌ 如果為0會導致Infinity
 ```
 
-**修复方案**:
+**修復方案**:
 
 ```javascript
 async clearTextInSegment(seg) {
   if (!this.contentListJson || !this.clearTextInBbox) {
-    console.warn('[SegmentManager] 缺少清除文字依赖');
+    console.warn('[SegmentManager] 缺少清除文字依賴');
     return;
   }
 
   const BBOX_NORMALIZED_RANGE = this.options.bboxNormalizedRange;
 
-  // ✅ 添加验证
+  // ✅ 新增驗證
   if (!BBOX_NORMALIZED_RANGE || BBOX_NORMALIZED_RANGE <= 0) {
-    console.error('[SegmentManager] 无效的 bboxNormalizedRange:', BBOX_NORMALIZED_RANGE);
+    console.error('[SegmentManager] 無效的 bboxNormalizedRange:', BBOX_NORMALIZED_RANGE);
     return;
   }
 
-  // ... 后续代码 ...
+  // ... 後續程式碼 ...
 }
 ```
 
-**影响**: 🟢 低 - 防止数值错误
+**影響**: 🟢 低 - 防止數值錯誤
 
 ---
 
-### 12. PDFExporter - 改进rgb色值处理
+### 12. PDFExporter - 改進rgb色值處理
 
-**问题位置**: `PDFExporter.js` line 133
+**問題位置**: `PDFExporter.js` line 133
 
-**当前代码**:
+**當前程式碼**:
 ```javascript
 page.drawRectangle({
   x: x,
   y: y,
   width: width,
   height: height,
-  color: rgb(1, 1, 1),  // ⚠️ 这在pdf-lib中是正确的（0-1范围）
+  color: rgb(1, 1, 1),  // ⚠️ 這在pdf-lib中是正確的（0-1範圍）
 });
 ```
 
-**说明**: 实际上这是正确的，pdf-lib使用0-1范围的RGB值。但建议添加注释：
+**說明**: 實際上這是正確的，pdf-lib使用0-1範圍的RGB值。但建議新增註釋：
 
 ```javascript
 page.drawRectangle({
@@ -836,108 +836,108 @@ page.drawRectangle({
   y: y,
   width: width,
   height: height,
-  color: rgb(1, 1, 1),  // ✅ pdf-lib使用0-1范围（不是0-255）
+  color: rgb(1, 1, 1),  // ✅ pdf-lib使用0-1範圍（不是0-255）
 });
 ```
 
-**影响**: 🟢 低 - 文档优化
+**影響**: 🟢 低 - 文件最佳化
 
 ---
 
-## 修复优先级排序
+## 修復優先順序排序
 
-### Phase 1 - 立即修复 (必须在测试前)
-1. ✅ TextFittingAdapter - 添加 BBOX_NORMALIZED_RANGE 定义
-2. ✅ PDFExporter - 统一Canvas和PDF文本高度公式
-3. ✅ SegmentManager - 修复事件监听器清理
+### Phase 1 - 立即修復 (必須在測試前)
+1. ✅ TextFittingAdapter - 新增 BBOX_NORMALIZED_RANGE 定義
+2. ✅ PDFExporter - 統一Canvas和PDF文字高度公式
+3. ✅ SegmentManager - 修復事件監聽器清理
 
-### Phase 2 - 尽快修复 (本周内)
-4. ✅ TextFittingAdapter - 改进错误处理
-5. ✅ TextFittingAdapter - 添加参数验证
-6. ✅ TextFittingAdapter - 添加ctx验证
-7. ✅ PDFExporter - 改进fontkit失败处理
-8. ✅ PDFExporter - 添加showNotification类型检查
+### Phase 2 - 儘快修復 (本週內)
+4. ✅ TextFittingAdapter - 改進錯誤處理
+5. ✅ TextFittingAdapter - 新增引數驗證
+6. ✅ TextFittingAdapter - 新增ctx驗證
+7. ✅ PDFExporter - 改進fontkit失敗處理
+8. ✅ PDFExporter - 新增showNotification型別檢查
 
-### Phase 3 - 后续优化 (下周)
-9. ✅ SegmentManager - 改进离屏canvas重用
-10. ✅ SegmentManager - 添加容器验证
-11. ✅ SegmentManager - 添加BBOX_NORMALIZED_RANGE验证
-12. ✅ PDFExporter - 改进rgb色值注释
-
----
-
-## 测试检查清单
-
-修复完成后，按以下顺序测试：
-
-- [ ] TextFittingAdapter.initialize() 失败时是否正确抛出错误
-- [ ] preprocessGlobalFontSizes() 接收无效参数时是否正确处理
-- [ ] wrapText() 接收无效ctx时是否降级处理
-- [ ] PDFExporter 导出的PDF文本大小是否与Canvas显示一致
-- [ ] PDFExporter fontkit加载失败时是否继续导出（可能带警告）
-- [ ] SegmentManager 滚动时是否继续渲染，销毁后是否停止
-- [ ] SegmentManager destroy() 调用后内存是否释放
-- [ ] SegmentManager setContainers(null, ...) 时是否正确处理
-- [ ] 长PDF (100+页) 是否能正确分段和渲染
-- [ ] 切换PDF后旧的事件监听器是否被清理
+### Phase 3 - 後續最佳化 (下週)
+9. ✅ SegmentManager - 改進離屏canvas重用
+10. ✅ SegmentManager - 新增容器驗證
+11. ✅ SegmentManager - 新增BBOX_NORMALIZED_RANGE驗證
+12. ✅ PDFExporter - 改進rgb色值註釋
 
 ---
 
-## 集成测试示例
+## 測試檢查清單
+
+修復完成後，按以下順序測試：
+
+- [ ] TextFittingAdapter.initialize() 失敗時是否正確丟擲錯誤
+- [ ] preprocessGlobalFontSizes() 接收無效引數時是否正確處理
+- [ ] wrapText() 接收無效ctx時是否降級處理
+- [ ] PDFExporter 匯出的PDF文字大小是否與Canvas顯示一致
+- [ ] PDFExporter fontkit載入失敗時是否繼續匯出（可能帶警告）
+- [ ] SegmentManager 滾動時是否繼續渲染，銷燬後是否停止
+- [ ] SegmentManager destroy() 呼叫後記憶體是否釋放
+- [ ] SegmentManager setContainers(null, ...) 時是否正確處理
+- [ ] 長PDF (100+頁) 是否能正確分段和渲染
+- [ ] 切換PDF後舊的事件監聽器是否被清理
+
+---
+
+## 整合測試示例
 
 ```javascript
-// 完整的集成测试
+// 完整的整合測試
 async function testModuleIntegration() {
-  console.log('开始模块集成测试...');
+  console.log('開始模組整合測試...');
 
-  // 1. 测试TextFittingAdapter
-  console.log('\n1. 测试 TextFittingAdapter');
+  // 1. 測試TextFittingAdapter
+  console.log('\n1. 測試 TextFittingAdapter');
   try {
     const textFitter = new TextFittingAdapter({
       globalFontScale: 0.9
     });
 
-    // 应该throw而不是静默失败
+    // 應該throw而不是靜默失敗
     try {
       textFitter.initialize();
-      console.warn('⚠️ initialize() 应该检查TextFittingEngine');
+      console.warn('⚠️ initialize() 應該檢查TextFittingEngine');
     } catch (e) {
-      console.log('✅ initialize() 正确抛出错误');
+      console.log('✅ initialize() 正確丟擲錯誤');
     }
 
-    // 测试参数验证
+    // 測試引數驗證
     textFitter.preprocessGlobalFontSizes(null, null);
-    console.log('✅ preprocessGlobalFontSizes() 接受无效参数');
+    console.log('✅ preprocessGlobalFontSizes() 接受無效引數');
 
-    // 测试wrapText验证
+    // 測試wrapText驗證
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const lines = textFitter.wrapText(null, 'test', 100);  // 应该降级
-    console.log('✅ wrapText() 接受无效ctx，返回:', lines);
+    const lines = textFitter.wrapText(null, 'test', 100);  // 應該降級
+    console.log('✅ wrapText() 接受無效ctx，返回:', lines);
 
   } catch (error) {
-    console.error('❌ TextFittingAdapter测试失败:', error);
+    console.error('❌ TextFittingAdapter測試失敗:', error);
   }
 
-  // 2. 测试PDFExporter
-  console.log('\n2. 测试 PDFExporter');
+  // 2. 測試PDFExporter
+  console.log('\n2. 測試 PDFExporter');
   try {
     const exporter = new PDFExporter();
 
-    // 测试没有翻译数据
+    // 測試沒有翻譯資料
     await exporter.exportStructuredTranslation('', [], (msg, type) => {
       console.log(`[${type}] ${msg}`);
     });
-    console.log('✅ 空翻译数据处理正确');
+    console.log('✅ 空翻譯資料處理正確');
 
   } catch (error) {
-    console.error('❌ PDFExporter测试失败:', error);
+    console.error('❌ PDFExporter測試失敗:', error);
   }
 
-  // 3. 测试SegmentManager
-  console.log('\n3. 测试 SegmentManager');
+  // 3. 測試SegmentManager
+  console.log('\n3. 測試 SegmentManager');
   try {
-    // 模拟pdfDoc
+    // 模擬pdfDoc
     const mockPdfDoc = {
       numPages: 10,
       getPage: async (n) => ({
@@ -948,28 +948,28 @@ async function testModuleIntegration() {
 
     const manager = new SegmentManager(mockPdfDoc);
 
-    // 设置依赖和容器
+    // 設定依賴和容器
     const origContainer = document.createElement('div');
     const transContainer = document.createElement('div');
 
     manager.setContainers(origContainer, transContainer, window, window);
 
-    // 测试setContainers(null)
+    // 測試setContainers(null)
     manager.setContainers(null, null, null, null);
-    console.log('✅ setContainers() 接受null，createSegmentDom应该降级');
+    console.log('✅ setContainers() 接受null，createSegmentDom應該降級');
 
-    // 测试destroy
+    // 測試destroy
     manager.destroy();
-    console.log('✅ destroy() 执行成功');
+    console.log('✅ destroy() 執行成功');
 
   } catch (error) {
-    console.error('❌ SegmentManager测试失败:', error);
+    console.error('❌ SegmentManager測試失敗:', error);
   }
 
-  console.log('\n✅ 模块集成测试完成');
+  console.log('\n✅ 模組整合測試完成');
 }
 
-// 运行测试
+// 執行測試
 testModuleIntegration();
 ```
 

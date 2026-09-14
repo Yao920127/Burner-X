@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,33 +9,33 @@
     <script src="https://gcore.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100">
-    <!-- 登录页面 -->
+    <!-- 登入頁面 -->
     <div id="loginPage" class="min-h-screen flex items-center justify-center">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h1 class="text-2xl font-bold mb-6 text-center">Paper Burner X 管理面板</h1>
             <form id="loginForm" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">邮箱</label>
+                    <label class="block text-sm font-medium text-gray-700">郵箱</label>
                     <input type="email" id="email" required
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">密码</label>
+                    <label class="block text-sm font-medium text-gray-700">密碼</label>
                     <input type="password" id="password" required
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <button type="submit"
                     class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    登录
+                    登入
                 </button>
             </form>
             <div id="loginError" class="mt-4 text-red-600 text-sm hidden"></div>
         </div>
     </div>
 
-    <!-- 管理面板主界面 -->
+    <!-- 管理面板主介面 -->
     <div id="adminPanel" class="hidden min-h-screen">
-        <!-- 顶部导航 -->
+        <!-- 頂部導航 -->
         <nav class="bg-white shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
@@ -46,70 +46,70 @@
                         <span id="adminName" class="text-gray-700"></span>
                         <button onclick="logout()"
                             class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">
-                            退出登录
+                            退出登入
                         </button>
                     </div>
                 </div>
             </div>
         </nav>
 
-        <!-- 主内容区 -->
+        <!-- 主內容區 -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <!-- 统计卡片 -->
+            <!-- 統計卡片 -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm">总用户数</div>
+                    <div class="text-gray-500 text-sm">總使用者數</div>
                     <div id="totalUsers" class="text-3xl font-bold mt-2">0</div>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm">活跃用户</div>
+                    <div class="text-gray-500 text-sm">活躍使用者</div>
                     <div id="activeUsers" class="text-3xl font-bold mt-2">0</div>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm">总文档数</div>
+                    <div class="text-gray-500 text-sm">總文件數</div>
                     <div id="totalDocuments" class="text-3xl font-bold mt-2">0</div>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm">今日处理</div>
+                    <div class="text-gray-500 text-sm">今日處理</div>
                     <div id="documentsToday" class="text-3xl font-bold mt-2">0</div>
                 </div>
             </div>
 
-            <!-- 额外统计卡片（周/月处理量与总存储） -->
+            <!-- 額外統計卡片（周/月處理量與總儲存） -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm mb-2">本周处理</div>
+                    <div class="text-gray-500 text-sm mb-2">本週處理</div>
                     <div id="documentsThisWeek" class="text-2xl font-bold">-</div>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm mb-2">本月处理</div>
+                    <div class="text-gray-500 text-sm mb-2">本月處理</div>
                     <div id="documentsThisMonth" class="text-2xl font-bold">-</div>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="text-gray-500 text-sm mb-2">总存储使用</div>
+                    <div class="text-gray-500 text-sm mb-2">總儲存使用</div>
                     <div id="totalStorageMB" class="text-2xl font-bold">- MB</div>
                 </div>
             </div>
 
-            <!-- 选项卡导航 -->
+            <!-- 選項卡導航 -->
             <div class="bg-white rounded-lg shadow mb-4">
                 <div class="border-b border-gray-200">
                     <nav class="flex -mb-px overflow-x-auto">
                         <button onclick="switchTab('overview')" id="tab-overview"
                             class="tab-button px-6 py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap">
-                            概览
+                            概覽
                         </button>
                         <button onclick="switchTab('users')" id="tab-users"
                             class="tab-button px-6 py-3 border-b-2 border-blue-500 font-medium text-blue-600 whitespace-nowrap">
-                            用户管理
+                            使用者管理
                         </button>
                         <button onclick="switchTab('quotas')" id="tab-quotas"
                             class="tab-button px-6 py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap">
-                            配额管理
+                            配額管理
                         </button>
                         <button onclick="switchTab('activity')" id="tab-activity"
                             class="tab-button px-6 py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap">
-                            活动日志
+                            活動日誌
                         </button>
                         <button onclick="switchTab('models')" id="tab-models"
                             class="tab-button px-6 py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap">
@@ -117,49 +117,49 @@
                         </button>
                         <button onclick="switchTab('system')" id="tab-system"
                             class="tab-button px-6 py-3 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap">
-                            系统设置
+                            系統設定
                         </button>
                     </nav>
                 </div>
 
-                <!-- 概览标签页 -->
+                <!-- 概覽分頁 -->
                 <div id="content-overview" class="p-6 hidden">
-                    <!-- 日期筛选 -->
+                    <!-- 日期篩選 -->
                     <div class="mb-6 flex flex-wrap items-end gap-3">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">开始日期</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">開始日期</label>
                             <input type="date" id="statsStartDate" class="px-3 py-2 border rounded-md">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">结束日期</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">結束日期</label>
                             <input type="date" id="statsEndDate" class="px-3 py-2 border rounded-md">
                         </div>
                         <div class="flex items-center gap-2 pb-1">
-                            <button onclick="applyStatsRange()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">应用</button>
+                            <button onclick="applyStatsRange()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">應用</button>
                             <button onclick="clearStatsRange()" class="px-4 py-2 border rounded-md hover:bg-gray-50">清除</button>
                         </div>
                     </div>
-                    <div id="statsRangeHint" class="mb-6 text-sm text-gray-600">当前筛选：全部</div>
+                    <div id="statsRangeHint" class="mb-6 text-sm text-gray-600">當前篩選：全部</div>
                     <div class="mb-8">
-                        <h3 class="text-lg font-medium mb-4">使用趋势（最近30天）</h3>
+                        <h3 class="text-lg font-medium mb-4">使用趨勢（最近30天）</h3>
                         <div class="bg-white p-4 rounded-lg border">
                             <canvas id="trendChart" height="80"></canvas>
                         </div>
                     </div>
                     <div class="mb-8">
-                        <h3 class="text-lg font-medium mb-4">文档状态分布</h3>
+                        <h3 class="text-lg font-medium mb-4">文件狀態分佈</h3>
                         <div id="documentsByStatus" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"></div>
                     </div>
                     <div>
-                        <h3 class="text-lg font-medium mb-4">Top 10 活跃用户（本月）</h3>
+                        <h3 class="text-lg font-medium mb-4">Top 10 活躍使用者（本月）</h3>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">排名</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">用户</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">邮箱</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">文档数</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">使用者</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">郵箱</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">文件數</th>
                                     </tr>
                                 </thead>
                                 <tbody id="topUsersList" class="bg-white divide-y divide-gray-200"></tbody>
@@ -168,30 +168,30 @@
                     </div>
                 </div>
 
-                <!-- 用户管理 -->
+                <!-- 使用者管理 -->
                 <div id="content-users" class="p-6">
                     <div class="mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                        <h3 class="text-lg font-medium">用户列表</h3>
+                        <h3 class="text-lg font-medium">使用者列表</h3>
                         <div class="flex items-center gap-2">
-                            <input id="usersSearch" type="text" placeholder="搜索邮箱/姓名" class="px-3 py-2 border rounded-md" onkeypress="if(event.key==='Enter'){ usersPage=1; loadUsers(); }">
+                            <input id="usersSearch" type="text" placeholder="搜尋郵箱/姓名" class="px-3 py-2 border rounded-md" onkeypress="if(event.key==='Enter'){ usersPage=1; loadUsers(); }">
                             <select id="usersPageSize" class="px-2 py-2 border rounded-md" onchange="usersPage=1; usersPageSize=parseInt(this.value); loadUsers();">
-                                <option value="10">10/页</option>
-                                <option value="20" selected>20/页</option>
-                                <option value="50">50/页</option>
+                                <option value="10">10/頁</option>
+                                <option value="20" selected>20/頁</option>
+                                <option value="50">50/頁</option>
                             </select>
-                            <button onclick="usersPage=1; loadUsers();" class="bg-gray-200 px-3 py-2 rounded-md hover:bg-gray-300">搜索</button>
-                            <button onclick="openCreateUser()" class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700">新建用户</button>
+                            <button onclick="usersPage=1; loadUsers();" class="bg-gray-200 px-3 py-2 rounded-md hover:bg-gray-300">搜尋</button>
+                            <button onclick="openCreateUser()" class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700">新建使用者</button>
                         </div>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">邮箱</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">郵箱</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">姓名</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">角色</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">注册时间</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">狀態</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">註冊時間</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
                                 </tr>
                             </thead>
@@ -199,70 +199,70 @@
                         </table>
                     </div>
                     <div class="flex items-center justify-between mt-3 text-sm text-gray-600">
-                        <div id="usersPagerInfo">共 0 条</div>
+                        <div id="usersPagerInfo">共 0 條</div>
                         <div class="flex items-center gap-2">
-                            <button class="px-3 py-1 border rounded-md" onclick="if(usersPage>1){usersPage--; loadUsers();}">上一页</button>
-                            <span id="usersPagerPage">第 1/1 页</span>
-                            <button class="px-3 py-1 border rounded-md" onclick="if(usersPage<usersTotalPages){usersPage++; loadUsers();}">下一页</button>
+                            <button class="px-3 py-1 border rounded-md" onclick="if(usersPage>1){usersPage--; loadUsers();}">上一頁</button>
+                            <span id="usersPagerPage">第 1/1 頁</span>
+                            <button class="px-3 py-1 border rounded-md" onclick="if(usersPage<usersTotalPages){usersPage++; loadUsers();}">下一頁</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 配额管理 -->
+                <!-- 配額管理 -->
                 <div id="content-quotas" class="p-6 hidden">
                     <div class="mb-4">
-                        <h3 class="text-lg font-medium mb-2">配额管理</h3>
-                        <p class="text-sm text-gray-600">为用户设置文档数量和存储空间限制（-1 表示无限制）</p>
+                        <h3 class="text-lg font-medium mb-2">配額管理</h3>
+                        <p class="text-sm text-gray-600">為使用者設定文件數量和儲存空間限制（-1 表示無限制）</p>
                     </div>
 
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">选择用户</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">選擇使用者</label>
                         <select id="quotaUserId" onchange="loadUserQuota()"
                             class="block w-full px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">请选择用户...</option>
+                            <option value="">請選擇使用者...</option>
                         </select>
                     </div>
 
                     <div id="quotaForm" class="hidden space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">每日文档限制</label>
+                                <label class="block text-sm font-medium text-gray-700">每日文件限制</label>
                                 <input type="number" id="maxDocumentsPerDay"
                                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <p class="mt-1 text-xs text-gray-500">-1 表示无限制</p>
+                                <p class="mt-1 text-xs text-gray-500">-1 表示無限制</p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">每月文档限制</label>
+                                <label class="block text-sm font-medium text-gray-700">每月文件限制</label>
                                 <input type="number" id="maxDocumentsPerMonth"
                                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <p class="mt-1 text-xs text-gray-500">-1 表示无限制</p>
+                                <p class="mt-1 text-xs text-gray-500">-1 表示無限制</p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">存储空间限制（MB）</label>
+                                <label class="block text-sm font-medium text-gray-700">儲存空間限制（MB）</label>
                                 <input type="number" id="maxStorageSize"
                                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <p class="mt-1 text-xs text-gray-500">-1 表示无限制</p>
+                                <p class="mt-1 text-xs text-gray-500">-1 表示無限制</p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">API Keys 数量限制</label>
+                                <label class="block text-sm font-medium text-gray-700">API Keys 數量限制</label>
                                 <input type="number" id="maxApiKeysCount"
                                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <p class="mt-1 text-xs text-gray-500">-1 表示无限制</p>
+                                <p class="mt-1 text-xs text-gray-500">-1 表示無限制</p>
                             </div>
                         </div>
 
                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <h4 class="text-sm font-medium text-gray-700 mb-3">当前使用量</h4>
+                            <h4 class="text-sm font-medium text-gray-700 mb-3">當前使用量</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <div class="text-sm text-gray-600">本月文档数</div>
+                                    <div class="text-sm text-gray-600">本月文件數</div>
                                     <div id="documentsThisMonthQuota" class="text-lg font-semibold">0</div>
                                     <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
                                         <div id="documentsProgressBar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 0%"></div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="text-sm text-gray-600">存储使用（MB）</div>
+                                    <div class="text-sm text-gray-600">儲存使用（MB）</div>
                                     <div id="currentStorageUsed" class="text-lg font-semibold">0</div>
                                     <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
                                         <div id="storageProgressBar" class="bg-green-600 h-2 rounded-full transition-all" style="width: 0%"></div>
@@ -274,7 +274,7 @@
                         <div class="flex space-x-4">
                             <button onclick="saveUserQuota()"
                                 class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
-                                保存配额
+                                儲存配額
                             </button>
                             <button onclick="resetUserQuota()"
                                 class="bg-gray-200 px-6 py-2 rounded-md hover:bg-gray-300">
@@ -284,20 +284,20 @@
                     </div>
                 </div>
 
-                <!-- 活动日志 -->
+                <!-- 活動日誌 -->
                 <div id="content-activity" class="p-6 hidden">
                     <div class="mb-6">
-                        <h3 class="text-lg font-medium mb-2">用户活动日志</h3>
+                        <h3 class="text-lg font-medium mb-2">使用者活動日誌</h3>
                         <div class="flex items-center space-x-4">
                             <div class="flex-1">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">选择用户</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">選擇使用者</label>
                                 <select id="activityUserId" onchange="loadUserActivity()"
                                     class="block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                    <option value="">请选择用户...</option>
+                                    <option value="">請選擇使用者...</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">显示条数</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">顯示條數</label>
                                 <select id="activityLimit" onchange="loadUserActivity()"
                                     class="block w-full px-3 py-2 border border-gray-300 rounded-md">
                                     <option value="50">50</option>
@@ -312,16 +312,16 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">时间</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">時間</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">资源ID</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">详情</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">資源ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">詳情</th>
                                 </tr>
                             </thead>
                             <tbody id="activityLogsList" class="bg-white divide-y divide-gray-200">
                                 <tr>
                                     <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                                        请选择用户查看活动日志
+                                        請選擇使用者檢視活動日誌
                                     </td>
                                 </tr>
                             </tbody>
@@ -334,31 +334,31 @@
                     <div class="mb-4 flex flex-wrap items-center gap-3">
                         <button onclick="addSourceSite()"
                             class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                            添加自定义源站
+                            新增自定義源站
                         </button>
                         <button id="importSourceSitesBtn"
                             class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">
-                            导入 JSON
+                            匯入 JSON
                         </button>
                         <input id="importSourceSitesFile" type="file" accept="application/json" class="hidden">
                         <button id="exportSourceSitesBtn"
                             class="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300">
-                            导出 JSON
+                            匯出 JSON
                         </button>
                     </div>
                     <div id="sourceSitesList" class="space-y-4">
-                        <!-- 源站配置将在这里动态加载 -->
+                        <!-- 源站配置將在這裡動態載入 -->
                     </div>
                 </div>
 
-                <!-- 系统设置 -->
+                <!-- 系統設定 -->
                 <div id="content-system" class="p-6 hidden">
                     <div class="space-y-6">
                         <div>
-                            <h3 class="text-lg font-medium mb-4">系统配置</h3>
+                            <h3 class="text-lg font-medium mb-4">系統配置</h3>
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">允许用户注册</label>
+                                    <label class="block text-sm font-medium text-gray-700">允許使用者註冊</label>
                                     <select id="allowRegistration"
                                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                                         <option value="true">是</option>
@@ -366,56 +366,56 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">最大上传大小（MB）</label>
+                                    <label class="block text-sm font-medium text-gray-700">最大上傳大小（MB）</label>
                                     <input type="number" id="maxUploadSize" value="100"
                                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                                 </div>
                                 <button onclick="saveSystemSettings()"
                                     class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                                    保存设置
+                                    儲存設定
                                 </button>
                             </div>
                         </div>
 
                         <div class="pt-6 border-t">
-                            <h3 class="text-lg font-medium mb-4">代理与下载设置</h3>
+                            <h3 class="text-lg font-medium mb-4">代理與下載設定</h3>
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">代理白名单域（手动追加，逗号分隔）</label>
+                                    <label class="block text-sm font-medium text-gray-700">代理白名單域（手動追加，逗號分隔）</label>
                                     <input type="text" id="proxyWhitelistDomains" placeholder="mineru.net, v2.doc2x.noedgeai.com"
                                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                    <p class="mt-1 text-xs text-gray-500">与“自定义源站点（全局）”“Workers 域”动态合并；子域名自动匹配。</p>
+                                    <p class="mt-1 text-xs text-gray-500">與“自定義源站點（全域）”“Workers 域”動態合併；子域名自動比對。</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">Workers 代理域（逗号分隔）</label>
+                                    <label class="block text-sm font-medium text-gray-700">Workers 代理域（逗號分隔）</label>
                                     <input type="text" id="workerProxyDomains" placeholder="ocr-proxy.xxx.workers.dev, my-proxy.example.com"
                                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">允许 HTTP 代理</label>
+                                        <label class="block text-sm font-medium text-gray-700">允許 HTTP 代理</label>
                                         <select id="allowHttpProxy" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                                            <option value="false">否（推荐）</option>
-                                            <option value="true">是（仅测试环境）</option>
+                                            <option value="false">否（推薦）</option>
+                                            <option value="true">是（僅測試環境）</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">上游超时（毫秒）</label>
+                                        <label class="block text-sm font-medium text-gray-700">上游超時（毫秒）</label>
                                         <input type="number" id="ocrUpstreamTimeoutMs" placeholder="30000"
                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">下载体积上限（MB）</label>
+                                        <label class="block text-sm font-medium text-gray-700">下載體積上限（MB）</label>
                                         <input type="number" id="maxProxyDownloadMb" placeholder="100"
                                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <button onclick="saveProxySettings()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">保存代理设置</button>
-                                    <span class="text-xs text-gray-500">保存后约 60 秒内生效（服务端定时刷新）。</span>
-                                    <button onclick="refreshEffectiveProxySettings()" class="px-3 py-2 border rounded-md hover:bg-gray-50 text-sm">刷新生效配置</button>
-                                    <button onclick="applyProxySettingsNow()" class="px-3 py-2 border rounded-md hover:bg-gray-50 text-sm">立即应用配置</button>
-                                    <button onclick="clearProxyDomains()" class="px-3 py-2 border rounded-md hover:bg-gray-50 text-sm">清空手动域/Workers 域</button>
+                                    <button onclick="saveProxySettings()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">儲存代理設定</button>
+                                    <span class="text-xs text-gray-500">儲存後約 60 秒內生效（服務端定時重新整理）。</span>
+                                    <button onclick="refreshEffectiveProxySettings()" class="px-3 py-2 border rounded-md hover:bg-gray-50 text-sm">重新整理生效配置</button>
+                                    <button onclick="applyProxySettingsNow()" class="px-3 py-2 border rounded-md hover:bg-gray-50 text-sm">立即應用配置</button>
+                                    <button onclick="clearProxyDomains()" class="px-3 py-2 border rounded-md hover:bg-gray-50 text-sm">清空手動域/Workers 域</button>
                                 </div>
                             </div>
                         </div>
@@ -441,7 +441,7 @@
             }
         });
 
-        // 登录
+        // 登入
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
@@ -458,10 +458,10 @@
                     localStorage.setItem('admin_token', authToken);
                     showAdminPanel(response.data.user);
                 } else {
-                    showError('您没有管理员权限');
+                    showError('您沒有管理員許可權');
                 }
             } catch (error) {
-                showError('登录失败：' + (error.response?.data?.error || error.message));
+                showError('登入失敗：' + (error.response?.data?.error || error.message));
             }
         });
 
@@ -496,7 +496,7 @@
         async function showAdminPanel(user) {
             document.getElementById('loginPage').classList.add('hidden');
             document.getElementById('adminPanel').classList.remove('hidden');
-            // 使用 textContent 而不是 innerHTML 来防止 XSS
+            // 使用 textContent 而不是 innerHTML 來防止 XSS
             const adminNameElement = document.getElementById('adminName');
             adminNameElement.textContent = user.name || user.email;
 
@@ -520,7 +520,7 @@
             }
         }
 
-        // 安全转义
+        // 安全轉義
         function escapeHtml(text) {
             if (!text) return '-';
             const div = document.createElement('div');
@@ -537,7 +537,7 @@
                 const data = response.data;
                 const usersList = document.getElementById('usersList');
                 usersList.innerHTML = data.items.map(user => {
-                    // 额外安全处理：为 onclick 组装参数时转义引号，避免属性破坏
+                    // 額外安全處理：為 onclick 組裝引數時轉義引號，避免屬性破壞
                     const safe = (s) => String(s ?? '').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
                     const id = safe(user.id);
                     const email = safe(user.email);
@@ -552,26 +552,26 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm">${escapeHtml(user.role)}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <span class="px-2 py-1 rounded-full text-xs ${isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
-                                ${isActive ? '活跃' : '禁用'}
+                                ${isActive ? '活躍' : '禁用'}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">${createdAt}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <div class="flex items-center gap-3">
-                              <button onclick="openEditUser('${id}','${email}','${name}','${role}')" class="text-blue-600 hover:text-blue-900">编辑</button>
-                              <button onclick="toggleUserStatus('${id}', ${!isActive})" class="text-yellow-600 hover:text-yellow-800">${isActive ? '禁用' : '启用'}</button>
-                              <button onclick="resetUserPasswordPrompt('${id}')" class="text-indigo-600 hover:text-indigo-800">重置密码</button>
-                              <button onclick="deleteUserConfirm('${id}')" class="text-red-600 hover:text-red-800">删除</button>
+                              <button onclick="openEditUser('${id}','${email}','${name}','${role}')" class="text-blue-600 hover:text-blue-900">編輯</button>
+                              <button onclick="toggleUserStatus('${id}', ${!isActive})" class="text-yellow-600 hover:text-yellow-800">${isActive ? '禁用' : '啟用'}</button>
+                              <button onclick="resetUserPasswordPrompt('${id}')" class="text-indigo-600 hover:text-indigo-800">重置密碼</button>
+                              <button onclick="deleteUserConfirm('${id}')" class="text-red-600 hover:text-red-800">刪除</button>
                             </div>
                         </td>
                     </tr>
                 `;
                 }).join('');
 
-                // 分页信息
+                // 分頁資訊
                 usersTotalPages = Math.max(1, Math.ceil((data.total || 0) / data.pageSize));
-                document.getElementById('usersPagerInfo').textContent = `共 ${data.total} 条`;
-                document.getElementById('usersPagerPage').textContent = `第 ${data.page}/${usersTotalPages} 页`;
+                document.getElementById('usersPagerInfo').textContent = `共 ${data.total} 條`;
+                document.getElementById('usersPagerPage').textContent = `第 ${data.page}/${usersTotalPages} 頁`;
             } catch (error) {
                 console.error('Failed to load users:', error);
             }
@@ -585,32 +585,32 @@
                 );
                 await loadUsers();
             } catch (error) {
-                alert('操作失败：' + error.message);
+                alert('操作失敗：' + error.message);
             }
         }
 
-        // 创建/编辑/重置/删除用户
+        // 建立/編輯/重置/刪除使用者
         function openCreateUser() {
-          const email = prompt('请输入邮箱：');
+          const email = prompt('請輸入郵箱：');
           if (!email) return;
-          const name = prompt('请输入姓名（可留空）：') || '';
-          const role = prompt('角色（USER/ADMIN，默认 USER）：') || 'USER';
-          const password = prompt('初始密码（至少 8 位，留空则自动生成）：') || undefined;
+          const name = prompt('請輸入姓名（可留空）：') || '';
+          const role = prompt('角色（USER/ADMIN，預設 USER）：') || 'USER';
+          const password = prompt('初始密碼（至少 8 位，留空則自動生成）：') || undefined;
           createUser({ email, name, role, password });
         }
 
         async function createUser(payload) {
           try {
             const res = await axios.post(`${API_BASE}/admin/users`, payload, { headers: { Authorization: `Bearer ${authToken}` } });
-            alert('创建成功' + (res.data.tempPassword ? `，临时密码：${res.data.tempPassword}` : ''));
+            alert('建立成功' + (res.data.tempPassword ? `，臨時密碼：${res.data.tempPassword}` : ''));
             await loadUsers();
-          } catch (e) { alert('创建失败：' + (e.response?.data?.error || e.message)); }
+          } catch (e) { alert('建立失敗：' + (e.response?.data?.error || e.message)); }
         }
 
         function openEditUser(id, email, name, role) {
-          const newEmail = prompt('修改邮箱（留空不变）：', email) || undefined;
+          const newEmail = prompt('修改郵箱（留空不變）：', email) || undefined;
           const newName = prompt('修改姓名（可留空）：', name) || undefined;
-          const newRole = prompt('修改角色（USER/ADMIN，留空不变）：', role) || undefined;
+          const newRole = prompt('修改角色（USER/ADMIN，留空不變）：', role) || undefined;
           const data = {};
           if (newEmail && newEmail !== email) data.email = newEmail;
           if (newName !== undefined && newName !== name) data.name = newName;
@@ -623,11 +623,11 @@
           try {
             await axios.put(`${API_BASE}/admin/users/${id}`, data, { headers: { Authorization: `Bearer ${authToken}` } });
             await loadUsers();
-          } catch (e) { alert('更新失败：' + (e.response?.data?.error || e.message)); }
+          } catch (e) { alert('更新失敗：' + (e.response?.data?.error || e.message)); }
         }
 
         function resetUserPasswordPrompt(id) {
-          const password = prompt('输入新密码（>=8 位）：');
+          const password = prompt('輸入新密碼（>=8 位）：');
           if (!password) return;
           resetUserPassword(id, password);
         }
@@ -635,12 +635,12 @@
         async function resetUserPassword(id, password) {
           try {
             await axios.put(`${API_BASE}/admin/users/${id}/password`, { password }, { headers: { Authorization: `Bearer ${authToken}` } });
-            alert('密码已重置');
-          } catch (e) { alert('重置失败：' + (e.response?.data?.error || e.message)); }
+            alert('密碼已重置');
+          } catch (e) { alert('重置失敗：' + (e.response?.data?.error || e.message)); }
         }
 
         function deleteUserConfirm(id) {
-          if (!confirm('确认删除该用户？此操作不可恢复。')) return;
+          if (!confirm('確認刪除該使用者？此操作不可恢復。')) return;
           deleteUser(id);
         }
 
@@ -648,11 +648,11 @@
           try {
             await axios.delete(`${API_BASE}/admin/users/${id}`, { headers: { Authorization: `Bearer ${authToken}` } });
             await loadUsers();
-          } catch (e) { alert('删除失败：' + (e.response?.data?.error || e.message)); }
+          } catch (e) { alert('刪除失敗：' + (e.response?.data?.error || e.message)); }
         }
 
         function switchTab(tab) {
-            // 更新选项卡样式
+            // 更新選項卡樣式
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('border-blue-500', 'text-blue-600');
                 btn.classList.add('border-transparent', 'text-gray-500');
@@ -663,7 +663,7 @@
                 activeBtn.classList.remove('border-transparent', 'text-gray-500');
             }
 
-            // 切换内容
+            // 切換內容
             ['overview', 'users', 'quotas', 'activity', 'models', 'system'].forEach(t => {
                 const el = document.getElementById(`content-${t}`);
                 if (el) el.classList.toggle('hidden', t !== tab);
@@ -676,16 +676,16 @@
             showLoginPage();
         }
 
-        // 占位函数
+        // 佔位函式
         function addSourceSite() {
-            alert('自定义源站管理功能开发中...');
+            alert('自定義源站管理功能開發中...');
         }
 
         function saveSystemSettings() {
-            alert('系统设置保存功能开发中...');
+            alert('系統設定儲存功能開發中...');
         }
     </script>
-    <script src="admin-enhanced.js"></script>
+    <script src="admin-enhanced.ts"></script>
 </body>
 </html>
 

@@ -11,7 +11,7 @@ RUN apk add --no-cache openssl openssl-dev
 # Copy backend package files
 COPY server/package*.json ./
 
-# Install dependencies（锁文件未同步，使用 npm install 以保证 PR 构建通过）
+# Install dependencies（鎖檔案未同步，使用 npm install 以保證 PR 構建透過）
 RUN npm install --no-audit --no-fund
 
 # Copy Prisma schema

@@ -1,4 +1,4 @@
-# Paper Burner X - 快速开始指南
+# Paper Burner X - 快速開始指南
 
 ## 🚀 快速部署
 
@@ -9,41 +9,41 @@
 
 ---
 
-## 方式一：使用 Docker Compose（推荐）
+## 方式一：使用 Docker Compose（推薦）
 
-### 1. 克隆或下载项目
+### 1. 克隆或下載專案
 
 ```bash
 git clone https://github.com/your-repo/paper-burner-x.git
 cd paper-burner-x
 ```
 
-### 2. 配置环境变量
+### 2. 配置環境變數
 
-复制示例配置文件：
+複製示例配置檔案：
 
 ```bash
 cp .env.example .env
 ```
 
-编辑 `.env` 文件，**务必修改以下关键配置**：
+編輯 `.env` 檔案，**務必修改以下關鍵配置**：
 
 ```bash
-# 数据库密码（必改）
+# 資料庫密碼（必改）
 DB_PASSWORD=your_secure_password_here
 
-# JWT 密钥（必改，至少32字符）
+# JWT 金鑰（必改，至少32字元）
 JWT_SECRET=your_super_secret_jwt_key_min_32_chars
 
-# API Keys 加密密钥（必改，至少32字符）
+# API Keys 加密金鑰（必改，至少32字元）
 ENCRYPTION_SECRET=your_encryption_secret_min_32_chars
 
-# 管理员账户（首次启动使用）
+# 管理員賬戶（首次啟動使用）
 ADMIN_EMAIL=admin@yourdomain.com
 ADMIN_PASSWORD=your_admin_password
 ```
 
-**生成安全密钥的方法：**
+**生成安全金鑰的方法：**
 
 ```bash
 # Linux/Mac
@@ -56,50 +56,50 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))
 ```
 
-### 3. 启动服务
+### 3. 啟動服務
 
 ```bash
 docker-compose up -d
 ```
 
-首次启动会自动：
-- 拉取 PostgreSQL 和应用镜像
-- 创建数据库
-- 运行数据库迁移
-- 创建管理员账户
+首次啟動會自動：
+- 拉取 PostgreSQL 和應用映象
+- 建立資料庫
+- 執行資料庫遷移
+- 建立管理員賬戶
 
-### 4. 验证部署
+### 4. 驗證部署
 
-访问：
-- 应用主页：http://localhost:3000
+訪問：
+- 應用主頁：http://localhost:3000
 - 管理面板：http://localhost:3000/admin
-- API 健康检查：http://localhost:3000/api/health
+- API 健康檢查：http://localhost:3000/api/health
 
-### 5. 登录管理员账户
+### 5. 登入管理員賬戶
 
-使用 `.env` 中配置的管理员邮箱和密码登录管理面板。
+使用 `.env` 中配置的管理員郵箱和密碼登入管理面板。
 
-**⚠️ 重要：首次登录后请立即修改管理员密码！**
+**⚠️ 重要：首次登入後請立即修改管理員密碼！**
 
 ---
 
-## 方式二：本地开发部署
+## 方式二：本地開發部署
 
-### 1. 安装依赖
+### 1. 安裝依賴
 
 ```bash
-# 安装前端依赖（如有）
+# 安裝前端依賴（如有）
 npm install
 
-# 安装后端依赖
+# 安裝後端依賴
 cd server
 npm install
 ```
 
-### 2. 启动 PostgreSQL
+### 2. 啟動 PostgreSQL
 
 ```bash
-# 使用 Docker 启动 PostgreSQL
+# 使用 Docker 啟動 PostgreSQL
 docker run -d \
   --name paperburner-db \
   -e POSTGRES_USER=paperburner \
@@ -108,19 +108,19 @@ docker run -d \
   -p 5432:5432 \
   postgres:16-alpine
 
-# 或使用本地 PostgreSQL 并创建数据库
+# 或使用本地 PostgreSQL 並建立資料庫
 createdb paperburner
 ```
 
-### 3. 配置环境变量
+### 3. 配置環境變數
 
 ```bash
 cd server
 cp ../.env.example ../.env
-# 编辑 .env 文件
+# 編輯 .env 檔案
 ```
 
-### 4. 运行数据库迁移
+### 4. 執行資料庫遷移
 
 ```bash
 cd server
@@ -128,91 +128,91 @@ npx prisma generate
 npx prisma migrate deploy
 ```
 
-### 5. 启动后端服务
+### 5. 啟動後端服務
 
 ```bash
 cd server
 npm start
 ```
 
-### 6. 访问应用
+### 6. 訪問應用
 
 http://localhost:3000
 
 ---
 
-## 📊 管理员功能
+## 📊 管理員功能
 
-### 登录管理面板
+### 登入管理面板
 
-访问 `/admin` 并使用管理员账户登录。
+訪問 `/admin` 並使用管理員賬戶登入。
 
 ### 主要功能
 
-1. **用户管理**
-   - 查看所有用户
-   - 启用/禁用用户账户
-   - 查看用户详细信息
+1. **使用者管理**
+   - 檢視所有使用者
+   - 啟用/禁用使用者賬戶
+   - 檢視使用者詳細資訊
 
-2. **系统统计**
-   - 总用户数、活跃用户
-   - 文档处理量
-   - 存储使用情况
+2. **系統統計**
+   - 總使用者數、活躍使用者
+   - 文件處理量
+   - 儲存使用情況
 
-3. **配额管理**
-   - 设置用户文档数量限制
-   - 设置存储空间限制
-   - 查看当前使用量
+3. **配額管理**
+   - 設定使用者文件數量限制
+   - 設定儲存空間限制
+   - 檢視當前使用量
 
-4. **系统配置**
-   - 全局设置
-   - 自定义模型源站管理
+4. **系統配置**
+   - 全域設定
+   - 自定義模型源站管理
 
 ---
 
-## 👤 用户注册和使用
+## 👤 使用者註冊和使用
 
-### 注册账户
+### 註冊賬戶
 
-如果允许用户注册（默认允许），用户可以：
+如果允許使用者註冊（預設允許），使用者可以：
 
-1. 访问主页
-2. 点击"注册"
-3. 填写邮箱、密码、姓名
-4. 提交注册
+1. 訪問主頁
+2. 點選"註冊"
+3. 填寫郵箱、密碼、姓名
+4. 提交註冊
 
 ### 配置 API Keys
 
-登录后：
+登入後：
 
-1. 进入设置页面
-2. 添加翻译服务的 API Keys（如 DeepSeek、Gemini、Claude 等）
-3. 配置 OCR 服务 API Keys（MinerU 或 Doc2X）
+1. 進入設定頁面
+2. 新增翻譯服務的 API Keys（如 DeepSeek、Gemini、Claude 等）
+3. 配置 OCR 服務 API Keys（MinerU 或 Doc2X）
 
-**注意：所有 API Keys 都会自动加密存储，确保安全。**
+**注意：所有 API Keys 都會自動加密儲存，確保安全。**
 
-### 上传和处理文档
+### 上傳和處理文件
 
-1. 上传 PDF 文件
-2. 选择 OCR 服务和翻译模型
-3. 开始处理
-4. 查看结果、下载译文
+1. 上傳 PDF 檔案
+2. 選擇 OCR 服務和翻譯模型
+3. 開始處理
+4. 檢視結果、下載譯文
 
-### 查看历史记录
+### 檢視歷史記錄
 
-在历史记录页面可以：
-- 查看所有处理过的文档
-- 重新查看翻译结果
-- 添加标注和高亮
-- 导出为 DOCX、Markdown 等格式
+在歷史記錄頁面可以：
+- 檢視所有處理過的文件
+- 重新檢視翻譯結果
+- 新增標註和醒目提示
+- 匯出為 DOCX、Markdown 等格式
 
 ---
 
-## 🔧 高级配置
+## 🔧 高階配置
 
-### Nginx 反向代理（生产环境）
+### Nginx 反向代理（生產環境）
 
-如需使用 Nginx，取消注释 `docker-compose.yml` 中的 nginx 服务：
+如需使用 Nginx，取消註釋 `docker-compose.yml` 中的 nginx 服務：
 
 ```yaml
 services:
@@ -222,31 +222,31 @@ services:
       - production
 ```
 
-然后使用：
+然後使用：
 
 ```bash
 docker-compose --profile production up -d
 ```
 
-### 自定义端口
+### 自定義埠
 
 在 `.env` 中修改：
 
 ```bash
-APP_PORT=8080  # 应用端口
-DB_PORT=5433   # 数据库端口
-NGINX_PORT=80  # Nginx 端口
+APP_PORT=8080  # 應用埠
+DB_PORT=5433   # 資料庫埠
+NGINX_PORT=80  # Nginx 埠
 ```
 
 ### CORS 配置
 
-如果前后端分离部署，配置允许的域名：
+如果前後端分離部署，配置允許的域名：
 
 ```bash
 CORS_ORIGIN=https://yourdomain.com,https://app.yourdomain.com
 ```
 
-### 文件上传大小限制
+### 檔案上傳大小限制
 
 ```bash
 MAX_UPLOAD_SIZE=100  # MB
@@ -254,69 +254,69 @@ MAX_UPLOAD_SIZE=100  # MB
 
 ---
 
-## 🛠️ 常见问题
+## 🛠️ 常見問題
 
-### 1. 数据库连接失败
+### 1. 資料庫連線失敗
 
-**问题**: `Error: connect ECONNREFUSED`
+**問題**: `Error: connect ECONNREFUSED`
 
-**解决**:
-- 检查 PostgreSQL 是否运行
-- 检查 `DATABASE_URL` 配置是否正确
-- 确认数据库端口没有被占用
+**解決**:
+- 檢查 PostgreSQL 是否執行
+- 檢查 `DATABASE_URL` 配置是否正確
+- 確認資料庫埠沒有被佔用
 
-### 2. 管理员账户未创建
+### 2. 管理員賬戶未建立
 
-**问题**: 无法登录管理面板
+**問題**: 無法登入管理面板
 
-**解决**:
+**解決**:
 ```bash
-# 查看容器日志
+# 檢視容器日誌
 docker-compose logs app
 
-# 应该看到：
+# 應該看到：
 # ✓ Admin account created successfully
 # Email: admin@paperburner.local
 # Password: admin123456
 
-# 如果未创建，手动创建：
+# 如果未建立，手動建立：
 docker-compose exec app node -e "require('./server/src/utils/initAdmin.js').initializeAdmin()"
 ```
 
-### 3. 数据库迁移失败
+### 3. 資料庫遷移失敗
 
-**问题**: Prisma 迁移错误
+**問題**: Prisma 遷移錯誤
 
-**解决**:
+**解決**:
 ```bash
-# 重置数据库（开发环境）
+# 重置資料庫（開發環境）
 docker-compose exec app npx prisma migrate reset
 
-# 生产环境
+# 生產環境
 docker-compose exec app npx prisma migrate deploy
 ```
 
-### 4. API Keys 加密错误
+### 4. API Keys 加密錯誤
 
-**问题**: 解密失败
+**問題**: 解密失敗
 
-**解决**:
-- 确保 `ENCRYPTION_SECRET` 没有改变
-- 如果更换了密钥，需要重新添加所有 API Keys
+**解決**:
+- 確保 `ENCRYPTION_SECRET` 沒有改變
+- 如果更換了金鑰，需要重新新增所有 API Keys
 
-### 5. 配额检查不生效
+### 5. 配額檢查不生效
 
-**问题**: 用户超出配额仍可创建文档
+**問題**: 使用者超出配額仍可建立文件
 
-**解决**:
-- 检查用户是否有配额设置：`GET /api/admin/users/:userId/quota`
-- 设置配额：`PUT /api/admin/users/:userId/quota`
+**解決**:
+- 檢查使用者是否有配額設定：`GET /api/admin/users/:userId/quota`
+- 設定配額：`PUT /api/admin/users/:userId/quota`
 
 ---
 
-## 📝 数据备份
+## 📝 資料備份
 
-### 备份数据库
+### 備份資料庫
 
 ```bash
 # 使用 Docker
@@ -326,7 +326,7 @@ docker-compose exec postgres pg_dump -U paperburner paperburner > backup.sql
 pg_dump -U paperburner -h localhost -p 5432 paperburner > backup.sql
 ```
 
-### 恢复数据库
+### 恢復資料庫
 
 ```bash
 # 使用 Docker
@@ -336,10 +336,10 @@ docker-compose exec -T postgres psql -U paperburner paperburner < backup.sql
 psql -U paperburner -h localhost -p 5432 paperburner < backup.sql
 ```
 
-### 备份上传文件
+### 備份上傳檔案
 
 ```bash
-# 备份 Docker Volume
+# 備份 Docker Volume
 docker run --rm \
   -v paperburner_app_uploads:/data \
   -v $(pwd):/backup \
@@ -348,19 +348,19 @@ docker run --rm \
 
 ---
 
-## 🔐 安全建议
+## 🔐 安全建議
 
-### 生产环境部署清单
+### 生產環境部署清單
 
-- [ ] 修改所有默认密码
-- [ ] 使用强随机密钥（JWT_SECRET、ENCRYPTION_SECRET）
+- [ ] 修改所有預設密碼
+- [ ] 使用強隨機金鑰（JWT_SECRET、ENCRYPTION_SECRET）
 - [ ] 配置 HTTPS（使用 Nginx + Let's Encrypt）
-- [ ] 设置防火墙规则
-- [ ] 定期备份数据库
-- [ ] 监控系统日志
-- [ ] 启用访问日志
-- [ ] 限制管理员 IP 范围（可选）
-- [ ] 配置邮件通知（可选）
+- [ ] 設定防火牆規則
+- [ ] 定期備份資料庫
+- [ ] 監控系統日誌
+- [ ] 啟用訪問日誌
+- [ ] 限制管理員 IP 範圍（可選）
+- [ ] 配置郵件通知（可選）
 
 ### HTTPS 配置示例
 
@@ -388,16 +388,16 @@ server {
 
 ## 📚 下一步
 
-- 阅读 [BACKEND_IMPROVEMENTS.md](BACKEND_IMPROVEMENTS.md) 了解详细功能
-- 查看 [API_REFERENCE.md](API_REFERENCE.md) 学习 API 使用
-- 参考 [schema.prisma](server/prisma/schema.prisma) 了解数据模型
+- 閱讀 [BACKEND_IMPROVEMENTS.md](BACKEND_IMPROVEMENTS.md) 瞭解詳細功能
+- 檢視 [API_REFERENCE.md](API_REFERENCE.md) 學習 API 使用
+- 參考 [schema.prisma](server/prisma/schema.prisma) 瞭解資料模型
 
 ---
 
-## 💬 获取帮助
+## 💬 獲取幫助
 
 - GitHub Issues: https://github.com/your-repo/paper-burner-x/issues
-- 文档: https://docs.yourproject.com
+- 文件: https://docs.yourproject.com
 - Email: support@yourproject.com
 
 ---

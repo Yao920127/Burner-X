@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>压缩表格调试</title>
+    <title>壓縮表格除錯</title>
     <style>
         body {
             font-family: 'Microsoft YaHei', Arial, sans-serif;
@@ -47,13 +47,13 @@
     </style>
 </head>
 <body>
-    <h1>🐛 压缩表格修复调试</h1>
+    <h1>🐛 壓縮表格修復除錯</h1>
 
     <div id="output"></div>
 
     <script>
-        // 测试4的压缩表格
-        const compressedTable = `| | | | 五分位数 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 规模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
+        // 測試4的壓縮表格
+        const compressedTable = `| | | | 五分位數 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 規模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
 
         const output = document.getElementById('output');
         const logs = [];
@@ -63,50 +63,50 @@
             console.log(msg);
         }
 
-        // === 步骤1: 基本检测 ===
-        log('=== 步骤1: 基本检测 ===');
-        log(`文本长度: ${compressedTable.length}`);
+        // === 步驟1: 基本檢測 ===
+        log('=== 步驟1: 基本檢測 ===');
+        log(`文字長度: ${compressedTable.length}`);
         log(`是否包含 |: ${compressedTable.includes('|')}`);
 
         const pipeCount = (compressedTable.match(/\|/g) || []).length;
-        log(`管道符数量: ${pipeCount}`);
+        log(`管道符數量: ${pipeCount}`);
         log(`是否 >= 10: ${pipeCount >= 10}`);
 
-        // === 步骤2: 分隔符检测 ===
-        log('\n=== 步骤2: 分隔符检测 ===');
+        // === 步驟2: 分隔符檢測 ===
+        log('\n=== 步驟2: 分隔符檢測 ===');
         const separatorPattern = /\|(:?-+:?\|)+/;
-        log(`正则模式: ${separatorPattern}`);
-        log(`是否匹配: ${separatorPattern.test(compressedTable)}`);
+        log(`正則模式: ${separatorPattern}`);
+        log(`是否比對: ${separatorPattern.test(compressedTable)}`);
 
         const separatorMatch = compressedTable.match(separatorPattern);
         if (separatorMatch) {
             log(`✓ 找到分隔符: "${separatorMatch[0]}"`);
             log(`  位置: ${separatorMatch.index}`);
-            log(`  长度: ${separatorMatch[0].length}`);
+            log(`  長度: ${separatorMatch[0].length}`);
 
             const separator = separatorMatch[0];
             const separatorPipes = (separator.match(/\|/g) || []).length;
             const columnCount = separatorPipes - 1;
             log(`  分隔符中的管道符: ${separatorPipes}`);
-            log(`  列数: ${columnCount}`);
+            log(`  列數: ${columnCount}`);
             log(`  每行需要管道符: ${columnCount + 1}`);
         } else {
             log('✗ 未找到分隔符！');
         }
 
-        // === 步骤3: 提取表头 ===
+        // === 步驟3: 提取表頭 ===
         if (separatorMatch) {
-            log('\n=== 步骤3: 提取表头 ===');
+            log('\n=== 步驟3: 提取表頭 ===');
             const separatorIndex = separatorMatch.index;
             const separator = separatorMatch[0];
             const columnCount = (separator.match(/\|/g) || []).length - 1;
             const pipesPerRow = columnCount + 1;
 
             const beforeSeparator = compressedTable.substring(0, separatorIndex);
-            log(`表头部分长度: ${beforeSeparator.length}`);
-            log(`表头部分: "${beforeSeparator.substring(0, 100)}..."`);
+            log(`表標頭分長度: ${beforeSeparator.length}`);
+            log(`表標頭分: "${beforeSeparator.substring(0, 100)}..."`);
 
-            // 手动提取表头
+            // 手動提取表頭
             let headerPipeCount = 0;
             let headerEndIndex = -1;
             for (let i = 0; i < beforeSeparator.length; i++) {
@@ -121,34 +121,34 @@
 
             if (headerEndIndex !== -1) {
                 const headerRow = beforeSeparator.substring(0, headerEndIndex).trim();
-                log(`✓ 表头提取成功: "${headerRow}"`);
+                log(`✓ 表頭提取成功: "${headerRow}"`);
             } else {
-                log(`✗ 表头提取失败！找到 ${headerPipeCount} 个管道符，需要 ${pipesPerRow} 个`);
+                log(`✗ 表頭提取失敗！找到 ${headerPipeCount} 個管道符，需要 ${pipesPerRow} 個`);
             }
 
-            // === 步骤4: 提取数据行 ===
-            log('\n=== 步骤4: 提取数据行 ===');
+            // === 步驟4: 提取資料行 ===
+            log('\n=== 步驟4: 提取資料行 ===');
             const afterSeparator = compressedTable.substring(separatorIndex + separator.length);
-            log(`数据部分长度: ${afterSeparator.length}`);
-            log(`数据部分开头: "${afterSeparator.substring(0, 100)}..."`);
+            log(`資料部分長度: ${afterSeparator.length}`);
+            log(`資料部分開頭: "${afterSeparator.substring(0, 100)}..."`);
 
             let remaining = afterSeparator.trim();
             let rowNum = 1;
             const dataRows = [];
 
             while (remaining.length > 0 && rowNum <= 10) {
-                log(`\n尝试提取行 ${rowNum}:`);
-                log(`  剩余长度: ${remaining.length}`);
-                log(`  开头: "${remaining.substring(0, 50)}..."`);
+                log(`\n嘗試提取行 ${rowNum}:`);
+                log(`  剩餘長度: ${remaining.length}`);
+                log(`  開頭: "${remaining.substring(0, 50)}..."`);
 
-                // 如果开头不是 |，添加一个
+                // 如果開頭不是 |，新增一個
                 if (!remaining.startsWith('|')) {
-                    log(`  添加开头的 |`);
+                    log(`  新增開頭的 |`);
                     remaining = '|' + remaining;
                 }
 
                 // 提取行
-                const rowText = remaining.substring(1); // 跳过开头的 |
+                const rowText = remaining.substring(1); // 跳過開頭的 |
                 let rowPipeCount = 0;
                 let rowEndIndex = -1;
 
@@ -163,7 +163,7 @@
                 }
 
                 if (rowEndIndex === -1) {
-                    log(`  ✗ 行提取失败：找到 ${rowPipeCount} 个管道符，需要 ${pipesPerRow} 个`);
+                    log(`  ✗ 行提取失敗：找到 ${rowPipeCount} 個管道符，需要 ${pipesPerRow} 個`);
                     break;
                 }
 
@@ -171,17 +171,17 @@
                 dataRows.push(row);
                 log(`  ✓ 行 ${rowNum}: "${row.substring(0, 80)}..."`);
 
-                // 移动到下一行
+                // 移動到下一行
                 const consumedLength = rowEndIndex + 1;
                 remaining = rowText.substring(rowEndIndex).trim();
                 rowNum++;
             }
 
-            log(`\n总共提取 ${dataRows.length} 行数据`);
+            log(`\n總共提取 ${dataRows.length} 行資料`);
 
-            // === 步骤5: 组合结果 ===
+            // === 步驟5: 組合結果 ===
             if (headerEndIndex !== -1 && dataRows.length > 0) {
-                log('\n=== 步骤5: 组合结果 ===');
+                log('\n=== 步驟5: 組合結果 ===');
                 const headerRow = beforeSeparator.substring(0, headerEndIndex).trim();
                 const fixedTable = [
                     headerRow,
@@ -189,15 +189,15 @@
                     ...dataRows
                 ].join('\n');
 
-                log('✓ 修复成功！');
-                log(`\n修复后的表格:\n${fixedTable}\n`);
+                log('✓ 修復成功！');
+                log(`\n修復後的表格:\n${fixedTable}\n`);
 
-                // 渲染测试
+                // 渲染測試
                 const section = document.createElement('div');
                 section.className = 'section';
                 section.innerHTML = `
-                    <h2 class="success">✓ 修复成功！</h2>
-                    <h3>渲染结果:</h3>
+                    <h2 class="success">✓ 修復成功！</h2>
+                    <h3>渲染結果:</h3>
                     <div class="result" id="render-result"></div>
                 `;
                 output.appendChild(section);
@@ -211,11 +211,11 @@
                     }
                 }, 100);
             } else {
-                log('\n✗ 修复失败');
+                log('\n✗ 修復失敗');
             }
         }
 
-        // 显示日志
+        // 顯示日誌
         const logDiv = document.createElement('div');
         logDiv.className = 'log';
         logDiv.textContent = logs.join('\n');

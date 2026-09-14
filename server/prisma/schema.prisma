@@ -1,5 +1,5 @@
 // Prisma Schema for Paper Burner X
-// 支持多租户系统、历史记录持久化、模型配置管理
+// 支援多租戶系統、歷史記錄持久化、模型配置管理
 
 generator client {
   provider      = "prisma-client-js"
@@ -11,7 +11,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ==================== 用户与认证 ====================
+// ==================== 使用者與認證 ====================
 
 model User {
   id        String   @id @default(uuid())
@@ -23,7 +23,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // 关联
+  // 關聯
   settings       UserSettings?
   documents      Document[]
   apiKeys        ApiKey[]
@@ -44,40 +44,40 @@ enum Role {
   ADMIN
 }
 
-// ==================== 用户设置 ====================
+// ==================== 使用者設定 ====================
 
 model UserSettings {
   id     String @id @default(uuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // OCR 设置
+  // OCR 設定
   ocrProvider String? // 'mineru' | 'doc2x'
   ocrApiKey   String? @db.Text
 
-  // 翻译设置
+  // 翻譯設定
   translationModel         String? // 'deepseek' | 'gemini' | 'claude' | 'custom'
   targetLanguage           String  @default("chinese")
   customTargetLanguageName String?
   maxTokensPerChunk        Int     @default(2000)
   translationConcurrency   Int     @default(15)
 
-  // 提示词设置
+  // 提示詞設定
   defaultSystemPrompt       String? @db.Text
   defaultUserPromptTemplate String? @db.Text
   useCustomPrompts          Boolean @default(false)
 
-  // 其他设置
+  // 其他設定
   enableGlossary      Boolean  @default(false)
   batchModeEnabled    Boolean  @default(false)
   batchModeTemplate   String?
   batchModeFormats    String[] // ['original', 'markdown', 'pdf']
   batchModeZipEnabled Boolean  @default(false)
 
-  // 扩展配置（JSON 字段）
-  ocrConfig            Json? // OCR 引擎和详细配置
-  academicSearchConfig Json? // 学术搜索配置
-  uiLayoutConfig       Json? // UI 布局配置
+  // 擴充配置（JSON 欄位）
+  ocrConfig            Json? // OCR 引擎和詳細配置
+  academicSearchConfig Json? // 學術搜尋配置
+  uiLayoutConfig       Json? // UI 版面配置
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -93,7 +93,7 @@ model ApiKey {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   provider String // 'mistral' | 'deepseek' | 'gemini' | 'claude' | 'tongyi' | 'volcano' | 'custom_source_xxx'
-  keyValue String    @db.Text // 加密存储
+  keyValue String    @db.Text // 加密儲存
   remark   String?
   status   KeyStatus @default(UNTESTED)
   order    Int       @default(0)
@@ -113,11 +113,11 @@ enum KeyStatus {
   TESTING
 }
 
-// ==================== 自定义模型源站配置 ====================
+// ==================== 自定義模型源站配置 ====================
 
 model CustomSourceSite {
   id     String  @id @default(uuid())
-  userId String? // null = 管理员全局配置
+  userId String? // null = 管理員全域配置
 
   displayName     String
   apiBaseUrl      String
@@ -135,44 +135,44 @@ model CustomSourceSite {
   @@map("custom_source_sites")
 }
 
-// ==================== 文档处理历史 ====================
+// ==================== 文件處理歷史 ====================
 
 model Document {
   id     String @id @default(uuid())
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // 基本信息
+  // 基本資訊
   fileName String
   fileSize Int?
   fileType String
-  filePath String? // 如果启用文件上传存储
+  filePath String? // 如果啟用檔案上傳儲存
 
-  // 处理状态
+  // 處理狀態
   status DocStatus @default(PENDING)
 
-  // OCR 结果
+  // OCR 結果
   ocrProvider String?
   ocrText     String? @db.Text
   ocrMetadata Json?
 
-  // 翻译结果
+  // 翻譯結果
   translationModel    String?
   translatedText      String? @db.Text
   translationMetadata Json?
 
-  // 其他数据
+  // 其他資料
   summary  String? @db.Text
   toc      Json? // Table of Contents
-  metadata Json? // 其他元数据
+  metadata Json? // 其他後設資料
 
-  processingTime Int? // 处理时间（毫秒）
+  processingTime Int? // 處理時間（毫秒）
   errorMessage   String? @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // 关联
+  // 關聯
   annotations    Annotation[]
   semanticGroups SemanticGroup[]
   chatMessages   ChatMessage[]
@@ -192,7 +192,7 @@ enum DocStatus {
   FAILED
 }
 
-// ==================== 高亮与标注 ====================
+// ==================== 醒目提示與標註 ====================
 
 model Annotation {
   id     String @id @default(uuid())
@@ -217,14 +217,14 @@ model Annotation {
   @@map("annotations")
 }
 
-// ==================== 意群数据 ====================
+// ==================== 意群資料 ====================
 
 model SemanticGroup {
   id         String   @id @default(uuid())
   documentId String
   document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
-  groups  Json // 存储意群数组
+  groups  Json // 儲存意群陣列
   version String?
   source  String?
 
@@ -235,7 +235,7 @@ model SemanticGroup {
   @@map("semantic_groups")
 }
 
-// ==================== 翻译术语库 ====================
+// ==================== 翻譯術語庫 ====================
 
 model Glossary {
   id     String @id @default(uuid())
@@ -244,7 +244,7 @@ model Glossary {
 
   name    String
   enabled Boolean @default(true)
-  entries Json // 存储术语条目数组
+  entries Json // 儲存術語條目陣列
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -253,7 +253,7 @@ model Glossary {
   @@map("glossaries")
 }
 
-// ==================== 系统配置（管理员）====================
+// ==================== 系統配置（管理員）====================
 
 model SystemConfig {
   id          String  @id @default(uuid())
@@ -267,14 +267,14 @@ model SystemConfig {
   @@map("system_config")
 }
 
-// ==================== 已处理文件记录 ====================
+// ==================== 已處理檔案記錄 ====================
 
 model ProcessedFile {
   id     String @id @default(uuid())
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  fileIdentifier String // 文件标识符 (name + size + lastModified)
+  fileIdentifier String // 檔案識別符號 (name + size + lastModified)
   fileName       String
   processedAt    DateTime @default(now())
 
@@ -283,24 +283,24 @@ model ProcessedFile {
   @@map("processed_files")
 }
 
-// ==================== 用户配额管理 ====================
+// ==================== 使用者配額管理 ====================
 
 model UserQuota {
   id     String @id @default(uuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // 配额限制 (-1 表示无限制)
+  // 配額限制 (-1 表示無限制)
   maxDocumentsPerDay   Int @default(-1)
   maxDocumentsPerMonth Int @default(-1)
   maxStorageSize       Int @default(-1) // MB
   maxApiKeysCount      Int @default(-1)
 
-  // 当前使用量
+  // 當前使用量
   documentsThisMonth Int @default(0)
   currentStorageUsed Int @default(0) // MB
 
-  // 重置时间
+  // 重置時間
   lastMonthlyReset DateTime @default(now())
 
   createdAt DateTime @default(now())
@@ -309,14 +309,14 @@ model UserQuota {
   @@map("user_quotas")
 }
 
-// ==================== 使用量日志 ====================
+// ==================== 使用量日誌 ====================
 
 model UsageLog {
   id         String  @id @default(uuid())
   userId     String
   action     String // 'ocr', 'translate', 'document_create', etc.
-  resourceId String? // 关联的资源ID（如文档ID）
-  metadata   Json? // 额外元数据
+  resourceId String? // 關聯的資源ID（如文件ID）
+  metadata   Json? // 額外後設資料
 
   createdAt DateTime @default(now())
 
@@ -325,7 +325,7 @@ model UsageLog {
   @@map("usage_logs")
 }
 
-// ==================== 聊天消息 ====================
+// ==================== 聊天訊息 ====================
 
 model ChatMessage {
   id         String   @id @default(uuid())
@@ -337,13 +337,13 @@ model ChatMessage {
   role      String // 'user' | 'assistant'
   content   String   @db.Text
   timestamp DateTime @default(now())
-  metadata  Json? // 扩展信息（模型、token 等）
+  metadata  Json? // 擴充資訊（模型、token 等）
 
   @@index([documentId, timestamp])
   @@map("chat_messages")
 }
 
-// ==================== 文献引用 ====================
+// ==================== 文獻參考 ====================
 
 model Reference {
   id         String   @id @default(uuid())
@@ -352,7 +352,7 @@ model Reference {
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  citationKey String // 引用标识符（如 "[1]"）
+  citationKey String // 參考識別符號（如 "[1]"）
   doi         String?
   title       String?
   authors     Json? // [{name, affiliation}]
@@ -361,7 +361,7 @@ model Reference {
   volume      String?
   pages       String?
   url         String?
-  metadata    Json? // 完整元数据
+  metadata    Json? // 完整後設資料
 
   createdAt DateTime @default(now())
 
@@ -370,15 +370,15 @@ model Reference {
   @@map("references")
 }
 
-// ==================== 提示词池 ====================
+// ==================== 提示詞池 ====================
 
 model PromptPool {
   id     String @id @default(uuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  prompts      Json // 提示词数组
-  healthConfig Json? // 健康检查配置
+  prompts      Json // 提示詞陣列
+  healthConfig Json? // 健康檢查配置
 
   updatedAt DateTime @default(now()) @updatedAt
 

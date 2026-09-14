@@ -1,20 +1,20 @@
 /**
  * Reference Manager - Detail Page Styles
  *
- * 职责：参考文献详情页样式
- * 作用域：悬浮面板、引用链接、详情卡片
- * 依赖：variables.css
+ * 職責：參考文獻詳情頁樣式
+ * 作用域：懸浮面板、參考連結、詳情卡片
+ * 依賴：variables.css
  *
  * 提取自：reference-manager-detail.css
  *
  * 包含：
- * - 文献区域和悬浮面板
- * - 引用链接和悬浮卡片
- * - 详情模态框
- * - Dock和TOC集成
+ * - 文獻區域和懸浮面板
+ * - 參考連結和懸浮卡片
+ * - 詳情模態框
+ * - Dock和TOC整合
  */
 
-/* ==================== 1. 文档末尾的参考文献区域 ==================== */
+/* ==================== 1. 文件末尾的參考文獻區域 ==================== */
 
 .reference-section {
     margin-top: 60px;
@@ -77,7 +77,7 @@
     background-color: var(--color-bg-secondary);
 }
 
-/* ==================== 2. 参考文献列表 ==================== */
+/* ==================== 2. 參考文獻列表 ==================== */
 
 .reference-list {
     display: flex;
@@ -198,7 +198,7 @@
     color: var(--color-text-primary);
 }
 
-/* ==================== 3. TOC中的参考文献链接 ==================== */
+/* ==================== 3. TOC中的參考文獻連結 ==================== */
 
 .toc-reference-link {
     border-top: 1px solid var(--color-border);
@@ -221,7 +221,7 @@
     border-radius: var(--radius-sm);
 }
 
-/* ==================== 4. 悬浮面板（类似chatbot） ==================== */
+/* ==================== 4. 懸浮面板（類似chatbot） ==================== */
 
 .reference-floating-panel {
     position: fixed;
@@ -338,7 +338,7 @@
     background: var(--color-bg-secondary);
 }
 
-/* 美化滚动条 */
+/* 美化捲軸 */
 .reference-panel-content::-webkit-scrollbar {
     width: 6px;
 }
@@ -527,7 +527,7 @@
     font-size: 11px;
 }
 
-/* ==================== 5. Dock中的文献统计样式 ==================== */
+/* ==================== 5. Dock中的文獻統計樣式 ==================== */
 
 .dock-stat-item-wrapper-reference {
     cursor: pointer;
@@ -538,7 +538,7 @@
     background-color: rgba(76, 175, 80, 0.1);
 }
 
-/* ==================== 6. 参考文献条目高亮动画 ==================== */
+/* ==================== 6. 參考文獻條目醒目提示動畫 ==================== */
 
 .reference-item-highlight {
     background-color: #fff3cd !important;
@@ -557,7 +557,7 @@
     }
 }
 
-/* ==================== 7. 原文中的引用链接 ==================== */
+/* ==================== 7. 原文中的參考連結 ==================== */
 
 .reference-citation {
     color: var(--color-primary);
@@ -576,7 +576,7 @@
     text-decoration: none;
 }
 
-/* ==================== 8. 引用悬浮卡片 ==================== */
+/* ==================== 8. 參考懸浮卡片 ==================== */
 
 .reference-citation-tooltip {
     position: absolute;
@@ -601,7 +601,7 @@
     visibility: visible;
 }
 
-/* ==================== 9. 详细悬浮卡片（改进版） ==================== */
+/* ==================== 9. 詳細懸浮卡片（改進版） ==================== */
 
 .reference-detail-tooltip {
     position: absolute;
@@ -813,7 +813,7 @@
     font-size: 11px;
 }
 
-/* ==================== 10. 多文献列表样式 ==================== */
+/* ==================== 10. 多文獻列表樣式 ==================== */
 
 .tooltip-multiple-refs {
     display: flex;
@@ -978,7 +978,7 @@
     text-overflow: ellipsis;
 }
 
-/* 美化滚动条 */
+/* 美化捲軸 */
 .reference-detail-tooltip::-webkit-scrollbar {
     width: 6px;
 }
@@ -1071,7 +1071,7 @@
     text-decoration: underline;
 }
 
-/* ==================== 11. 返回原文按钮 ==================== */
+/* ==================== 11. 返回原文按鈕 ==================== */
 
 .ref-back-to-text {
     display: inline-flex;
@@ -1098,7 +1098,7 @@
     font-size: 10px;
 }
 
-/* ==================== 12. 文献详细卡片模态框 ==================== */
+/* ==================== 12. 文獻詳細卡片模態框 ==================== */
 
 .reference-detail-modal {
     position: fixed;
@@ -1340,7 +1340,7 @@
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
-/* 美化滚动条 */
+/* 美化捲軸 */
 .reference-detail-card::-webkit-scrollbar {
     width: 8px;
 }
@@ -1358,7 +1358,7 @@
     background: #94a3b8;
 }
 
-/* ==================== 13. 响应式设计 ==================== */
+/* ==================== 13. 響應式設計 ==================== */
 
 @media (max-width: 768px) {
     .reference-floating-panel {

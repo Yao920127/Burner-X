@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>压缩表格修复诊断</title>
+    <title>壓縮表格修復診斷</title>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
     <script src="js/processing/markdown_processor_ast.js"></script>
     <style>
@@ -51,12 +51,12 @@
     </style>
 </head>
 <body>
-    <h1>🔍 压缩表格修复诊断</h1>
+    <h1>🔍 壓縮表格修復診斷</h1>
 
     <div id="output"></div>
 
     <script>
-        // 拦截所有 console.log
+        // 攔截所有 console.log
         const logs = [];
         const originalLog = console.log;
         const originalWarn = console.warn;
@@ -78,27 +78,27 @@
         };
 
         const output = document.getElementById('output');
-        const compressedTable = `| | | | 五分位数 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市场 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 规模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
+        const compressedTable = `| | | | 五分位數 (Quintiles) | | | |---|---|---|---|---|---|---| | | 1 | 2 | 3 | 4 | 5 | 5-1 | | 市場 (Market) | 0.145*** | 0.200** | 0.061* | 0.136* | 0.106*** | -0.039 | | | (2.774) | (2.441) | (1.938) | (1.689) | (2.703) | (-0.930) | | 規模 (Size) | 0.107** | 0.329* | 0.147** | 0.206** | 0.059*** | 0.047 | | | (2.163) | (1.800) | (2.223) | (2.452) | (3.150) | (1.090) |`;
 
-        // 步骤1: 验证输入
+        // 步驟1: 驗證輸入
         const section1 = document.createElement('div');
         section1.className = 'section';
         section1.innerHTML = `
-            <h2>步骤1: 验证输入</h2>
-            <p>管道符数量: <strong>${(compressedTable.match(/\|/g) || []).length}</strong></p>
-            <p>文本长度: <strong>${compressedTable.length}</strong></p>
+            <h2>步驟1: 驗證輸入</h2>
+            <p>管道符數量: <strong>${(compressedTable.match(/\|/g) || []).length}</strong></p>
+            <p>文字長度: <strong>${compressedTable.length}</strong></p>
             <p>包含分隔符: <strong>${/\|(:?-+:?\|)+/.test(compressedTable) ? '✓ 是' : '✗ 否'}</strong></p>
         `;
         output.appendChild(section1);
 
-        // 步骤2: 测试 MarkdownProcessorAST
+        // 步驟2: 測試 MarkdownProcessorAST
         const section2 = document.createElement('div');
         section2.className = 'section';
-        section2.innerHTML = `<h2>步骤2: MarkdownProcessorAST 渲染</h2>`;
+        section2.innerHTML = `<h2>步驟2: MarkdownProcessorAST 渲染</h2>`;
 
         if (typeof MarkdownProcessorAST !== 'undefined') {
             try {
-                logs.length = 0; // 清空日志
+                logs.length = 0; // 清空日誌
                 const html = MarkdownProcessorAST.render(compressedTable);
                 const hasTable = html.includes('<table');
 
@@ -110,32 +110,32 @@
                 `;
             } catch (error) {
                 section2.innerHTML += `
-                    <p class="fail">✗ 渲染出错: ${error.message}</p>
+                    <p class="fail">✗ 渲染出錯: ${error.message}</p>
                     <pre>${error.stack}</pre>
                 `;
             }
         } else {
-            section2.innerHTML += `<p class="fail">✗ MarkdownProcessorAST 未加载</p>`;
+            section2.innerHTML += `<p class="fail">✗ MarkdownProcessorAST 未載入</p>`;
         }
         output.appendChild(section2);
 
-        // 步骤3: 显示日志
+        // 步驟3: 顯示日誌
         setTimeout(() => {
             const section3 = document.createElement('div');
             section3.className = 'section';
             section3.innerHTML = `
-                <h2>步骤3: 控制台日志 (${logs.length} 条)</h2>
-                <div class="log">${logs.length > 0 ? logs.join('\n') : '(无日志)'}</div>
+                <h2>步驟3: 主控台日誌 (${logs.length} 條)</h2>
+                <div class="log">${logs.length > 0 ? logs.join('\n') : '(無日誌)'}</div>
             `;
             output.appendChild(section3);
 
-            // 步骤4: 获取指标
+            // 步驟4: 獲取指標
             if (typeof MarkdownProcessorAST !== 'undefined' && MarkdownProcessorAST.getMetrics) {
                 const metrics = MarkdownProcessorAST.getMetrics();
                 const section4 = document.createElement('div');
                 section4.className = 'section';
                 section4.innerHTML = `
-                    <h2>步骤4: 性能指标</h2>
+                    <h2>步驟4: 效能指標</h2>
                     <div class="log">${JSON.stringify(metrics, null, 2)}</div>
                 `;
                 output.appendChild(section4);

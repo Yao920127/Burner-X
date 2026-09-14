@@ -1,12 +1,12 @@
 /**
- * Typography - 排版系统
+ * Typography - 排版系統
  *
- * 职责：定义标题、段落、列表等文本元素的样式
- * 作用域：全局与 .markdown-content 作用域
- * 依赖：variables.css
+ * 職責：定義標題、段落、列表等文字元素的樣式
+ * 作用域：全域與 .markdown-content 作用域
+ * 依賴：variables.css
  */
 
-/* ==================== 标题层级 ==================== */
+/* ==================== 標題層級 ==================== */
 
 h1 {
   font-size: var(--font-size-xxl);
@@ -50,7 +50,7 @@ h6 {
   margin-bottom: var(--spacing-xs);
 }
 
-/* ==================== 段落与文本块 ==================== */
+/* ==================== 段落與文字塊 ==================== */
 
 p {
   margin-bottom: var(--spacing-md);
@@ -86,7 +86,7 @@ li:last-child {
   margin-bottom: 0;
 }
 
-/* 嵌套列表 */
+/* 巢狀列表 */
 ul ul,
 ol ul {
   list-style-type: circle;
@@ -99,7 +99,7 @@ ol ol {
   margin-top: var(--spacing-xs);
 }
 
-/* ==================== 链接 ==================== */
+/* ==================== 連結 ==================== */
 
 a {
   color: var(--color-primary);
@@ -116,7 +116,7 @@ a:active {
   color: var(--color-primary-active);
 }
 
-/* ==================== 强调与标记 ==================== */
+/* ==================== 強調與標記 ==================== */
 
 strong,
 b {
@@ -150,7 +150,7 @@ small {
   font-size: var(--font-size-xs);
 }
 
-/* ==================== 代码 ==================== */
+/* ==================== 程式碼 ==================== */
 
 code {
   font-family: var(--font-family-monospace);
@@ -178,7 +178,7 @@ pre code {
   color: inherit;
 }
 
-/* ==================== 引用 ==================== */
+/* ==================== 參考 ==================== */
 
 blockquote {
   margin: var(--spacing-md) 0;
@@ -204,7 +204,7 @@ blockquote cite::before {
   content: "— ";
 }
 
-/* ==================== 水平分隔线 ==================== */
+/* ==================== 水平分隔線 ==================== */
 
 hr {
   border: 0;
@@ -212,7 +212,7 @@ hr {
   margin: var(--spacing-lg) 0;
 }
 
-/* ==================== 缩写与定义 ==================== */
+/* ==================== 縮寫與定義 ==================== */
 
 abbr[title] {
   text-decoration: underline dotted;
@@ -225,10 +225,10 @@ dfn {
   font-weight: var(--font-weight-medium);
 }
 
-/* ==================== Markdown 内容特定样式 ==================== */
+/* ==================== Markdown 內容特定樣式 ==================== */
 
 .markdown-content {
-  /* 为 Markdown 渲染的内容提供额外的间距 */
+  /* 為 Markdown 渲染的內容提供額外的間距 */
   line-height: var(--line-height-relaxed);
 }
 
@@ -286,7 +286,7 @@ dfn {
   background-color: var(--color-bg-secondary);
 }
 
-/* ==================== 工具类 ==================== */
+/* ==================== 工具類 ==================== */
 
 .text-center {
   text-align: center;

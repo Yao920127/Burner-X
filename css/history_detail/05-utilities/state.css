@@ -1,8 +1,8 @@
 /* ==========================
- * 动态状态管理CSS类
+ * 動態狀態管理CSS類
  * ========================== */
 
-/* 分块对比显示模式 */
+/* 分塊對比顯示模式 */
 .block-mode-ocr-only .align-block-trans,
 .block-mode-ocr-only .splitter {
   display: none !important;
@@ -34,7 +34,7 @@
   display: block !important;
 }
 
-/* Flex比例CSS变量支持 - 只在对比模式下生效 */
+/* Flex比例CSS變數支援 - 只在對比模式下生效 */
 .block-mode-both .align-block-ocr {
   flex-basis: var(--ocr-ratio, 50%) !important;
   max-width: var(--ocr-ratio, 50%) !important;
@@ -45,12 +45,12 @@
   max-width: var(--trans-ratio, 50%) !important;
 }
 
-/* 拖拽状态 */
+/* 拖拽狀態 */
 .dragging-cursor {
   cursor: col-resize !important;
 }
 
-/* 上下文菜单状态 */
+/* 上下文選單狀態 */
 .context-menu-visible {
   display: block !important;
 }
@@ -59,7 +59,7 @@
   display: none !important;
 }
 
-/* TOC弹窗状态 */
+/* TOC彈出視窗狀態 */
 .toc-popup-visible {
   display: block !important;
   opacity: 1 !important;
@@ -75,7 +75,7 @@
   transform: translateY(-10px) !important;
 }
 
-/* 临时加载效果 */
+/* 臨時載入效果 */
 .loading-effect {
   position: fixed !important;
   top: 50% !important;
@@ -101,7 +101,7 @@
   transition: filter 0.3s ease-in-out !important;
 }
 
-/* 动态高亮样式 */
+/* 動態醒目提示樣式 */
 .dynamic-highlight {
   cursor: pointer !important;
 }

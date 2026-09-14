@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KaTeX 缓存性能测试 - Phase 4.2+</title>
+  <title>KaTeX 快取效能測試 - Phase 4.2+</title>
   <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -151,43 +151,43 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🚀 Phase 4.2+ KaTeX 公式缓存性能测试</h1>
-      <p>测试缓存对公式渲染性能的影响（针对 4.6s 阻塞问题）</p>
+      <h1>🚀 Phase 4.2+ KaTeX 公式快取效能測試</h1>
+      <p>測試快取對公式渲染效能的影響（針對 4.6s 阻塞問題）</p>
 
       <div class="warning-box">
-        <h3>⚠️ 测试场景</h3>
-        <p><strong>问题：</strong> 打开充满公式的 chatbot 时，KaTeX 渲染阻塞主线程 4.6 秒</p>
-        <p><strong>优化：</strong> 使用 LRU 缓存避免重复公式的重新渲染</p>
-        <p><strong>预期收益：</strong> 缓存命中时渲染时间减少 99%（从 50ms 降至 0.5ms）</p>
+        <h3>⚠️ 測試場景</h3>
+        <p><strong>問題：</strong> 開啟充滿公式的 chatbot 時，KaTeX 渲染阻塞主執行緒 4.6 秒</p>
+        <p><strong>最佳化：</strong> 使用 LRU 快取避免重複公式的重新渲染</p>
+        <p><strong>預期收益：</strong> 快取命中時渲染時間減少 99%（從 50ms 降至 0.5ms）</p>
       </div>
 
       <div class="controls">
-        <button class="btn-primary" onclick="runTest(50)">测试 50 个公式</button>
-        <button class="btn-primary" onclick="runTest(100)">测试 100 个公式</button>
-        <button class="btn-secondary" onclick="viewCacheStats()">查看缓存统计</button>
-        <button class="btn-secondary" onclick="clearCache()">清空缓存</button>
+        <button class="btn-primary" onclick="runTest(50)">測試 50 個公式</button>
+        <button class="btn-primary" onclick="runTest(100)">測試 100 個公式</button>
+        <button class="btn-secondary" onclick="viewCacheStats()">檢視快取統計</button>
+        <button class="btn-secondary" onclick="clearCache()">清空快取</button>
       </div>
     </div>
 
     <div class="comparison" id="results-area"></div>
 
     <div class="formulas-preview">
-      <h2>📝 测试公式预览</h2>
+      <h2>📝 測試公式預覽</h2>
       <div id="formulas-preview"></div>
     </div>
 
     <div class="test-card">
-      <h2>📝 测试日志</h2>
-      <div id="console-log" class="console-log">等待测试...</div>
+      <h2>📝 測試日誌</h2>
+      <div id="console-log" class="console-log">等待測試...</div>
     </div>
   </div>
 
-  <!-- 加载依赖 -->
+  <!-- 載入依賴 -->
   <script src="https://gcore.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script src="../../js/chatbot/utils/katex-cache.js"></script>
 
   <script>
-    // 测试公式集合
+    // 測試公式集合
     const TEST_FORMULAS = [
       'E = mc^2',
       '\\int_{0}^{\\infty} e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}',
@@ -209,9 +209,9 @@
       console.log(`[${type.toUpperCase()}] ${message}`);
     }
 
-    // 测试无缓存渲染
+    // 測試無快取渲染
     async function testWithoutCache(formulas, rounds = 3) {
-      log('开始测试：无缓存渲染', 'info');
+      log('開始測試：無快取渲染', 'info');
 
       const times = [];
 
@@ -231,7 +231,7 @@
       }
 
       const avgTime = times.reduce((a, b) => a + b, 0) / times.length;
-      log(`无缓存完成: 平均 ${avgTime.toFixed(0)} ms`, 'success');
+      log(`無快取完成: 平均 ${avgTime.toFixed(0)} ms`, 'success');
 
       return {
         avgTime,
@@ -241,11 +241,11 @@
       };
     }
 
-    // 测试缓存渲染
+    // 測試快取渲染
     async function testWithCache(formulas, rounds = 3) {
-      log('开始测试：缓存渲染', 'info');
+      log('開始測試：快取渲染', 'info');
 
-      // 第一轮：缓存未命中
+      // 第一輪：快取未命中
       const firstRoundStart = performance.now();
       formulas.forEach(tex => {
         window.renderKatexCached(tex, {
@@ -256,9 +256,9 @@
         });
       });
       const firstRoundTime = performance.now() - firstRoundStart;
-      log(`第一轮（缓存未命中）: ${firstRoundTime.toFixed(0)} ms`, 'info');
+      log(`第一輪（快取未命中）: ${firstRoundTime.toFixed(0)} ms`, 'info');
 
-      // 后续轮次：缓存命中
+      // 後續輪次：快取命中
       const times = [];
       for (let round = 0; round < rounds - 1; round++) {
         const roundStart = performance.now();
@@ -276,7 +276,7 @@
       }
 
       const avgCachedTime = times.reduce((a, b) => a + b, 0) / times.length;
-      log(`后续轮次（缓存命中）: 平均 ${avgCachedTime.toFixed(2)} ms`, 'success');
+      log(`後續輪次（快取命中）: 平均 ${avgCachedTime.toFixed(2)} ms`, 'success');
 
       return {
         firstRoundTime,
@@ -287,70 +287,70 @@
       };
     }
 
-    // 运行测试
+    // 執行測試
     async function runTest(formulaCount) {
       log('========================================', 'info');
-      log(`开始测试：${formulaCount} 个公式，每个渲染 3 次`, 'info');
+      log(`開始測試：${formulaCount} 個公式，每個渲染 3 次`, 'info');
       log('========================================', 'info');
 
-      // 准备测试公式（重复使用基础公式）
+      // 準備測試公式（重複使用基礎公式）
       const formulas = [];
       for (let i = 0; i < formulaCount; i++) {
         formulas.push(TEST_FORMULAS[i % TEST_FORMULAS.length]);
       }
 
-      // 清空缓存
+      // 清空快取
       window.katexCache.clear();
 
-      // 测试无缓存
+      // 測試無快取
       const noCacheResult = await testWithoutCache(formulas, 3);
 
       // 等待一下
       await new Promise(r => setTimeout(r, 500));
 
-      // 测试缓存
+      // 測試快取
       const cacheResult = await testWithCache(formulas, 3);
 
-      // 显示结果
+      // 顯示結果
       displayResults(noCacheResult, cacheResult, formulaCount);
 
-      // 显示公式预览
+      // 顯示公式預覽
       displayFormulas(formulas.slice(0, 10));
 
       log('========================================', 'success');
-      log('测试完成！', 'success');
+      log('測試完成！', 'success');
       log('========================================', 'success');
     }
 
-    // 显示结果
+    // 顯示結果
     function displayResults(noCacheResult, cacheResult, formulaCount) {
       const improvement = ((noCacheResult.avgTime - cacheResult.avgCachedTime) / noCacheResult.avgTime * 100);
 
       const html = `
         <div class="test-card">
-          <h3>⏱️ 无缓存渲染</h3>
+          <h3>⏱️ 無快取渲染</h3>
           <div class="metric warning">
-            <span>平均耗时:</span>
+            <span>平均耗時:</span>
             <span><strong>${noCacheResult.avgTime.toFixed(0)} ms</strong></span>
           </div>
           <div class="metric">
-            <span>最小耗时:</span>
+            <span>最小耗時:</span>
             <span>${noCacheResult.minTime.toFixed(0)} ms</span>
           </div>
           <div class="metric">
-            <span>最大耗时:</span>
+            <span>最大耗時:</span>
             <span>${noCacheResult.maxTime.toFixed(0)} ms</span>
           </div>
           <div class="metric">
-            <span>总渲染数:</span>
+            <span>總渲染數:</span>
             <span>${noCacheResult.totalRenders} 次</span>
           </div>
         </div>
 
         <div class="test-card">
-          <h3>⚡ 缓存渲染</h3>
+          <h3>⚡ 快取渲染</h3>
           <div class="metric highlight">
-            <span>缓存命中耗时:</span>
+            <span>快取命中耗時:</span>
             <span><strong>${cacheResult.avgCachedTime.toFixed(2)} ms</strong></span>
           </div>
           <div class="metric">
@@ -358,25 +358,25 @@
             <span>${cacheResult.firstRoundTime.toFixed(0)} ms</span>
           </div>
           <div class="metric highlight">
-            <span>性能提升:</span>
+            <span>效能提升:</span>
             <span><strong>↑ ${improvement.toFixed(1)}%</strong></span>
           </div>
           <div class="metric highlight">
-            <span>速度倍数:</span>
+            <span>速度倍數:</span>
             <span><strong>${(noCacheResult.avgTime / cacheResult.avgCachedTime).toFixed(0)}x 更快</strong></span>
           </div>
 
           <div class="huge-improvement">
-            🚀 ${improvement.toFixed(0)}% 性能提升！
+            🚀 ${improvement.toFixed(0)}% 效能提升！
           </div>
 
           <div class="success-box">
-            <h3>✅ 实际应用场景</h3>
-            <p>如果你的 chatbot 有 ${formulaCount} 个公式：</p>
+            <h3>✅ 實際應用場景</h3>
+            <p>如果你的 chatbot 有 ${formulaCount} 個公式：</p>
             <ul style="margin: 8px 0 0 20px; line-height: 1.8;">
-              <li><strong>无缓存：</strong> 每次打开需要 ${noCacheResult.avgTime.toFixed(0)} ms</li>
-              <li><strong>有缓存：</strong> 第二次打开只需 <strong>${cacheResult.avgCachedTime.toFixed(2)} ms</strong></li>
-              <li><strong>节省时间：</strong> <strong>${(noCacheResult.avgTime - cacheResult.avgCachedTime).toFixed(0)} ms</strong></li>
+              <li><strong>無快取：</strong> 每次開啟需要 ${noCacheResult.avgTime.toFixed(0)} ms</li>
+              <li><strong>有快取：</strong> 第二次開啟只需 <strong>${cacheResult.avgCachedTime.toFixed(2)} ms</strong></li>
+              <li><strong>節省時間：</strong> <strong>${(noCacheResult.avgTime - cacheResult.avgCachedTime).toFixed(0)} ms</strong></li>
             </ul>
           </div>
         </div>
@@ -385,10 +385,10 @@
       document.getElementById('results-area').innerHTML = html;
     }
 
-    // 显示公式预览
+    // 顯示公式預覽
     function displayFormulas(formulas) {
       const preview = document.getElementById('formulas-preview');
-      preview.innerHTML = '<p style="margin-bottom: 12px; color: #666;">测试公式示例（仅显示前 10 个）：</p>';
+      preview.innerHTML = '<p style="margin-bottom: 12px; color: #666;">測試公式示例（僅顯示前 10 個）：</p>';
 
       formulas.forEach((tex, index) => {
         const div = document.createElement('div');
@@ -406,30 +406,30 @@
           });
           div.innerHTML = `<div style="color: #666; font-size: 12px; margin-bottom: 4px;">公式 ${index + 1}</div>${html}`;
         } catch (e) {
-          div.textContent = `公式 ${index + 1}: 渲染失败`;
+          div.textContent = `公式 ${index + 1}: 渲染失敗`;
         }
 
         preview.appendChild(div);
       });
     }
 
-    // 查看缓存统计
+    // 檢視快取統計
     function viewCacheStats() {
       window.getKatexCacheStats();
     }
 
-    // 清空缓存
+    // 清空快取
     function clearCache() {
       window.katexCache.clear();
-      log('缓存已清空', 'warning');
-      alert('缓存已清空！');
+      log('快取已清空', 'warning');
+      alert('快取已清空！');
     }
 
-    // 页面加载完成
+    // 頁面載入完成
     window.addEventListener('load', function() {
-      log('页面加载完成', 'success');
-      log('KaTeX 缓存系统已就绪', 'info');
-      log('点击上方按钮开始测试', 'info');
+      log('頁面載入完成', 'success');
+      log('KaTeX 快取系統已就緒', 'info');
+      log('點選上方按鈕開始測試', 'info');
     });
   </script>
 </body>

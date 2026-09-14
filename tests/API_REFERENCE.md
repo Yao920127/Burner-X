@@ -1,23 +1,23 @@
-# Paper Burner X - API 参考文档
+# Paper Burner X - API 參考文件
 
-## 认证
+## 認證
 
-所有需要认证的端点都需要在请求头中包含 JWT Token：
+所有需要認證的端點都需要在請求頭中包含 JWT Token：
 
 ```
 Authorization: Bearer <token>
 ```
 
-## 用户相关 API
+## 使用者相關 API
 
-### 用户设置
+### 使用者設定
 
-#### 获取用户设置
+#### 獲取使用者設定
 ```
 GET /api/user/settings
 ```
 
-#### 更新用户设置
+#### 更新使用者設定
 ```
 PUT /api/user/settings
 Content-Type: application/json
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ### API Keys 管理
 
-#### 获取 API Keys 列表
+#### 獲取 API Keys 列表
 ```
 GET /api/user/api-keys
 
@@ -43,7 +43,7 @@ Response:
   {
     "id": "uuid",
     "provider": "deepseek",
-    "remark": "主要密钥",
+    "remark": "主要金鑰",
     "status": "VALID",
     "order": 0,
     "lastUsedAt": "2025-01-17T...",
@@ -52,7 +52,7 @@ Response:
 ]
 ```
 
-#### 添加 API Key
+#### 新增 API Key
 ```
 POST /api/user/api-keys
 Content-Type: application/json
@@ -60,7 +60,7 @@ Content-Type: application/json
 {
   "provider": "deepseek",
   "keyValue": "sk-...",
-  "remark": "备用密钥",
+  "remark": "備用金鑰",
   "order": 1
 }
 
@@ -68,13 +68,13 @@ Response:
 {
   "id": "uuid",
   "provider": "deepseek",
-  "remark": "备用密钥",
+  "remark": "備用金鑰",
   "status": "UNTESTED",
   "order": 1
 }
 ```
 
-#### 更新 API Key 状态
+#### 更新 API Key 狀態
 ```
 PATCH /api/user/api-keys/:id/status
 Content-Type: application/json
@@ -84,50 +84,50 @@ Content-Type: application/json
 }
 ```
 
-#### 删除 API Key
+#### 刪除 API Key
 ```
 DELETE /api/user/api-keys/:id
 ```
 
 ---
 
-### 术语库管理
+### 術語庫管理
 
-#### 获取术语库列表
+#### 獲取術語庫列表
 ```
 GET /api/user/glossaries
 ```
 
-#### 创建术语库
+#### 建立術語庫
 ```
 POST /api/user/glossaries
 Content-Type: application/json
 
 {
-  "name": "医学术语",
+  "name": "醫學術語",
   "enabled": true,
   "entries": [
-    {"source": "protein", "target": "蛋白质"},
-    {"source": "cell", "target": "细胞"}
+    {"source": "protein", "target": "蛋白質"},
+    {"source": "cell", "target": "細胞"}
   ]
 }
 ```
 
-#### 更新术语库
+#### 更新術語庫
 ```
 PUT /api/user/glossaries/:id
 ```
 
-#### 删除术语库
+#### 刪除術語庫
 ```
 DELETE /api/user/glossaries/:id
 ```
 
 ---
 
-### 已处理文件记录
+### 已處理檔案記錄
 
-#### 获取已处理文件列表
+#### 獲取已處理檔案列表
 ```
 GET /api/user/processed-files
 
@@ -141,7 +141,7 @@ Response:
 ]
 ```
 
-#### 标记文件为已处理
+#### 標記檔案為已處理
 ```
 POST /api/user/processed-files
 Content-Type: application/json
@@ -152,7 +152,7 @@ Content-Type: application/json
 }
 ```
 
-#### 检查单个文件是否已处理
+#### 檢查單個檔案是否已處理
 ```
 GET /api/user/processed-files/check/:identifier
 
@@ -162,7 +162,7 @@ Response:
 }
 ```
 
-#### 批量检查文件是否已处理
+#### 批次檢查檔案是否已處理
 ```
 POST /api/user/processed-files/check-batch
 Content-Type: application/json
@@ -183,18 +183,18 @@ Response:
 }
 ```
 
-#### 清空已处理文件记录
+#### 清空已處理檔案記錄
 ```
 DELETE /api/user/processed-files
 ```
 
 ---
 
-## 文档管理 API
+## 文件管理 API
 
-### 文档 CRUD
+### 文件 CRUD
 
-#### 获取文档列表
+#### 獲取文件列表
 ```
 GET /api/documents?page=1&limit=20&status=COMPLETED
 
@@ -210,7 +210,7 @@ Response:
 }
 ```
 
-#### 获取文档详情
+#### 獲取文件詳情
 ```
 GET /api/documents/:id
 
@@ -227,7 +227,7 @@ Response:
 }
 ```
 
-#### 创建文档记录
+#### 建立文件記錄
 ```
 POST /api/documents
 Content-Type: application/json
@@ -245,13 +245,13 @@ Response:
   ...
 }
 
-Error (配额超出):
+Error (配額超出):
 {
   "error": "Monthly document quota exceeded (100 documents)"
 }
 ```
 
-#### 更新文档
+#### 更新文件
 ```
 PUT /api/documents/:id
 Content-Type: application/json
@@ -263,16 +263,16 @@ Content-Type: application/json
 }
 ```
 
-#### 删除文档
+#### 刪除文件
 ```
 DELETE /api/documents/:id
 ```
 
 ---
 
-### 标注管理
+### 標註管理
 
-#### 获取文档的所有标注
+#### 獲取文件的所有標註
 ```
 GET /api/documents/:id/annotations
 
@@ -284,13 +284,13 @@ Response:
     "color": "#ffff00",
     "startIndex": 100,
     "endIndex": 200,
-    "text": "高亮文本",
-    "note": "我的笔记"
+    "text": "醒目提示文字",
+    "note": "我的筆記"
   }
 ]
 ```
 
-#### 创建标注
+#### 建立標註
 ```
 POST /api/documents/:id/annotations
 Content-Type: application/json
@@ -300,31 +300,31 @@ Content-Type: application/json
   "color": "#ffff00",
   "startIndex": 100,
   "endIndex": 200,
-  "text": "高亮文本",
-  "note": "我的笔记"
+  "text": "醒目提示文字",
+  "note": "我的筆記"
 }
 ```
 
-#### 更新标注
+#### 更新標註
 ```
 PUT /api/documents/:documentId/annotations/:annotationId
 Content-Type: application/json
 
 {
-  "note": "更新后的笔记"
+  "note": "更新後的筆記"
 }
 ```
 
-#### 删除标注
+#### 刪除標註
 ```
 DELETE /api/documents/:documentId/annotations/:annotationId
 ```
 
 ---
 
-### 意群数据
+### 意群資料
 
-#### 保存/更新意群数据
+#### 儲存/更新意群資料
 ```
 POST /api/documents/:id/semantic-groups
 Content-Type: application/json
@@ -333,13 +333,13 @@ Content-Type: application/json
   "groups": [
     {
       "id": 1,
-      "text": "语义组1",
-      "translation": "翻译1"
+      "text": "語義組1",
+      "translation": "翻譯1"
     },
     {
       "id": 2,
-      "text": "语义组2",
-      "translation": "翻译2"
+      "text": "語義組2",
+      "translation": "翻譯2"
     }
   ],
   "version": "1.0",
@@ -347,7 +347,7 @@ Content-Type: application/json
 }
 ```
 
-#### 获取意群数据
+#### 獲取意群資料
 ```
 GET /api/documents/:id/semantic-groups
 
@@ -365,13 +365,13 @@ Response:
 
 ---
 
-## 管理员 API
+## 管理員 API
 
-所有管理员 API 都需要 ADMIN 角色。
+所有管理員 API 都需要 ADMIN 角色。
 
-### 用户管理
+### 使用者管理
 
-#### 获取所有用户
+#### 獲取所有使用者
 ```
 GET /api/admin/users
 
@@ -388,7 +388,7 @@ Response:
 ]
 ```
 
-#### 更新用户状态
+#### 更新使用者狀態
 ```
 PUT /api/admin/users/:id/status
 Content-Type: application/json
@@ -400,9 +400,9 @@ Content-Type: application/json
 
 ---
 
-### 统计信息
+### 統計資訊
 
-#### 获取基础统计
+#### 獲取基礎統計
 ```
 GET /api/admin/stats
 
@@ -415,7 +415,7 @@ Response:
 }
 ```
 
-#### 获取详细统计
+#### 獲取詳細統計
 ```
 GET /api/admin/stats/detailed
 
@@ -444,7 +444,7 @@ Response:
 }
 ```
 
-#### 获取使用趋势
+#### 獲取使用趨勢
 ```
 GET /api/admin/stats/trends?days=30
 
@@ -467,9 +467,9 @@ Response:
 
 ---
 
-### 用户配额管理
+### 使用者配額管理
 
-#### 获取用户配额
+#### 獲取使用者配額
 ```
 GET /api/admin/users/:userId/quota
 
@@ -487,7 +487,7 @@ Response:
 }
 ```
 
-#### 更新用户配额
+#### 更新使用者配額
 ```
 PUT /api/admin/users/:userId/quota
 Content-Type: application/json
@@ -500,9 +500,9 @@ Content-Type: application/json
 
 ---
 
-### 用户活动日志
+### 使用者活動日誌
 
-#### 获取用户活动
+#### 獲取使用者活動
 ```
 GET /api/admin/users/:userId/activity?limit=50&offset=0
 
@@ -524,9 +524,9 @@ Response:
 
 ---
 
-### 系统配置
+### 系統配置
 
-#### 获取系统配置
+#### 獲取系統配置
 ```
 GET /api/admin/config
 
@@ -537,7 +537,7 @@ Response:
 }
 ```
 
-#### 更新系统配置
+#### 更新系統配置
 ```
 PUT /api/admin/config
 Content-Type: application/json
@@ -545,15 +545,15 @@ Content-Type: application/json
 {
   "key": "allowRegistration",
   "value": "false",
-  "description": "是否允许用户注册"
+  "description": "是否允許使用者註冊"
 }
 ```
 
 ---
 
-### 自定义源站管理
+### 自定義源站管理
 
-#### 获取全局源站列表
+#### 獲取全域源站列表
 ```
 GET /api/admin/source-sites
 
@@ -561,7 +561,7 @@ Response:
 [
   {
     "id": "uuid",
-    "displayName": "自定义模型",
+    "displayName": "自定義模型",
     "apiBaseUrl": "https://api.example.com",
     "modelId": "model-name",
     "availableModels": ["model-1", "model-2"],
@@ -570,13 +570,13 @@ Response:
 ]
 ```
 
-#### 创建全局源站
+#### 建立全域源站
 ```
 POST /api/admin/source-sites
 Content-Type: application/json
 
 {
-  "displayName": "自定义模型",
+  "displayName": "自定義模型",
   "apiBaseUrl": "https://api.example.com",
   "modelId": "model-name",
   "availableModels": ["model-1"],
@@ -589,16 +589,16 @@ Content-Type: application/json
 PUT /api/admin/source-sites/:id
 ```
 
-#### 删除源站
+#### 刪除源站
 ```
 DELETE /api/admin/source-sites/:id
 ```
 
 ---
 
-## 认证 API
+## 認證 API
 
-### 注册
+### 註冊
 ```
 POST /api/auth/register
 Content-Type: application/json
@@ -622,7 +622,7 @@ Response:
 }
 ```
 
-### 登录
+### 登入
 ```
 POST /api/auth/login
 Content-Type: application/json
@@ -645,7 +645,7 @@ Response:
 }
 ```
 
-### 获取当前用户
+### 獲取當前使用者
 ```
 GET /api/auth/me
 Authorization: Bearer <token>
@@ -664,7 +664,7 @@ Response:
 
 ---
 
-## 健康检查
+## 健康檢查
 
 ```
 GET /api/health
@@ -680,37 +680,37 @@ Response:
 
 ---
 
-## 错误响应
+## 錯誤響應
 
-所有错误响应遵循以下格式：
+所有錯誤響應遵循以下格式：
 
 ```json
 {
-  "error": "错误描述信息"
+  "error": "錯誤描述資訊"
 }
 ```
 
-常见 HTTP 状态码：
+常見 HTTP 狀態碼：
 - `200` - 成功
-- `201` - 创建成功
-- `400` - 请求参数错误
-- `401` - 未认证
-- `403` - 权限不足 / 配额超出
-- `404` - 资源不存在
-- `409` - 冲突（如邮箱已存在）
-- `500` - 服务器错误
+- `201` - 建立成功
+- `400` - 請求引數錯誤
+- `401` - 未認證
+- `403` - 許可權不足 / 配額超出
+- `404` - 資源不存在
+- `409` - 衝突（如郵箱已存在）
+- `500` - 伺服器錯誤
 
 ---
 
-## 分页
+## 分頁
 
-支持分页的端点使用以下参数：
+支援分頁的端點使用以下引數：
 
 ```
 ?page=1&limit=20
 ```
 
-响应格式：
+響應格式：
 
 ```json
 {
@@ -731,7 +731,7 @@ Response:
 ### JavaScript / Fetch
 
 ```javascript
-// 登录
+// 登入
 const loginResponse = await fetch('/api/auth/login', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
@@ -742,13 +742,13 @@ const loginResponse = await fetch('/api/auth/login', {
 });
 const { token } = await loginResponse.json();
 
-// 获取文档列表
+// 獲取文件列表
 const docsResponse = await fetch('/api/documents?page=1&limit=20', {
   headers: { 'Authorization': `Bearer ${token}` }
 });
 const { documents, pagination } = await docsResponse.json();
 
-// 创建文档
+// 建立文件
 const createResponse = await fetch('/api/documents', {
   method: 'POST',
   headers: {
@@ -768,23 +768,23 @@ const newDoc = await createResponse.json();
 ### cURL
 
 ```bash
-# 登录
+# 登入
 TOKEN=$(curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@paperburner.local","password":"admin123456"}' \
   | jq -r '.token')
 
-# 获取统计
+# 獲取統計
 curl http://localhost:3000/api/admin/stats \
   -H "Authorization: Bearer $TOKEN"
 
-# 创建 API Key
+# 建立 API Key
 curl -X POST http://localhost:3000/api/user/api-keys \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"provider":"deepseek","keyValue":"sk-...","remark":"主密钥"}'
+  -d '{"provider":"deepseek","keyValue":"sk-...","remark":"主金鑰"}'
 ```
 
 ---
 
-**最后更新**: 2025-01-17
+**最後更新**: 2025-01-17

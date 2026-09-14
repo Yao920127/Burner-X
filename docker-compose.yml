@@ -1,6 +1,6 @@
 
 services:
-  # PostgreSQL 数据库
+  # PostgreSQL 資料庫
   postgres:
     image: postgres:16-alpine
     container_name: paperburner-db
@@ -19,14 +19,14 @@ services:
       timeout: 5s
       retries: 5
 
-  # Paper Burner X 应用
+  # Paper Burner X 應用
   app:
-    # 方式 1: 从 Docker Hub 拉取（推荐用于生产，快速启动）
+    # 方式 1: 從 Docker Hub 拉取（推薦用於生產，快速啟動）
     # image: feather2dev/paper-burner-x:latest
     # pull_policy: always
 
-    # 方式 2: 从本地构建（推荐用于开发和自定义修改）
-    # 已切换为本地构建，便于验证当前仓库代码改动
+    # 方式 2: 從本地構建（推薦用於開發和自定義修改）
+    # 已切換為本地構建，便於驗證當前倉庫程式碼改動
     build:
       context: .
       dockerfile: Dockerfile
@@ -37,10 +37,10 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      # 数据库配置
+      # 資料庫配置
       DATABASE_URL: postgresql://${DB_USER:-paperburner}:${DB_PASSWORD:-changeme}@postgres:5432/${DB_NAME:-paperburner}
 
-      # 服务器配置
+      # 伺服器配置
       NODE_ENV: ${NODE_ENV:-production}
       PORT: ${PORT:-3000}
 
@@ -48,7 +48,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
 
-      # 加密密钥（生产必填）
+      # 加密金鑰（生產必填）
       ENCRYPTION_SECRET: ${ENCRYPTION_SECRET:-your-encryption-secret-min-32-chars-change-in-production}
 
       # CORS 配置
@@ -57,14 +57,14 @@ services:
       # 部署模式
       DEPLOYMENT_MODE: backend
       RUN_MIGRATIONS: "true"
-      # 后端模式下临时允许内联脚本（CSP），以兼容现有页面
+      # 後端模式下臨時允許內聯腳本（CSP），以相容現有頁面
       CSP_ALLOW_INLINE: "true"
 
-      # OCR API Keys（可选，可通过管理面板配置）
+      # OCR API Keys（可選，可透過管理面板配置）
       MINERU_API_TOKEN: ${MINERU_API_TOKEN:-}
       DOC2X_API_TOKEN: ${DOC2X_API_TOKEN:-}
 
-      # 翻译模型 API Keys（可选）
+      # 翻譯模型 API Keys（可選）
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       CLAUDE_API_KEY: ${CLAUDE_API_KEY:-}
@@ -72,17 +72,17 @@ services:
       VOLCANO_API_KEY: ${VOLCANO_API_KEY:-}
 
     ports:
-      # 避免与本机可能占用的 3000 端口冲突，改为仅绑定 IPv4 127.0.0.1:3300
+      # 避免與本機可能佔用的 3000 埠衝突，改為僅綁定 IPv4 127.0.0.1:3300
       - "127.0.0.1:3300:3000"
-      # 如需同时绑定 IPv6 本地回环，可取消下一行注释（某些环境不支持）：
+      # 如需同時綁定 IPv6 本地迴環，可取消下一行註釋（某些環境不支援）：
       # - "[::1]:3300:3000"
     volumes:
-      # 如果需要持久化上传的文件
+      # 如果需要持久化上傳的檔案
       - app_uploads:/app/uploads
-      # 将迁移与 schema 挂载到容器，确保旧镜像也能找到迁移（只读）
+      # 將遷移與 schema 掛載到容器，確保舊映象也能找到遷移（只讀）
       - ./server/prisma/migrations:/app/server/prisma/migrations:ro
       - ./server/prisma/schema.prisma:/app/server/prisma/schema.prisma:ro
-      # 挂载前端与服务端源码为只读，确保容器运行当前工作区代码（避免旧镜像残留）
+      # 掛載前端與服務端原始碼為只讀，確保容器執行當前工作區程式碼（避免舊映象殘留）
       - ./server/src:/app/server/src:ro
       - ./index.html:/app/index.html:ro
       - ./login.html:/app/login.html:ro
@@ -92,7 +92,7 @@ services:
       - ./css:/app/css:ro
       - ./public:/app/public:ro
 
-  # Nginx 反向代理（可选，用于生产环境）
+  # Nginx 反向代理（可選，用於生產環境）
   nginx:
     image: nginx:alpine
     container_name: paperburner-nginx

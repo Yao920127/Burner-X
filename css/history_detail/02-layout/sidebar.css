@@ -1,9 +1,9 @@
 /**
- * Sidebar Layout - History Detail 统一侧边栏
+ * Sidebar Layout - History Detail 統一側邊欄
  *
- * 职责：提供集成了 TOC 和 Dock 数据的统一侧边栏布局
- * 依赖：01-foundation/variables.css
- * 设计：High-end Minimalist (Ultra-light & Clean)
+ * 職責：提供整合了 TOC 和 Dock 資料的統一側邊欄版面
+ * 依賴：01-foundation/variables.css
+ * 設計：High-end Minimalist (Ultra-light & Clean)
  */
 
 /* ==================== App Shell 容器 ==================== */
@@ -15,7 +15,7 @@
   background-color: var(--color-bg-base);
 }
 
-/* ==================== 侧边栏主体 ==================== */
+/* ==================== 側邊欄主體 ==================== */
 
 .app-sidebar {
   width: var(--sidebar-width);
@@ -35,20 +35,20 @@
   transition: var(--sidebar-transition);
 }
 
-/* 移动端打开状态 */
+/* 行動裝置開啟狀態 */
 .app-sidebar.mobile-open {
   transform: translateX(0);
   box-shadow: var(--shadow-xl); /* Use variable */
 }
 
-/* 桌面端样式 */
+/* 桌面端樣式 */
 @media (min-width: 768px) {
   .app-sidebar {
     position: static;
     transform: none;
   }
 
-  /* 收起状态 */
+  /* 收起狀態 */
   .app-sidebar.collapsed {
     width: var(--sidebar-collapsed-width);
   }
@@ -58,7 +58,7 @@
     padding-right: 0;
   }
 
-  /* 收起时头部垂直排列并居中 */
+  /* 收起時標頭垂直排列並居中 */
   .app-sidebar.collapsed .sidebar-header {
     flex-direction: column;
     align-items: center;
@@ -73,7 +73,7 @@
     object-fit: contain;
   }
 
-  /* 隐藏文字元素 */
+  /* 隱藏文字元素 */
   .app-sidebar.collapsed .nav-text,
   .app-sidebar.collapsed .nav-section-title,
   .app-sidebar.collapsed .sidebar-section-title span,
@@ -87,7 +87,7 @@
     display: none;
   }
 
-  /* 导航项居中 */
+  /* 導航項居中 */
   .app-sidebar.collapsed .nav-item {
     justify-content: center;
     padding-left: 0;
@@ -106,7 +106,7 @@
   }
 }
 
-/* ==================== 侧边栏头部 ==================== */
+/* ==================== 側邊欄標頭 ==================== */
 
 .sidebar-header {
   padding: 1.25rem 1.5rem;
@@ -124,7 +124,7 @@
 }
 
 .sidebar-toggle-btn {
-  display: none; /* 仅桌面端显示 */
+  display: none; /* 僅桌面端顯示 */
   padding: 0.375rem;
   color: var(--color-text-muted);
   background: transparent;
@@ -147,7 +147,7 @@
   }
 }
 
-/* 移动端关闭按钮 */
+/* 行動裝置關閉按鈕 */
 .sidebar-close-btn {
   display: flex;
   padding: 0.5rem;
@@ -170,33 +170,33 @@
   }
 }
 
-/* ==================== 侧边栏导航区 ==================== */
+/* ==================== 側邊欄導航區 ==================== */
 
 .sidebar-nav {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 0.75rem;
-  overflow: hidden; /* 不滚动，内部 TOC 内容区滚动 */
+  overflow: hidden; /* 不滾動，內部 TOC 內容區滾動 */
 }
 
-/* TOC section 占据剩余空间 */
+/* TOC section 佔據剩餘空間 */
 #sidebarTocSection {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* 关键：允许 flex 子元素缩小 */
+  min-height: 0; /* 關鍵：允許 flex 子元素縮小 */
   overflow: hidden;
 }
 
-/* TOC 内容区可滚动 */
+/* TOC 內容區可滾動 */
 #sidebarTocSection .sidebar-section-content {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* 自定义滚动条（应用到 TOC 内容区） */
+/* 自定義捲軸（應用到 TOC 內容區） */
 #sidebarTocSection .sidebar-section-content::-webkit-scrollbar {
   width: 4px; /* Thinner scrollbar */
 }
@@ -214,7 +214,7 @@
   background: var(--slate-400);
 }
 
-/* ==================== 导航分组标题 ==================== */
+/* ==================== 導航分組標題 ==================== */
 
 .nav-section-title {
   padding: 0 0.75rem;
@@ -232,7 +232,7 @@
   margin-top: 0;
 }
 
-/* ==================== 导航项 ==================== */
+/* ==================== 導航項 ==================== */
 
 .nav-item {
   display: flex;
@@ -281,7 +281,7 @@
   transition: opacity var(--transition-fast);
 }
 
-/* ==================== 可折叠区域 ==================== */
+/* ==================== 可摺疊區域 ==================== */
 
 .sidebar-section {
   margin-bottom: 0.25rem;
@@ -341,7 +341,7 @@
   transform: rotate(90deg);
 }
 
-/* 折叠内容区 */
+/* 摺疊內容區 */
 .sidebar-section-content {
   max-height: 0;
   overflow: hidden;
@@ -350,15 +350,15 @@
 }
 
 .sidebar-section.expanded .sidebar-section-content {
-  max-height: none; /* 移除高度限制，由 flex 布局控制 */
+  max-height: none; /* 移除高度限制，由 flex 版面控制 */
 }
 
-/* 非 TOC section 的折叠区域保持原有行为 */
+/* 非 TOC section 的摺疊區域保持原有行為 */
 .sidebar-section:not(#sidebarTocSection).expanded .sidebar-section-content {
-  max-height: 600px; /* 其他折叠区域保持固定高度 */
+  max-height: 600px; /* 其他摺疊區域保持固定高度 */
 }
 
-/* ==================== TOC 目录列表（集成到侧边栏） ==================== */
+/* ==================== TOC 目錄列表（整合到側邊欄） ==================== */
 
 .sidebar-toc-list {
   list-style: none;
@@ -371,7 +371,7 @@
   position: relative;
 }
 
-/* 增加左侧连接线效果，更像树状结构 */
+/* 增加左側連線線效果，更像樹狀結構 */
 .sidebar-toc-item::before {
   content: '';
   position: absolute;
@@ -380,7 +380,7 @@
   bottom: 0;
   width: 1px;
   background-color: var(--slate-200);
-  display: none; /* 默认隐藏，可选开启 */
+  display: none; /* 預設隱藏，可選開啟 */
 }
 
 .sidebar-toc-link {
@@ -410,7 +410,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* TOC 层级缩进 - 优化层次感 */
+/* TOC 層級縮排 - 最佳化層次感 */
 .sidebar-toc-item.toc-h2 .sidebar-toc-link {
   padding-left: 1.25rem; /* 20px */
   font-size: 0.875rem;
@@ -434,7 +434,7 @@
   font-size: 0.75rem;
 }
 
-/* ==================== Dock 统计信息（集成到侧边栏） ==================== */
+/* ==================== Dock 統計資訊（整合到側邊欄） ==================== */
 
 .sidebar-stat-list {
   padding: 0 0.5rem;
@@ -467,7 +467,7 @@
   border-radius: 4px;
 }
 
-/* ==================== 侧边栏底部 ==================== */
+/* ==================== 側邊欄底部 ==================== */
 
 .sidebar-footer {
   padding: 0.75rem;
@@ -475,7 +475,7 @@
   transition: opacity var(--transition-fast);
 }
 
-/* 紧凑底部布局（阅读进度 + 快速统计 + 设置） */
+/* 緊湊底部版面（閱讀進度 + 快速統計 + 設定） */
 .sidebar-footer-compact {
   display: flex;
   align-items: center;
@@ -523,7 +523,7 @@
   background: var(--slate-200);
 }
 
-/* 分隔线（高亮/批注 和 其他统计之间） */
+/* 分隔線（醒目提示/批註 和 其他統計之間） */
 .sidebar-quick-stat-divider {
   width: 1px;
   height: 14px;
@@ -550,7 +550,7 @@
   color: var(--slate-900);
 }
 
-/* ==================== 移动端遮罩 ==================== */
+/* ==================== 行動裝置遮罩 ==================== */
 
 .sidebar-overlay {
   position: fixed;
@@ -574,7 +574,7 @@
   }
 }
 
-/* ==================== 主内容区 ==================== */
+/* ==================== 主內容區 ==================== */
 
 .app-main {
   flex: 1;
@@ -585,7 +585,7 @@
   background-color: var(--color-bg-base);
 }
 
-/* ==================== 移动端顶部栏 ==================== */
+/* ==================== 行動裝置頂部欄 ==================== */
 
 .mobile-header {
   display: flex;
@@ -628,7 +628,7 @@
   }
 }
 
-/* ==================== 分隔线 ==================== */
+/* ==================== 分隔線 ==================== */
 
 .sidebar-divider {
   height: 1px;
@@ -637,7 +637,7 @@
   transition: margin var(--transition-fast);
 }
 
-/* ==================== 空状态提示 ==================== */
+/* ==================== 空狀態提示 ==================== */
 
 .sidebar-empty-state {
   padding: 0.75rem 1rem;
@@ -647,7 +647,7 @@
 }
 
 .sidebar-empty-icon {
-  display: none; /* 隐藏 emoji 图标 */
+  display: none; /* 隱藏 emoji 圖示 */
 }
 
 /* ==================== 工具提示 ==================== */
@@ -674,7 +674,7 @@
   opacity: 1;
 }
 
-/* 仅在收起状态显示工具提示 */
+/* 僅在收起狀態顯示工具提示 */
 @media (min-width: 768px) {
   .app-sidebar:not(.collapsed) .sidebar-tooltip {
     display: none;

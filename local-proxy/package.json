@@ -1,7 +1,7 @@
 {
   "name": "paper-burner-local-proxy",
   "version": "1.0.0",
-  "description": "Paper Burner 本地代理服务器 - 替代 Cloudflare Worker",
+  "description": "Paper Burner 本地代理伺服器 - 替代 Cloudflare Worker",
   "main": "server.js",
   "type": "module",
   "scripts": {

@@ -1,5 +1,5 @@
 /* ==========================
- * TOC 浮动按钮和弹窗样式
+ * TOC 浮動按鈕和彈出視窗樣式
  * ========================== */
 #toc-float-btn {
   position: fixed !important; /* Ensure it's fixed */
@@ -89,12 +89,12 @@
 
 #toc-list ul.toc-children {
   list-style: none;
-  padding-left: 0; /* 移除默认缩进 */
+  padding-left: 0; /* 移除預設縮排 */
   margin: 0;
-  overflow: hidden; /* 确保折叠时内容被隐藏 */
+  overflow: hidden; /* 確保摺疊時內容被隱藏 */
 }
 
-/* 添加每级标题的默认缩进和字体样式 */
+/* 新增每級標題的預設縮排和字型樣式 */
 #toc-list li.toc-h1 {
   margin-top: 6px;
 }
@@ -110,7 +110,7 @@
   margin-top: 2px;
 }
 
-/* 折叠按钮样式 */
+/* 摺疊按鈕樣式 */
 #toc-list .toc-toggle {
   display: inline-block;
   width: 16px;
@@ -128,24 +128,24 @@
   transform: rotate(-90deg);
 }
 
-/* 有子项的TOC项样式 */
+/* 有子項的TOC項樣式 */
 #toc-list li.has-children > a {
   font-weight: 600;
 }
 
-/* 折叠状态下的子项容器 */
+/* 摺疊狀態下的子項容器 */
 #toc-list .toc-children.collapsed {
   height: 0 !important;
   margin: 0;
   padding: 0;
 }
 
-/* 修复悬停状态与折叠状态的冲突 */
+/* 修復懸停狀態與摺疊狀態的衝突 */
 #toc-list li a:hover .toc-toggle {
   color: #3b82f6;
 }
 
-/* 为折叠按钮单独设置悬停样式 */
+/* 為摺疊按鈕單獨設定懸停樣式 */
 #toc-list .toc-toggle:hover {
   color: #3b82f6;
   background-color: rgba(59, 130, 246, 0.1);
@@ -153,9 +153,9 @@
 }
 
 /* ==========================
- * TOC 悬浮窗的特定样式
+ * TOC 懸浮窗的特定樣式
  * ========================== */
-/* TOC弹窗滚动条样式 */
+/* TOC彈出視窗捲軸樣式 */
 #toc-popup::-webkit-scrollbar {
   width: 5px;
 }
@@ -173,13 +173,13 @@
   background: #94a3b8;
 }
 
-/* TOC列表项通用样式 */
+/* TOC列表項通用樣式 */
 #toc-list li {
   margin-bottom: 0;
   line-height: 1.4;
 }
 
-/* 文件名占位符的特殊样式 */
+/* 檔名佔位符的特殊樣式 */
 #toc-list li a[href^="#placeholder-"] {
   font-weight: 600;
   color: #2563eb;
@@ -201,7 +201,7 @@
   font-weight: 500;
   transition: background 0.15s, color 0.15s, border-left-color 0.15s;
   border-left: 3px dashed #e2e8f0;
-  /* 添加多行支持 */
+  /* 新增多行支援 */
   white-space: normal;
   word-break: break-word;
   line-height: 1.3;
@@ -221,14 +221,14 @@
   font-weight: 600;
 }
 
-/* 不同层级标题的缩进和字体大小 */
+/* 不同層級標題的縮排和字型大小 */
 #toc-list li.toc-h2 a {
   padding-left: 16px;
   font-size: 0.95em;
 }
 
 #toc-list li.toc-h3 a {
-  padding-left: 24px; /* 略微调整缩进 */
+  padding-left: 24px; /* 略微調整縮排 */
   font-size: 0.88em;
   color: #475569;
 }
@@ -237,7 +237,7 @@
   color: #3b82f6;
 }
 
-/* TOC项中的英文翻译样式 */
+/* TOC項中的英文翻譯樣式 */
 #toc-list span.toc-en-translation {
   font-size: 0.85em;
   color: #64748b;
@@ -245,7 +245,7 @@
   font-weight: 400;
 }
 
-/* TOC浮动按钮和关闭按钮的悬停效果 */
+/* TOC浮動按鈕和關閉按鈕的懸停效果 */
 #toc-float-btn:hover {
   background: #1d4ed8;
 }
